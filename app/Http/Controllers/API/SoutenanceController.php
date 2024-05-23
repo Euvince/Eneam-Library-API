@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Soutenance;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSoutenanceRequest;
 use App\Http\Requests\UpdateSoutenanceRequest;
 

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\RoleType;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleTypeRequest;
 use App\Http\Requests\UpdateRoleTypeRequest;
 

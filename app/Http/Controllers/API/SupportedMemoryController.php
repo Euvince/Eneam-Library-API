@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\SupportedMemory;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSupportedMemoryRequest;
 use App\Http\Requests\UpdateSupportedMemoryRequest;
 
