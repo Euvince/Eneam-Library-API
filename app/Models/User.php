@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Listeners\UserCreatingListener;
 use App\Models\Loan;
 use App\Models\Comment;
 use App\Models\Payment;
@@ -52,40 +53,30 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'email_verified_at' => 'datetime',
     ];
 
-    /* protected static function boot() {
+    protected $dispatchesEvents = [
+        'creating' => UserCreatingListener::class
+    ];
+
+    protected static function boot() {
 
         parent::boot();
 
         if (!app()->runningInConsole() && auth()->check()) {
-            $userFullName = Auth::user()->nom . " " . Auth::user()->prenoms;
-
-            static::creating(function ($rayon) use ($userFullName) {
-                $rayon->created_by = $userFullName;
-            });
-
-            static::created(function ($rayon) {
-                $rayon->update([
-                    'code' => 'R' . $rayon->id
-                ]);
-            });
-
-            static::updating(function ($rayon) use ($userFullName) {
-                $rayon->updated_by = $userFullName;
-            });
-
-            static::deleting(function ($rayon) use ($userFullName) {
-                $rayon->boitearchives->each(function ($boite) {
-                    $boite->delete();
-                });
-                $rayon->deleted_by = $userFullName;
-                $rayon->save();
+            $userFullName = Auth::user()->firstname . " " . Auth::user()->lastname;
+            static::creating(callback : fn ($user) => $user->created_by = $userFullName);
+            static::creating(callback : fn ($user) => $user->updated_by = $userFullName);
+            static::deleting(function ($user) use ($userFullName) {
+                $user->deleted_by = $userFullName;
+                $user->save();
             });
         }
 
-    } */
+    }
 
     public function payments () : HasMany {
         return $this->hasMany(related : Payment::class, foreignKey : 'user_id');

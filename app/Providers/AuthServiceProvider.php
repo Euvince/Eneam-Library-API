@@ -13,7 +13,22 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Role' => 'App\Policies\RolePolicy',
+        'App\Models\Loan' => 'App\Policies\LoanPolicy',
+        'App\Models\User' => 'App\Policies\UserPolicy',
+        'App\Models\Cycle' => 'App\Policies\CyclePolicy',
+        'App\Models\Sector' => 'App\Policies\SectorPolicy',
+        'App\Models\Article' => 'App\Policies\ArticlePolicy',
+        'App\Models\Comment' => 'App\Policies\CommentPolicy',
+        'App\Models\Payment' => 'App\Policies\PaymentPolicy',
+        'App\Models\RoleType' => 'App\Policies\RoleTypePolicy',
+        'App\Models\Soutenance' => 'App\Policies\SoutenancePolicy',
+        'App\Models\Permission' => 'App\Policies\PermissionPolicy',
+        'App\Models\Reservation' => 'App\Policies\ReservationPolicy',
+        'App\Models\FilingReport' => 'App\Policies\FilingReportPolicy',
+        'App\Models\Subscription' => 'App\Policies\SubscriptionPolicy',
+        'App\Models\Configuration' => 'App\Policies\ConfigurationPolicy',
+        'App\Models\SupportedMemory' => 'App\Policies\SupportedMemoryPolicy',
     ];
 
     /**
@@ -22,7 +37,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-
-        //
     }
 }

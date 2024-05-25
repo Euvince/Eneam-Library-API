@@ -6,6 +6,11 @@ use App\Models\User;
 
 class UserObserver
 {
+
+    private function appRunningInConsole () : bool {
+        return app()->runningInConsole();
+    }
+
     /**
      * Handle the User "created" event.
      */

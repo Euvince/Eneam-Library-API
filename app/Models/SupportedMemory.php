@@ -25,6 +25,38 @@ class SupportedMemory extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    /* protected static function boot() {
+
+        parent::boot();
+
+        if (!app()->runningInConsole() && auth()->check()) {
+            $userFullName = Auth::user()->nom . " " . Auth::user()->prenoms;
+
+            static::creating(function ($rayon) use ($userFullName) {
+                $rayon->created_by = $userFullName;
+            });
+
+            static::created(function ($rayon) {
+                $rayon->update([
+                    'code' => 'R' . $rayon->id
+                ]);
+            });
+
+            static::updating(function ($rayon) use ($userFullName) {
+                $rayon->updated_by = $userFullName;
+            });
+
+            static::deleting(function ($rayon) use ($userFullName) {
+                $rayon->boitearchives->each(function ($boite) {
+                    $boite->delete();
+                });
+                $rayon->deleted_by = $userFullName;
+                $rayon->save();
+            });
+        }
+
+    } */
+
     public function soutenance () : BelongsTo {
         return $this->belongsTo(related : Soutenance::class, foreignKey : 'soutenance_id');
     }
