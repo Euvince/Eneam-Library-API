@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Subscription;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSubscriptionRequest;
-use App\Http\Requests\UpdateSubscriptionRequest;
+use App\Http\Requests\SubscriptionRequest;
 
 class SubscriptionController extends Controller
 {
@@ -28,7 +27,7 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubscriptionRequest $request)
+    public function store(SubscriptionRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
+    public function update(SubscriptionRequest $request, Subscription $subscription)
     {
         //
     }

@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('soutenances', function (Blueprint $table) {
             $table->id();
+            $table->string(column : 'name');
+            $table->string(column : 'year');
+            $table->date(column : 'start_date');
+            $table->date(column : 'end_date');
+            $table->integer(column : 'number_memories_expected');
+            $table->string(column : 'created_by');
+            $table->string(column : 'updated_by');
+            $table->string(column : 'deleted_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

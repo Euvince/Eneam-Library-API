@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Sector;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSectorRequest;
-use App\Http\Requests\UpdateSectorRequest;
+use App\Http\Requests\SectorRequest;
 
 class SectorController extends Controller
 {
@@ -28,7 +27,7 @@ class SectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSectorRequest $request)
+    public function store(SectorRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class SectorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSectorRequest $request, Sector $sector)
+    public function update(SectorRequest $request, Sector $sector)
     {
         //
     }

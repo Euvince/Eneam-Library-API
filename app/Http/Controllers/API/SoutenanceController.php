@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Soutenance;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSoutenanceRequest;
-use App\Http\Requests\UpdateSoutenanceRequest;
+use App\Http\Requests\SoutenanceRequest;
 
 class SoutenanceController extends Controller
 {
@@ -28,7 +27,7 @@ class SoutenanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSoutenanceRequest $request)
+    public function store(SoutenanceRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class SoutenanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSoutenanceRequest $request, Soutenance $soutenance)
+    public function update(SoutenanceRequest $request, Soutenance $soutenance)
     {
         //
     }

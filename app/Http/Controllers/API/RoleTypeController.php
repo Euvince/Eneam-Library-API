@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\RoleType;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRoleTypeRequest;
-use App\Http\Requests\UpdateRoleTypeRequest;
+use App\Http\Requests\RoleTypeRequest;
 
 class RoleTypeController extends Controller
 {
@@ -28,7 +27,7 @@ class RoleTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleTypeRequest $request)
+    public function store(RoleTypeRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class RoleTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleTypeRequest $request, RoleType $roleType)
+    public function update(RoleTypeRequest $request, RoleType $roleType)
     {
         //
     }

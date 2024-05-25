@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Cycle;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCycleRequest;
-use App\Http\Requests\UpdateCycleRequest;
+use App\Http\Requests\CycleRequest;
 
 class CycleController extends Controller
 {
@@ -28,7 +27,7 @@ class CycleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCycleRequest $request)
+    public function store(CycleRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class CycleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCycleRequest $request, Cycle $cycle)
+    public function update(CycleRequest $request, Cycle $cycle)
     {
         //
     }

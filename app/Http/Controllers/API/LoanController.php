@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Loan;
+use App\Http\Requests\LoanRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLoanRequest;
-use App\Http\Requests\UpdateLoanRequest;
 
 class LoanController extends Controller
 {
@@ -28,7 +27,7 @@ class LoanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLoanRequest $request)
+    public function store(LoanRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class LoanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLoanRequest $request, Loan $loan)
+    public function update(LoanRequest $request, Loan $loan)
     {
         //
     }

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSupportedMemoryRequest;
-use App\Http\Requests\UpdateSupportedMemoryRequest;
+use App\Http\Requests\SupportedMemoryRequest;
 
 class SupportedMemoryController extends Controller
 {
@@ -28,7 +27,7 @@ class SupportedMemoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSupportedMemoryRequest $request)
+    public function store(SupportedMemoryRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class SupportedMemoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSupportedMemoryRequest $request, SupportedMemory $supportedMemory)
+    public function update(SupportedMemoryRequest $request, SupportedMemory $supportedMemory)
     {
         //
     }

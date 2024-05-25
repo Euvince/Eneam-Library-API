@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Reservation;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreReservationRequest;
-use App\Http\Requests\UpdateReservationRequest;
+use App\Http\Requests\ReservationRequest;
 
 class ReservationController extends Controller
 {
@@ -28,7 +27,7 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReservationRequest $request)
+    public function store(ReservationRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReservationRequest $request, Reservation $reservation)
+    public function update(ReservationRequest $request, Reservation $reservation)
     {
         //
     }

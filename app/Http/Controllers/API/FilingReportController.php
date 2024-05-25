@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\FilingReport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreFilingReportRequest;
-use App\Http\Requests\UpdateFilingReportRequest;
+use App\Http\Requests\FilingReportRequest;
 
 class FilingReportController extends Controller
 {
@@ -28,7 +27,7 @@ class FilingReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFilingReportRequest $request)
+    public function store(FilingReportRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class FilingReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFilingReportRequest $request, FilingReport $filingReport)
+    public function update(FilingReportRequest $request, FilingReport $filingReport)
     {
         //
     }

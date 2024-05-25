@@ -4,8 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Configuration;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreConfigurationRequest;
-use App\Http\Requests\UpdateConfigurationRequest;
 
 class ConfigurationController extends Controller
 {
@@ -28,7 +26,7 @@ class ConfigurationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreConfigurationRequest $request)
+    public function store(ConfigurationController $request)
     {
         //
     }
@@ -52,7 +50,7 @@ class ConfigurationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateConfigurationRequest $request, Configuration $configuration)
+    public function update(ConfigurationController $request, Configuration $configuration)
     {
         //
     }

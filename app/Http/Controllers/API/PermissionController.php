@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Permission;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePermissionRequest;
-use App\Http\Requests\UpdatePermissionRequest;
+use App\Http\Requests\PermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -28,7 +27,7 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePermissionRequest $request)
+    public function store(PermissionRequest $request)
     {
         //
     }
@@ -52,7 +51,7 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePermissionRequest $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission)
     {
         //
     }
