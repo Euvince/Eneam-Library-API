@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Loan;
+use App\Models\Comment;
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Article extends Model
 {
@@ -24,5 +29,17 @@ class Article extends Model
         'formats' => 'array',
         'access_paths' => 'array'
     ];
+
+    public function comments () : HasMany {
+        return $this->hasMany(related : Comment::class, foreignKey : 'article_id');
+    }
+
+    public function loans () : BelongsToMany {
+        return $this->belongsToMany(related : Loan::class);
+    }
+
+    public function reservations () : BelongsToMany {
+        return $this->belongsToMany(related : Reservation::class);
+    }
 
 }

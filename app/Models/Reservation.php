@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Reservation extends Model
 {
@@ -16,5 +20,13 @@ class Reservation extends Model
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    public function user () : BelongsTo {
+        return $this->belongsTo(related : User::class, foreignKey : 'user_id');
+    }
+
+    public function articles () : BelongsToMany {
+        return $this->belongsToMany(related : Article::class);
+    }
 
 }
