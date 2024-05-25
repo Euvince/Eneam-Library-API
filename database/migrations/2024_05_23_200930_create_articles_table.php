@@ -13,7 +13,32 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->string(column : 'title');
+            $table->string(column : 'type');
+            $table->longText(column : 'summary');
+            $table->string(column : 'author');
+            $table->string(column : 'editor');
+            $table->year(column : 'editing_year');
+            $table->string(column : 'cote');
+            $table->integer(column : 'number_pages');
+            $table->string(column : 'ISBN');
+            $table->integer(column : 'available_stock');
+            $table->boolean(column : 'available')->default(value : true);
+            $table->boolean(column : 'loaned')->default(value : false);
+            $table->boolean(column : 'reserved')->default(value : false);
+            $table->boolean(column : 'hasEbook')->default(value : false);
+            $table->boolean(column : 'hasPodcast')->default(value : false);
+            $table->json('keywords')->default(value : NULL);
+            $table->json('formats')->default(value : NULL);
+            $table->json('access_paths')->default(value : NULL);
+            $table->integer(column : 'likes_number')->default(value : NULL);
+            $table->integer(column : 'views_number')->default(value : NULL);
+            $table->integer(column : 'stars_number')->default(value : NULL);
+            $table->string(column : 'created_by');
+            $table->string(column : 'updated_by');
+            $table->string(column : 'deleted_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

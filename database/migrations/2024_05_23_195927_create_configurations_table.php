@@ -20,6 +20,8 @@ return new class extends Migration
             $table->float(column : 'teacher_debt_price');
             $table->integer(column : 'student_loan_delay');
             $table->integer(column : 'teacher_loan_delay');
+            $table->integer(column : 'student_renewals_number');
+            $table->integer(column : 'teacher_renewals_number');
             $table->string(column : 'created_by');
             $table->string(column : 'updated_by');
             $table->string(column : 'deleted_by');

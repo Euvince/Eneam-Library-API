@@ -15,6 +15,8 @@ class Configuration extends Model
         'teacher_debt_price',
         'student_loan_delay',
         'teacher_loan_delay',
+        'student_renewals_number',
+        'teacher_renewals_number',
         'extern_subscribe_rising',
         'eneamien_subscribe_rising',
         'subscription_expiration_date',
