@@ -40,7 +40,7 @@ return new class extends Migration
 
         Schema::create(table : 'article_loan', callback : function (Blueprint $table) {
             $table->foreignIdFor(model : App\Models\Article::class, column : 'article_id');
-            $table->foreignIdFor(model : App\Models\Loan::class, column : 'article_id');
+            $table->foreignIdFor(model : App\Models\Loan::class, column : 'loan_id');
             $table->primary(columns : ['article_id', 'loan_id']);
         });
         Schema::create(table : 'article_reservation', callback : function (Blueprint $table) {
