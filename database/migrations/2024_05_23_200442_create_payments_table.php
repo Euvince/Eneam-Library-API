@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->float(column : 'rising');
+            $table->date(column : 'payment_date');
+            $table->string(column : 'status');
+            $table->string(column : 'created_by');
+            $table->string(column : 'updated_by');
+            $table->string(column : 'deleted_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

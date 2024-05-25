@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string(column : 'second_author_phone');
             $table->string(column : 'jury_president');
             $table->string(column : 'memory_master');
-            $table->string(column : 'file_path');
+            $table->string(column : 'file_path')->default(value : NULL);
             $table->string(column : 'cote');
             $table->string(column : 'status');
             $table->string(column : 'created_by');

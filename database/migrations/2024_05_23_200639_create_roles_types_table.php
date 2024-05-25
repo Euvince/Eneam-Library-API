@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('roles_types', function (Blueprint $table) {
             $table->id();
-            $table->
+            $table->string(column : 'name');
             $table->string(column : 'created_by');
             $table->string(column : 'updated_by');
             $table->string(column : 'deleted_by');

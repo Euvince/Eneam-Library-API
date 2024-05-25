@@ -13,6 +13,8 @@ class Configuration extends Model
     protected $fillable = [
         'student_debt_price',
         'teacher_debt_price',
+        'student_loan_delay',
+        'teacher_loan_delay',
         'extern_subscribe_rising',
         'eneamien_subscribe_rising',
         'subscription_expiration_date',
