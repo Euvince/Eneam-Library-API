@@ -12,6 +12,6 @@ class ConfigurationSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
     }
 }

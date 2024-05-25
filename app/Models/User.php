@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Subscription;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -53,6 +54,38 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /* protected static function boot() {
+
+        parent::boot();
+
+        if (!app()->runningInConsole() && auth()->check()) {
+            $userFullName = Auth::user()->nom . " " . Auth::user()->prenoms;
+
+            static::creating(function ($rayon) use ($userFullName) {
+                $rayon->created_by = $userFullName;
+            });
+
+            static::created(function ($rayon) {
+                $rayon->update([
+                    'code' => 'R' . $rayon->id
+                ]);
+            });
+
+            static::updating(function ($rayon) use ($userFullName) {
+                $rayon->updated_by = $userFullName;
+            });
+
+            static::deleting(function ($rayon) use ($userFullName) {
+                $rayon->boitearchives->each(function ($boite) {
+                    $boite->delete();
+                });
+                $rayon->deleted_by = $userFullName;
+                $rayon->save();
+            });
+        }
+
+    } */
 
     public function payments () : HasMany {
         return $this->hasMany(related : Payment::class, foreignKey : 'user_id');
