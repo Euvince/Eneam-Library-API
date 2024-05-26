@@ -24,7 +24,7 @@ class Configuration extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    public static function getApplicationConfiguration () : mixed {
+    public static function getApplicationConfiguration () : self {
         return self::first();
     }
 
