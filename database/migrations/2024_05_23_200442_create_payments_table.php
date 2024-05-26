@@ -16,9 +16,9 @@ return new class extends Migration
             $table->float(column : 'rising');
             $table->date(column : 'payment_date');
             $table->string(column : 'status')->default(value : "Impayé");
-            $table->string(column : 'created_by')->default(value : NULL);
-            $table->string(column : 'updated_by')->default(value : NULL);
-            $table->string(column : 'deleted_by')->default(value : NULL);
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

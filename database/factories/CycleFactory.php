@@ -16,8 +16,11 @@ class CycleFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->unique()->randomElement(['Licence', 'Master', 'Doctorat']);
         return [
-            'name' => fake()->unique()->randomElement(['Licence', 'Master', 'Doctorat']),
+            'name' => $name,
+            'slug' => \Illuminate\Support\Str::slug($name),
+            'code' => ucfirst(substr($name, 0, 1)),
             'created_by' => 'APPLICATION',
             'updated_by' => 'APPLICATION',
             'deleted_by' => 'APPLICATION',

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('status')->default(value : "Inactif");
             $table->date(column : 'subscription_date');
             $table->date(column : 'expiration_date');
-            $table->string(column : 'created_by')->default(value : NULL);
-            $table->string(column : 'updated_by')->default(value : NULL);
-            $table->string(column : 'deleted_by')->default(value : NULL);
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

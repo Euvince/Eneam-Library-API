@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string(column : 'file_path')->default(value : NULL);
             $table->string(column : 'cote');
             $table->string(column : 'status')->default(value : "Invalidé");;
-            $table->string(column : 'created_by')->default(value : NULL);
-            $table->string(column : 'updated_by')->default(value : NULL);
-            $table->string(column : 'deleted_by')->default(value : NULL);
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

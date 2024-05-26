@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table(table : 'soutenances', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Cycle::class, column : 'cycle_id');
+            $table->foreignIdFor(model : App\Models\Cycle::class, column : 'cycle_id')->default(value : NULL);
         });
         Schema::table(table : 'supported_memories', callback : function (Blueprint $table) {
             $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id');
@@ -50,7 +50,9 @@ return new class extends Migration
         });
 
         Schema::table(table : 'sectors', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')->default(value : NULL);
+            $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')
+                ->default(value : NULL)
+                /* ->after('likes_number') */;
         });
 
     }

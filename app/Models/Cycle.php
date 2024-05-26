@@ -12,7 +12,7 @@ class Cycle extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'slug',
+        'name', 'slug', 'code',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];

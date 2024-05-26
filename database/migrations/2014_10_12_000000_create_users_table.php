@@ -27,9 +27,9 @@ return new class extends Migration
             $table->boolean(column : 'hasPaid')->default(value : false);
             $table->boolean(column : 'hasAccess')->default(value : false);
             $table->float(column : 'debt_price')->default(value : NULL);
-            $table->string(column : 'created_by')->default(value : NULL);
-            $table->string(column : 'updated_by')->default(value : NULL);
-            $table->string(column : 'deleted_by')->default(value : NULL);
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

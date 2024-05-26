@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string(column : 'name');
             $table->string(column : 'slug');
-            $table->string(column : 'created_by')->default(value : NULL);
-            $table->string(column : 'updated_by')->default(value : NULL);
-            $table->string(column : 'deleted_by')->default(value : NULL);
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });
