@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string(column : 'matricule');
+            $table->string(column : 'matricule')->nullable()->default(value : NULL);
             $table->string(column : 'firstname');
             $table->string(column : 'lastname');
             $table->string(column : 'slug');
             $table->string(column : 'email')->unique();
             $table->timestamp(column : 'email_verified_at')->nullable();
             $table->string(column : 'password');
-            $table->rememberToken();
             $table->string(column : 'phone_number');
             $table->string(column : 'birth_date');
             $table->string(column : 'sex');
-            $table->boolean(column : 'hasPaid')->default(value : false);
-            $table->boolean(column : 'hasAccess')->default(value : false);
+            $table->boolean(column : 'has_paid')->default(value : false);
+            $table->boolean(column : 'has_access')->default(value : false);
             $table->float(column : 'debt_price')->default(value : NULL);
+            $table->rememberToken();
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);

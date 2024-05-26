@@ -17,7 +17,8 @@ class FilingReportFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'observation' => fake()->paragraph(),
+            'created_by' => 'APPLICATION'
         ];
     }
 }

@@ -17,12 +17,26 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $firstname = fake()->firstName();
+        $lastname = fake()->lastName();
+        $hasPaid = fake()->boolean(chanceOfGettingTrue : 20);
+
         return [
-            'name' => fake()->name(),
+            'matricule' => fake()->numberBetween(10000000, 99999999),
+            'firstname' => $firstname,
+            'laststname' => $lastname,
+            'slug' => \Illuminate\Support\Str::slug($firstname + $lastname),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'phone_number' => fake()->unique()->phoneNumber(),
+            'birth_ddate' => fake()->date(),
+            'sex' => fake()->randomElement(['Masculin', 'Féminin', 'Autre']),
+            'has_paid' => $hasPaid,
+            'has_access' => $hasPaid,
+            'debt_price' => fake()->randomFloat(min : 500, max : 2500),
             'remember_token' => Str::random(10),
+            'created_by' => 'APPLICATION'
         ];
     }
 

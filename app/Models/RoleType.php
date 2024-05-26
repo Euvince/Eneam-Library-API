@@ -13,6 +13,8 @@ class RoleType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'roles_types';
+
     protected $fillable = [
         'name', 'slug',
         'created_by', 'updated_by', 'deleted_by',

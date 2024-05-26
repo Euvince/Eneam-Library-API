@@ -12,6 +12,14 @@ class SupportedMemorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\SupportedMemory::factory(150)
+            ->create()
+            ->each(callback : function (\App\Models\SupportedMemory $supportedMemory) {
+                $supportedMemory->update([
+                    'sector_id' => array_rand(\App\Models\Sector::whereNotNull('sector_id')->pluck('acronym', 'id')->toArray(), 1),
+                    'soutenance_id' => array_rand(\App\Models\Soutenance::pluck('id')->toArray(), 1),
+                ]);
+            })
+        ;
     }
 }

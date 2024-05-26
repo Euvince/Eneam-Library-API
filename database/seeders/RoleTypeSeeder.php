@@ -12,6 +12,6 @@ class RoleTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\RoleType::factory(5)->create();
     }
 }

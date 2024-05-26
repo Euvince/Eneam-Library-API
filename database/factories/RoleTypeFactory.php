@@ -16,8 +16,13 @@ class RoleTypeFactory extends Factory
      */
     public function definition(): array
     {
+        $elements = ['Administrateur', 'Gestionnaire', 'Enseignant', 'Étudiant-Eneamien', 'Étudiant-Externe'];
+        $name = fake()->unique()->randomElement($elements);
+
         return [
-            //
+            'name' => $name,
+            'slug' => \Illuminate\Support\Str::slug($name),
+            'created_by' => 'APPLICATION'
         ];
     }
 }

@@ -12,6 +12,13 @@ class FilingReportSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\FilingReport::factory(30)
+            ->create()
+            ->each(callback : function (\App\Models\FilingReport $filingReport) {
+                $filingReport->update([
+                    'supported_memory_id' => array_rand(\App\Models\SupportedMemory::pluck('cote', 'id')->toArray(), 1),
+                ]);
+            })
+        ;
     }
 }
