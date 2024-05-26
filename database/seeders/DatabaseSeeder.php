@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
-use Database\Seeders\CycleSeeder;
 use Database\Seeders\ConfigurationSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,10 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        $this->call(CycleSeeder::class);
+        \App\Models\User::factory(10)->create();
+        \App\Models\Cycle::factory()->count(3)->create()->each(callback : function (\App\Models\Cycle $cycle) {
+            \App\Models\Soutenance::factory()->count(30)->create([
+                'cycle_id' => $cycle->id,
+                'name' => "Soutenance de " . $cycle->name . ,
+                'slug' => ,
+            ]);
+        });
         $this->call(ConfigurationSeeder::class);
+
 
         /* $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);

@@ -17,7 +17,13 @@ class SoutenanceFactory extends Factory
     public function definition(): array
     {
         return [
-            /* 'name' => */
+            'year' => fake()->year(),
+            'start_date' => fake()->dateTimeBetween(),
+            'end_date' => fake()->dateTimeBetween(),
+            'number_memories_expected' => rand(min : 50, max : 200),
+            'created_by' => 'APPLICATION',
+            'updated_by' => 'APPLICATION',
+            'deleted_by' => 'APPLICATION',
         ];
     }
 }

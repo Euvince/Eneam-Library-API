@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('supported_memories', function (Blueprint $table) {
             $table->id();
             $table->string(column : 'theme');
+            $table->string(column : 'slug');
             $table->date(column : 'soutenance_date');
             $table->time(column : 'soutenance_hour');
             $table->string(column : 'first_author_name');

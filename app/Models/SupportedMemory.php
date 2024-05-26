@@ -16,7 +16,7 @@ class SupportedMemory extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'theme', 'soutenance_date', 'soutanance_hour',
+        'theme', 'slug', 'soutenance_date', 'soutanance_hour',
         'first_author_name', 'second_author_name',
         'first_author_email', 'second_author_email',
         'first_author_phone', 'second_author_phone', 'jury_president',

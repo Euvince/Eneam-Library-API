@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Loan;
-use App\Models\Comment;
-use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +13,7 @@ class Article extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'title', 'type', 'summary', 'author', 'cote', 'ISBN',
+        'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
         'available', 'loaned', 'reserved', 'hasEbook', 'hasPodcast',
         'keywords', 'formats', 'access_paths',
@@ -31,15 +28,15 @@ class Article extends Model
     ];
 
     public function comments () : HasMany {
-        return $this->hasMany(related : Comment::class, foreignKey : 'article_id');
+        return $this->hasMany(related : \App\Models\Comment::class, foreignKey : 'article_id');
     }
 
     public function loans () : BelongsToMany {
-        return $this->belongsToMany(related : Loan::class);
+        return $this->belongsToMany(related : \App\Models\Loan::class);
     }
 
     public function reservations () : BelongsToMany {
-        return $this->belongsToMany(related : Reservation::class);
+        return $this->belongsToMany(related : \App\Models\Reservation::class);
     }
 
 }

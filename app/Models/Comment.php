@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,11 +18,11 @@ class Comment extends Model
     ];
 
     public function user () : BelongsTo {
-        return $this->belongsTo(related : User::class, foreignKey : 'user_id');
+        return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }
 
     public function article () : BelongsTo {
-        return $this->belongsTo(related : Article::class, foreignKey : 'article_id');
+        return $this->belongsTo(related : \App\Models\Article::class, foreignKey : 'article_id');
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +18,7 @@ class Payment extends Model
     ];
 
     public function user () : BelongsTo {
-        return $this->belongsTo(related : User::class, foreignKey : 'user_id');
+        return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }
 
 }

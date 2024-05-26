@@ -18,7 +18,7 @@ class FilingReport extends Model
     ];
 
     public function supportedMemory () : BelongsTo {
-        return $this->belongsTo(related : SupportedMemory::class, foreignKey : 'supported_memory_id');
+        return $this->belongsTo(related : \App\Models\SupportedMemory::class, foreignKey : 'supported_memory_id');
     }
 
 }

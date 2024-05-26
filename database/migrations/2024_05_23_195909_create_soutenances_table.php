@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('soutenances', function (Blueprint $table) {
             $table->id();
             $table->string(column : 'name');
+            $table->string(column : 'slug');
             $table->string(column : 'year');
             $table->date(column : 'start_date');
             $table->date(column : 'end_date');

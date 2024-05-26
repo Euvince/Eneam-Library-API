@@ -13,22 +13,22 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        'App\Models\Role' => 'App\Policies\RolePolicy',
-        'App\Models\Loan' => 'App\Policies\LoanPolicy',
-        'App\Models\User' => 'App\Policies\UserPolicy',
-        'App\Models\Cycle' => 'App\Policies\CyclePolicy',
-        'App\Models\Sector' => 'App\Policies\SectorPolicy',
-        'App\Models\Article' => 'App\Policies\ArticlePolicy',
-        'App\Models\Comment' => 'App\Policies\CommentPolicy',
-        'App\Models\Payment' => 'App\Policies\PaymentPolicy',
-        'App\Models\RoleType' => 'App\Policies\RoleTypePolicy',
-        'App\Models\Soutenance' => 'App\Policies\SoutenancePolicy',
-        'App\Models\Permission' => 'App\Policies\PermissionPolicy',
-        'App\Models\Reservation' => 'App\Policies\ReservationPolicy',
-        'App\Models\FilingReport' => 'App\Policies\FilingReportPolicy',
-        'App\Models\Subscription' => 'App\Policies\SubscriptionPolicy',
-        'App\Models\Configuration' => 'App\Policies\ConfigurationPolicy',
-        'App\Models\SupportedMemory' => 'App\Policies\SupportedMemoryPolicy',
+        \App\Models\Role::class => \App\Policies\RolePolicy::class,
+        \App\Models\Loan::class => \App\Policies\LoanPolicy::class,
+        \App\Models\User::class => \App\Policies\UserPolicy::class,
+        \App\Models\Cycle::class => \App\Policies\CyclePolicy::class,
+        \App\Models\Sector::class => \App\Policies\SectorPolicy::class,
+        \App\Models\Article::class => \App\Policies\ArticlePolicy::class,
+        \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
+        \App\Models\Payment::class => \App\Policies\PaymentPolicy::class,
+        \App\Models\RoleType::class => \App\Policies\RoleTypePolicy::class,
+        \App\Models\Soutenance::class => \App\Policies\SoutenancePolicy::class,
+        \App\Models\Permission::class => \App\Policies\PermissionPolicy::class,
+        \App\Models\Reservation::class => \App\Policies\ReservationPolicy::class,
+        \App\Models\FilingReport::class => \App\Policies\FilingReportPolicy::class,
+        \App\Models\Subscription::class => \App\Policies\SubscriptionPolicy::class,
+        \App\Models\Configuration::class => \App\Policies\ConfigurationPolicy::class,
+        \App\Models\SupportedMemory::class => \App\Policies\SupportedMemoryPolicy::class,
     ];
 
     /**
