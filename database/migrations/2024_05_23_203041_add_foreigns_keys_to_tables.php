@@ -12,29 +12,43 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table(table : 'soutenances', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Cycle::class, column : 'cycle_id')->default(value : NULL);
+            $table->foreignIdFor(model : App\Models\Cycle::class, column : 'cycle_id')
+                ->nullable()
+                ->default(value : NULL);
         });
         Schema::table(table : 'supported_memories', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id');
-            $table->foreignIdFor(model : App\Models\Soutenance::class, column : 'soutenance_id');
+            $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')
+                ->nullable()
+                ->default(value : NULL);
+            $table->foreignIdFor(model : App\Models\Soutenance::class, column : 'soutenance_id')
+                ->nullable()
+                ->default(value : NULL);
         });
         Schema::table(table : 'filing_reports', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\SupportedMemory::class, column : 'supported_memory_id');
+            $table->foreignIdFor(model : App\Models\SupportedMemory::class, column : 'supported_memory_id')
+                ->nullable()
+                ->default(value : NULL);
         });
 
         foreach (['roles', 'permissions'] as $tableName) {
             Schema::table(table : $tableName, callback : function (Blueprint $table) {
-                $table->foreignIdFor(model : App\Models\RoleType::class, column : 'role_type_id');
+                $table->foreignIdFor(model : App\Models\RoleType::class, column : 'role_type_id')
+                    ->nullable()
+                    ->default(value : NULL);
             });
         }
 
         Schema::table(table : 'comments', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Article::class, column : 'article_id');
+            $table->foreignIdFor(model : App\Models\Article::class, column : 'article_id')
+                ->nullable()
+                ->default(value : NULL);
         });
 
         foreach (['payments', 'subscriptions', 'comments', 'loans', 'reservations'] as $tableName) {
             Schema::table($tableName, callback : function (Blueprint $table) {
-                $table->foreignIdFor(model : App\Models\User::class, column : 'user_id');
+                $table->foreignIdFor(model : App\Models\User::class, column : 'user_id')
+                    ->nullable()
+                    ->default(value : NULL);
             });
         }
 
@@ -51,6 +65,7 @@ return new class extends Migration
 
         Schema::table(table : 'sectors', callback : function (Blueprint $table) {
             $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')
+                ->nullable()
                 ->default(value : NULL)
                 /* ->after('likes_number') */;
         });

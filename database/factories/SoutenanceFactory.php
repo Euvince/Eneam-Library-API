@@ -25,8 +25,6 @@ class SoutenanceFactory extends Factory
             'end_date' => $endDate,
             'number_memories_expected' => rand(min : 50, max : 250),
             'created_by' => 'APPLICATION',
-            'updated_by' => 'APPLICATION',
-            'deleted_by' => 'APPLICATION',
         ];
     }
 }

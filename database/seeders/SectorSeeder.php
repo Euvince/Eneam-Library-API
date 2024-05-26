@@ -60,89 +60,96 @@ class SectorSeeder extends Seeder
         /* array_walk(array : $sectors, callback : function ($value, $key) {
             \App\Models\Sector::create([
                 'name' => $value,
+                'slug' => \Illuminate\Support\Str::slug($value),
                 'acronym' => $key,
                 'type' => 'Filière',
                 'sector_id' => NULL,
             ]);
         }); */
 
-        array_map(callback : function ($sector, $key) {
+        array_map(function ($sector, $key) {
             \App\Models\Sector::create([
                 'name' => $sector,
+                'slug' => \Illuminate\Support\Str::slug($sector),
                 'acronym' => $key,
                 'type' => 'Filière',
                 'sector_id' => NULL,
             ]);
-        }, array : $sectors, arrays : array_keys($sectors));
+        }, $sectors, array_keys($sectors));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'IG')->first()->id,
             ]);
-        }, array : $specialitiesIG, arrays : array_keys($specialitiesIG));
+        }, $specialitiesIG, array_keys($specialitiesIG));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'PLAN')->first()->id,
             ]);
-        }, array : $specialitiesPLAN, arrays : array_keys($specialitiesPLAN));
+        }, $specialitiesPLAN, array_keys($specialitiesPLAN));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'STAT')->first()->id,
             ]);
-        }, array : $specialitiesSTAT, arrays : array_keys($specialitiesSTAT));
+        }, $specialitiesSTAT, array_keys($specialitiesSTAT));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'L')->first()->id,
             ]);
-        }, array : $specialitiesL, arrays : array_keys($specialitiesL));
+        }, $specialitiesL, array_keys($specialitiesL));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'GFC')->first()->id,
             ]);
-        }, array : $specialitiesGFC, arrays : array_keys($specialitiesGFC));
+        }, $specialitiesGFC, array_keys($specialitiesGFC));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'GCO')->first()->id,
             ]);
-        }, array : $specialitiesGCO, arrays : array_keys($specialitiesGCO));
+        }, $specialitiesGCO, array_keys($specialitiesGCO));
 
-        array_map(callback : function ($speciality, $key) {
+        array_map(function ($speciality, $key) {
             \App\Models\Sector::create([
                 'name' => $speciality,
+                'slug' => \Illuminate\Support\Str::slug($speciality),
                 'acronym' => $key,
                 'type' => 'Spécialité',
                 'sector_id' => \App\Models\Sector::where('acronym', 'GBA')->first()->id,
             ]);
-        }, array : $specialitiesGBA, arrays : array_keys($specialitiesGBA));
+        }, $specialitiesGBA, array_keys($specialitiesGBA));
 
         foreach (\App\Models\Sector::all() as  $sector) {
             $sector->update(attributes : [
                 'created_by' => 'APPLICATION',
-                'updated_by' => 'APPLICATION',
-                'deleted_by' => 'APPLICATION',
             ]);
         }
 

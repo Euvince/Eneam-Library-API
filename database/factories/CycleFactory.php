@@ -22,8 +22,6 @@ class CycleFactory extends Factory
             'slug' => \Illuminate\Support\Str::slug($name),
             'code' => ucfirst(substr($name, 0, 1)),
             'created_by' => 'APPLICATION',
-            'updated_by' => 'APPLICATION',
-            'deleted_by' => 'APPLICATION',
         ];
     }
 }

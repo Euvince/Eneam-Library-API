@@ -17,9 +17,12 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Cycle::factory()->count(3)->create()->each(callback : function (\App\Models\Cycle $cycle) {
             \App\Models\Soutenance::factory()->count(30)->create()->each(callback : function (\App\Models\Soutenance $soutenance) use($cycle) {
-                $soutenance->cycle_id = $cycle->id;
-                $soutenance->name = $cycle->name . $soutenance->year;
-                $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+                $name = $cycle->name . $soutenance->year;
+                $soutenance->update([
+                    'cycle_id' => $cycle->id,
+                    'name' => $name,
+                    'slug' => \Illuminate\Support\Str::slug($name),
+                ]);
             });
         });
 
