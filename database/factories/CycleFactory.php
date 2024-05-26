@@ -17,7 +17,10 @@ class CycleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->unique()->randomElement(['Licence', 'Master', 'Doctorat']),
+            'created_by' => 'APPLICATION',
+            'updated_by' => 'APPLICATION',
+            'deleted_by' => 'APPLICATION',
         ];
     }
 }

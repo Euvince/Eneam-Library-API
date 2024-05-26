@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->string('status')->default(value : "Inactif");
             $table->date(column : 'subscription_date');
             $table->date(column : 'expiration_date');
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

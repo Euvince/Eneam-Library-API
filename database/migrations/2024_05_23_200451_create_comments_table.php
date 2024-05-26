@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->longText(column : 'content');
             $table->integer(column : 'likes_number');
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

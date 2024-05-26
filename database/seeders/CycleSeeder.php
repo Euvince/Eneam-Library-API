@@ -12,6 +12,6 @@ class CycleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Cycle::factory(3)->create();
     }
 }

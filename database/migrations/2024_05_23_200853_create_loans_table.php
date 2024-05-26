@@ -16,11 +16,11 @@ return new class extends Migration
             $table->date(column : 'loan_date');
             $table->date(column : 'processing_date')->default(value : NULL);
             $table->integer(column : 'duration');
-            $table->string(column : 'status');
+            $table->string(column : 'status')->default(value : "En cours");
             $table->integer(column : 'renewals');
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

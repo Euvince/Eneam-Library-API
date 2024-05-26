@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Configuration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,21 @@ class ConfigurationSeeder extends Seeder
      */
     public function run(): void
     {
-
+        Configuration::create([
+            'eneamien_subscribe_rising' => 500,
+            'extern_subscribe_rising' => 1000,
+            'subscription_expiration_delay' => 1,
+            'student_debt_price' => 500,
+            'teacher_debt_price' => 1000,
+            'student_loan_delay' => 1000,
+            'teacher_loan_delay' => 1000,
+            'student_renewals_number' => 1000,
+            'teacher_renewals_number' => 1000,
+            'teacher_loan_delay' => 1000,
+            'teacher_loan_delay' => 1000,
+            'created_by' => "APPLICATION",
+            'updated_by' => "APPLICATION",
+            'deleted_by' => "APPLICATION",
+        ]);
     }
 }

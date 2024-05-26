@@ -31,12 +31,12 @@ return new class extends Migration
             $table->json('keywords')->default(value : NULL);
             $table->json('formats')->default(value : NULL);
             $table->json('access_paths')->default(value : NULL);
-            $table->integer(column : 'likes_number')->default(value : NULL);
-            $table->integer(column : 'views_number')->default(value : NULL);
-            $table->integer(column : 'stars_number')->default(value : NULL);
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->integer(column : 'likes_number')->default(value : 0);
+            $table->integer(column : 'views_number')->default(value : 0);
+            $table->integer(column : 'stars_number')->default(value : 0);
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

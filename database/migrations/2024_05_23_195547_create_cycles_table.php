@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('cycles', function (Blueprint $table) {
             $table->id();
             $table->string(column : 'name');
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

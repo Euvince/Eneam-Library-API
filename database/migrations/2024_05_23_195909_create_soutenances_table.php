@@ -18,9 +18,9 @@ return new class extends Migration
             $table->date(column : 'start_date');
             $table->date(column : 'end_date');
             $table->integer(column : 'number_memories_expected');
-            $table->string(column : 'created_by');
-            $table->string(column : 'updated_by');
-            $table->string(column : 'deleted_by');
+            $table->string(column : 'created_by')->default(value : NULL);
+            $table->string(column : 'updated_by')->default(value : NULL);
+            $table->string(column : 'deleted_by')->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });
