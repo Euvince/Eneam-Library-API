@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\SupportedMemory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Sector extends Model
 {
@@ -18,8 +18,16 @@ class Sector extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    public function sector () : BelongsTo {
+        return $this->belongsTo(related : \App\Models\Sector::class, foreignKey : 'sector_id');
+    }
+
+    public function specialities () : HasMany {
+        return $this->hasMany(related : \App\Models\Sector::class, foreignKey : 'sector_id');
+    }
+
     public function supportedMemories () : HasMany {
-        return $this->hasMany(related : SupportedMemory::class, foreignKey : 'sector_id');
+        return $this->hasMany(related : \App\Models\SupportedMemory::class, foreignKey : 'sector_id');
     }
 
 }

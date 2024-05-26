@@ -49,6 +49,10 @@ return new class extends Migration
             $table->primary(columns : ['article_id', 'reservation_id']);
         });
 
+        Schema::table(table : 'sectors', callback : function (Blueprint $table) {
+            $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')->default(value : NULL);
+        });
+
     }
 
     /**

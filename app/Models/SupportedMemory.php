@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Sector;
-use App\Models\Soutenance;
-use App\Models\FilingReport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,15 +55,15 @@ class SupportedMemory extends Model
     } */
 
     public function soutenance () : BelongsTo {
-        return $this->belongsTo(related : Soutenance::class, foreignKey : 'soutenance_id');
+        return $this->belongsTo(related : \App\Models\Soutenance::class, foreignKey : 'soutenance_id');
     }
 
     public function sector () : BelongsTo {
-        return $this->belongsTo(related : Sector::class, foreignKey : 'sector_id');
+        return $this->belongsTo(related : \App\Models\Sector::class, foreignKey : 'sector_id');
     }
 
     public function finlingReports () : HasMany {
-        return $this->hasMany(related : FilingReport::class, foreignKey : 'supported_memory_id');
+        return $this->hasMany(related : \App\Models\FilingReport::class, foreignKey : 'supported_memory_id');
     }
 
 }

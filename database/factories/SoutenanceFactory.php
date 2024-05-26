@@ -18,9 +18,9 @@ class SoutenanceFactory extends Factory
     {
         return [
             'year' => fake()->year(),
-            'start_date' => fake()->dateTimeBetween(),
+            'start_date' => fake()->dateTimeBetween(startDate : '-15 years', endDate : 'now'),
             'end_date' => fake()->dateTimeBetween(),
-            'number_memories_expected' => rand(min : 50, max : 200),
+            'number_memories_expected' => rand(min : 50, max : 250),
             'created_by' => 'APPLICATION',
             'updated_by' => 'APPLICATION',
             'deleted_by' => 'APPLICATION',

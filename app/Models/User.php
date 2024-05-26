@@ -4,12 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Listeners\UserCreatingListener;
-use App\Models\Loan;
-use App\Models\Comment;
-use App\Models\Payment;
-use App\Models\Reservation;
-use App\Models\Subscription;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
@@ -59,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $dispatchesEvents = [
-        'creating' => UserCreatingListener::class
+        'creating' => \App\Listeners\UserCreatingListener::class
     ];
 
     protected static function boot() {
@@ -79,23 +73,23 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function payments () : HasMany {
-        return $this->hasMany(related : Payment::class, foreignKey : 'user_id');
+        return $this->hasMany(related : \App\Models\Payment::class, foreignKey : 'user_id');
     }
 
     public function subscriptions () : HasMany {
-        return $this->hasMany(related : Subscription::class, foreignKey : 'user_id');
+        return $this->hasMany(related : \App\Models\Subscription::class, foreignKey : 'user_id');
     }
 
     public function comments () : HasMany {
-        return $this->hasMany(related : Comment::class, foreignKey : 'user_id');
+        return $this->hasMany(related : \App\Models\Comment::class, foreignKey : 'user_id');
     }
 
     public function loans () : HasMany {
-        return $this->hasMany(related : Loan::class, foreignKey : 'user_id');
+        return $this->hasMany(related : \App\Models\Loan::class, foreignKey : 'user_id');
     }
 
     public function reservations () : HasMany {
-        return $this->hasMany(related : Reservation::class, foreignKey : 'user_id');
+        return $this->hasMany(related : \App\Models\Reservation::class, foreignKey : 'user_id');
     }
 
 }

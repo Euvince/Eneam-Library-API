@@ -18,7 +18,7 @@ class Subscription extends Model
     ];
 
     public function user () : BelongsTo {
-        return $this->belongsTo(related : User::class, foreignKey : 'user_id');
+        return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }
 
 }

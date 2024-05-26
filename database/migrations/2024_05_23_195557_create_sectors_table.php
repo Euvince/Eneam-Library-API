@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
+            $table->string(column : 'type');
             $table->string(column : 'name');
             $table->string(column : 'slug');
             $table->string(column : 'acronym');
