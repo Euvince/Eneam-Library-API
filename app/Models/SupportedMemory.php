@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @mixin IdeHelperSupportedMemory
+ */
 class SupportedMemory extends Model
 {
     use HasFactory, SoftDeletes;
@@ -17,7 +20,7 @@ class SupportedMemory extends Model
         'first_author_name', 'second_author_name',
         'first_author_email', 'second_author_email',
         'first_author_phone', 'second_author_phone', 'jury_president',
-        'memory_master', 'file_path', 'cote', 'status',
+        'memory_master', 'file_path', 'cover_page_path', 'cote', 'status',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];

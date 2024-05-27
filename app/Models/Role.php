@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @mixin IdeHelperRole
+ */
 class Role extends \Spatie\Permission\Models\Role
 {
     use HasFactory, SoftDeletes;

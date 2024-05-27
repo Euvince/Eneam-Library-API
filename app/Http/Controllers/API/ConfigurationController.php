@@ -12,7 +12,7 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

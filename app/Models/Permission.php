@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @mixin IdeHelperPermission
+ */
 class Permission extends \Spatie\Permission\Models\Permission
 {
     use HasFactory, SoftDeletes;
