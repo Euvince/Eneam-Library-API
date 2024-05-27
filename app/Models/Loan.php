@@ -26,7 +26,7 @@ class Loan extends Model
     public function articles () : BelongsToMany {
         return $this->belongsToMany(
             related : \App\Models\Article::class,
-            table : 'article_reservation',
+            table : 'article_loan',
             foreignPivotKey : 'loan_id',
             relatedPivotKey : 'article_id'
         )->withPivot(columns : 'quantity');

@@ -17,7 +17,10 @@ class LoanFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'loan_date' => fake()->date(),
+            'duration' => 14,
+            'renewals' => fake()->numberBetween(1, 2),
+            'created_by' => 'APPLICATION',
         ];
     }
 }

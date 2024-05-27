@@ -21,10 +21,12 @@ class ConfigurationSeeder extends Seeder
             'teacher_debt_price' => 1000,
             'student_loan_delay' => 14,
             'teacher_loan_delay' => 30,
+            'max_books_per_student' => 2,
+            'max_books_per_teacher' => 2,
             'student_renewals_number' => 1,
             'teacher_renewals_number' => 1,
-            'max_number_books_borrowed_student' => 2,
-            'max_number_books_borrowed_teacher' => 2,
+            'max_copies_books_per_student' => 1,
+            'max_copies_books_per_teacher' => 1,
             'created_by' => "APPLICATION",
         ]);
     }

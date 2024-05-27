@@ -106,7 +106,8 @@ class ArticleFactory extends Factory
             'has_ebook' => $this->faker->boolean(chanceOfGettingTrue : 85),
             'has_podcast' => $this->faker->boolean(chanceOfGettingTrue : 85),
             'keywords' => $keywords,
-            'formats' => $formats
+            'formats' => $formats,
+            'created_by' => 'APPLICATION'
         ];
     }
 }

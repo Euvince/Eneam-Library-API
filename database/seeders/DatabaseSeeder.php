@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\SubscriptionSeeder::class);
         $this->call(\Database\Seeders\ArticleSeeder::class);
         $this->call(\Database\Seeders\CommentSeeder::class);
+        $this->call(\Database\Seeders\LoanSeeder::class);
+        $this->call(\Database\Seeders\ReservationSeeder::class);
 
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->date(column : 'loan_date');
-            $table->date(column : 'processing_date')->default(value : NULL);
+            $table->date(column : 'processing_date')->nullable()->default(value : NULL);
             $table->integer(column : 'duration');
             $table->string(column : 'status')->default(value : "En cours");
             $table->integer(column : 'renewals');

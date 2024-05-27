@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('configurations', function (Blueprint $table) {
+        Schema::create('configuration', function (Blueprint $table) {
             $table->id();
             $table->float(column : 'eneamien_subscribe_rising');
             $table->float(column : 'extern_subscribe_rising');
@@ -22,8 +22,10 @@ return new class extends Migration
             $table->integer(column : 'teacher_loan_delay');
             $table->integer(column : 'student_renewals_number');
             $table->integer(column : 'teacher_renewals_number');
-            $table->integer(column : 'max_number_books_borrowed_student');
-            $table->integer(column : 'max_number_books_borrowed_teacher');
+            $table->integer(column : 'max_books_per_student');
+            $table->integer(column : 'max_books_per_teacher');
+            $table->integer(column : 'max_copies_books_per_student');
+            $table->integer(column : 'max_copies_books_per_teacher');
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
