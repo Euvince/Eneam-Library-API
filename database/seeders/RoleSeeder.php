@@ -15,8 +15,8 @@ class RoleSeeder extends Seeder
         $admin = \App\Models\RoleType::where('name', 'Administrateur')->first();
         $manager = \App\Models\RoleType::where('name', 'Gestionnaire')->first();
         $teacher = \App\Models\RoleType::where('name', 'Enseignant')->first();
-        $externStudent = \App\Models\RoleType::where('name', 'Étudiant-Externe')->first();
-        $eneamienStudent = \App\Models\RoleType::where('name', 'Étudiant-Eneamien')->first();
+        $externStudent = \App\Models\RoleType::where('name', 'Etudiant-Externe')->first();
+        $eneamienStudent = \App\Models\RoleType::where('name', 'Etudiant-Eneamien')->first();
 
         \App\Models\Role::create([
             'name' => 'Administrateur',
@@ -34,13 +34,13 @@ class RoleSeeder extends Seeder
             'role_type_id' => $teacher->id
         ]);
         \App\Models\Role::create([
-            'name' => 'Étudiant-Extern',
-            'slug' => \Illuminate\Support\Str::slug('Étudiant-Externe'),
+            'name' => 'Etudiant-Externe',
+            'slug' => \Illuminate\Support\Str::slug('Etudiant-Externe'),
             'role_type_id' => $externStudent->id
         ]);
         \App\Models\Role::create([
-            'name' => 'Étudiant-Eneamien',
-            'slug' => \Illuminate\Support\Str::slug('Étudiant-Eneamien'),
+            'name' => 'Etudiant-Eneamien',
+            'slug' => \Illuminate\Support\Str::slug('Etudiant-Eneamien'),
             'role_type_id' => $eneamienStudent->id
         ]);
     }

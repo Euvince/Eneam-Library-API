@@ -17,7 +17,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'rising' => fake()->randomFloat(),
+            'rising' => fake()->randomElement(['500', '1000']),
             'payment_date' => fake()->dateTimeBetween(startDate : '-3 years', endDate : 'now'),
             'created_by' => 'APPLICATION',
         ];

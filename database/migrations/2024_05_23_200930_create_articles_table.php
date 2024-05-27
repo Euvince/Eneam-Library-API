@@ -27,11 +27,11 @@ return new class extends Migration
             $table->boolean(column : 'available')->default(value : true);
             $table->boolean(column : 'loaned')->default(value : false);
             $table->boolean(column : 'reserved')->default(value : false);
-            $table->boolean(column : 'hasEbook')->default(value : false);
-            $table->boolean(column : 'hasPodcast')->default(value : false);
-            $table->json('keywords')->default(value : NULL);
-            $table->json('formats')->default(value : NULL);
-            $table->json('access_paths')->default(value : NULL);
+            $table->boolean(column : 'has_ebook')->default(value : false);
+            $table->boolean(column : 'has_podcast')->default(value : false);
+            $table->json('keywords')->nullable()->default(value : NULL);
+            $table->json('formats')->nullable()->default(value : NULL);
+            $table->json('access_paths')->nullable()->default(value : NULL);
             $table->integer(column : 'likes_number')->default(value : 0);
             $table->integer(column : 'views_number')->default(value : 0);
             $table->integer(column : 'stars_number')->default(value : 0);

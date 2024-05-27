@@ -12,6 +12,13 @@ class CommentSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Comment::factory(200)->create()
+            ->each(callback : function (\App\Models\Comment $comment) {
+                $comment->update([
+                    'user_id' => array_rand(\App\Models\User::pluck('matricule', 'id')->toArray(), 1),
+                    'article_id' => array_rand(\App\Models\Article::pluck('cote', 'id')->toArray(), 1),
+                ]);
+            })
+        ;
     }
 }

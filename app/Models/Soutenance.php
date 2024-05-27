@@ -27,5 +27,4 @@ class Soutenance extends Model
         return $this->hasMany(related : \App\Models\SupportedMemory::class, foreignKey : 'soutenance_id');
     }
 
-
 }

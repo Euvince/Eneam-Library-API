@@ -22,6 +22,7 @@ class SubscriptionFactory extends Factory
         );
 
         return [
+            'rising' => fake()->randomElement(['500', '1000']),
             'subscription_date' => $subscriptionDate,
             'expiration_date' => $expirationDate,
             'created_by' => 'APPLICATION',

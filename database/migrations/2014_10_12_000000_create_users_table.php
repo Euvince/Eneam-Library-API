@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string(column : 'sex');
             $table->boolean(column : 'has_paid')->default(value : false);
             $table->boolean(column : 'has_access')->default(value : false);
-            $table->float(column : 'debt_price')->default(value : NULL);
+            $table->float(column : 'debt_price')->default(value : 0);
             $table->rememberToken();
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);

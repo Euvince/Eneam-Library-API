@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $dispatchesEvents = [
-        'creating' => \App\Listeners\UserCreatingListener::class
+        'creating' => \App\Events\UserCreatingEvent::class
     ];
 
     protected static function boot() {

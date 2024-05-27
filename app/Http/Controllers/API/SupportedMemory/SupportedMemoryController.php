@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\SupportedMemory;
 
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;

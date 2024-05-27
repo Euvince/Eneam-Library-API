@@ -20,9 +20,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        \App\Events\UserCreatingEvent::class => [
+        /* \App\Events\UserCreatingEvent::class => [
             \App\Listeners\UserCreatingListener::class
-        ],
+        ], */
     ];
 
     /**
@@ -30,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \App\Models\User::observe(classes : UserObserver::class);
+        /* \App\Models\User::observe(classes : UserObserver::class); */
     }
 
     /**
