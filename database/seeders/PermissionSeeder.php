@@ -30,12 +30,35 @@ class PermissionSeeder extends Seeder
             'Gestion des Mémoires Soutenus',
             'Gestion des Fiches de Dépôts de Mémoires',
         ];
-        $userPermissions = [
+        $TeacherPermissions = [
             "S'Abonner",
             'Se Connecter',
             'Créer un compte',
             'Prêter un Livre',
             'Réserver un Livre',
+            'Demander un Accès',
+            'Consulter un Livre',
+            'Déposer un Mémoire',
+            'Consulter un Mémoire',
+        ];
+        $EneamienSutudentPermissions = [
+            "S'Abonner",
+            'Se Connecter',
+            'Créer un compte',
+            'Prêter un Livre',
+            'Réserver un Livre',
+            'Demander un Accès',
+            'Consulter un Livre',
+            'Déposer un Mémoire',
+            'Consulter un Mémoire',
+        ];
+        $ExternSutudentPermissions = [
+            "S'Abonner",
+            'Se Connecter',
+            'Créer un compte',
+            'Demander un Accès',
+            'Consulter un Livre',
+            'Consulter un Mémoire',
         ];
 
         $managerRole = \App\Models\Role::where('name', 'Manager')->first();
@@ -88,10 +111,9 @@ class PermissionSeeder extends Seeder
         array_walk(
             array : $teacherPermissions,
             callback : function (\App\Models\Permission $permission) use($teacherRole, $teacherTypeRole) {
-                \App\Models\Permission::create([
+                \App\Models\Permission::firstOrCreate([
                     'name' => $permission,
                     'slug' => \Illuminate\Support\Str::slug($permission),
-                    'type_role_id' => $teacherTypeRole->id,
                 ]);
                 $teacherRole->givePermissionTo($permission);
             }

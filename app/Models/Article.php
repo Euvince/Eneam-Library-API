@@ -32,11 +32,21 @@ class Article extends Model
     }
 
     public function loans () : BelongsToMany {
-        return $this->belongsToMany(related : \App\Models\Loan::class);
+        return $this->belongsToMany(
+            related : \App\Models\Loan::class,
+            table : 'article_reservation',
+            foreignPivotKey : 'article_id',
+            relatedPivotKey : 'loan_id'
+        )->withPivot('quantity');
     }
 
     public function reservations () : BelongsToMany {
-        return $this->belongsToMany(related : \App\Models\Reservation::class);
+        return $this->belongsToMany(
+            related : \App\Models\Reservation::class,
+            table : 'article_reservation',
+            foreignPivotKey : 'article_id',
+            relatedPivotKey : 'reservation_id'
+        );
     }
 
 }

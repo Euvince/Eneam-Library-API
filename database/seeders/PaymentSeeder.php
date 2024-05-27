@@ -12,6 +12,12 @@ class PaymentSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Subscription::factory(30)->create();
+        \App\Models\Payment::factory(30)->create()
+            ->each(callback : function (\App\Models\Subscription $subscription) {
+                $subscription->update([
+                    'user_id' => array_rand(\App\Models\User::pluck('matricule', 'id')->toArray(), 1),
+                ]);
+            })
+        ;
     }
 }

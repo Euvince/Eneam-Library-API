@@ -3,15 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permission extends \Spatie\Permission\Models\Permission
 {
     use HasFactory, SoftDeletes;
 
-    public function roleType () : BelongsTo {
-        return $this->belongsTo(related : \App\Models\RoleType::class, foreignKey : 'role_type_id');
+    public function rolesTypes () : BelongsToMany {
+        return $this->belongsToMany(
+            related : \App\Models\RoleType::class, 
+            table : 'roletype_has_permission',
+            foreignPivotKey : 'permission_id',
+            relatedPivotKey : 'role_type_id',
+        );
     }
 
 }
