@@ -24,7 +24,12 @@ class Reservation extends Model
     }
 
     public function articles () : BelongsToMany {
-        return $this->belongsToMany(related : \App\Models\Article::class);
+        return $this->belongsToMany(
+            related : \App\Models\Article::class,
+            table : 'article_reservation',
+            foreignPivotKey : 'reservation_id',
+            relatedPivotKey : 'article_id'
+        );
     }
 
 }

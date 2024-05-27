@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\FilingReportSeeder::class);
         $this->call(\Database\Seeders\RoleTypeSeeder::class);
         $this->call(\Database\Seeders\RoleSeeder::class);
-        $this->call(\Database\Seeders\UserSeeder::class);
+        $this->call(\Database\Seeders\PermissionSeeder::class);
+        /* $this->call(\Database\Seeders\UserSeeder::class); */
 
     }
 }

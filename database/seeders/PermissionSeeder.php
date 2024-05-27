@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
             'Gestion des Mémoires Soutenus',
             'Gestion des Fiches de Dépôts de Mémoires',
         ];
-        $TeacherPermissions = [
+        $teacherPermissions = [
             "S'Abonner",
             'Se Connecter',
             'Créer un compte',
@@ -41,7 +41,7 @@ class PermissionSeeder extends Seeder
             'Déposer un Mémoire',
             'Consulter un Mémoire',
         ];
-        $EneamienSutudentPermissions = [
+        $eneamienSutudentPermissions = [
             "S'Abonner",
             'Se Connecter',
             'Créer un compte',
@@ -52,7 +52,7 @@ class PermissionSeeder extends Seeder
             'Déposer un Mémoire',
             'Consulter un Mémoire',
         ];
-        $ExternSutudentPermissions = [
+        $externSutudentPermissions = [
             "S'Abonner",
             'Se Connecter',
             'Créer un compte',
@@ -61,63 +61,74 @@ class PermissionSeeder extends Seeder
             'Consulter un Mémoire',
         ];
 
-        $managerRole = \App\Models\Role::where('name', 'Manager')->first();
+        $managerRole = \App\Models\Role::where('name', 'Gestionnaire')->first();
         $teacherRole = \App\Models\Role::where('name', 'Enseignant')->first();
         $adminRole = \App\Models\Role::where('name', 'Administrateur')->first();
         $externStudentRole = \App\Models\Role::where('name', 'Étudiant-Extern')->first();
         $eneamienStudentRole = \App\Models\Role::where('name', 'Étudiant-Eneamien')->first();
 
-        $managerTypeRole = \App\Models\RoleType::where('name', 'Manager')->first();
+        $managerTypeRole = \App\Models\RoleType::where('name', 'Gestionnaire')->first();
         $teacherTypeRole = \App\Models\RoleType::where('name', 'Enseignant')->first();
         $adminTypeRole = \App\Models\RoleType::where('name', 'Administrateur')->first();
         $externStudentTypeRole = \App\Models\RoleType::where('name', 'Étudiant-Extern')->first();
         $eneamienStudentTypeRole = \App\Models\RoleType::where('name', 'Étudiant-Eneamien')->first();
 
-        /*
-            foreach ($adminPermissions as $permission) {
-                \App\Models\Permission::create([
-                    'name' => $permission,
-                    'slug' => \Illuminate\Support\Str::slug($permission),
-                    'type_role_id' => $adminTypeRole->id,
-                ]);
-                $adminRole->givePermissionTo($permission);
-            }
-        */
-
+        $adminPermissionsIds = [];
         array_walk(
             array : $adminPermissions,
-            callback : function (\App\Models\Permission $permission) use($adminRole, $adminTypeRole) {
-                \App\Models\Permission::create([
+            callback : function (string $permission) use($adminRole, &$adminPermissionsIds) {
+                $p = \App\Models\Permission::firstOrCreate([
                     'name' => $permission,
                     'slug' => \Illuminate\Support\Str::slug($permission),
-                    'type_role_id' => $adminTypeRole->id,
                 ]);
+                $adminPermissionsIds[] = $p->id;
                 $adminRole->givePermissionTo($permission);
             }
         );
+        $adminTypeRole->permissions()->sync($adminPermissionsIds);
 
+        $managerPermissionsIds = [];
         array_walk(
             array : $managerPermissions,
-            callback : function (\App\Models\Permission $permission) use($managerRole, $adminTypeRole) {
-                \App\Models\Permission::create([
+            callback : function (string $permission) use($managerRole, &$managerPermissionsIds) {
+                $p = \App\Models\Permission::firstOrCreate([
                     'name' => $permission,
                     'slug' => \Illuminate\Support\Str::slug($permission),
-                    'type_role_id' => $adminTypeRole->id,
                 ]);
+                $managerPermissionsIds[] = $p->id;
                 $managerRole->givePermissionTo($permission);
             }
         );
+        $managerTypeRole->permissions()->sync($managerPermissionsIds);
 
+
+        $teacherPermissionsIds = [];
         array_walk(
             array : $teacherPermissions,
-            callback : function (\App\Models\Permission $permission) use($teacherRole, $teacherTypeRole) {
-                \App\Models\Permission::firstOrCreate([
+            callback : function (string $permission) use($teacherRole, &$teacherPermissionsIds) {
+                $p = \App\Models\Permission::firstOrCreate([
                     'name' => $permission,
                     'slug' => \Illuminate\Support\Str::slug($permission),
                 ]);
+                $teacherPermissionsIds[] = $p->id;
                 $teacherRole->givePermissionTo($permission);
             }
         );
+        $teacherTypeRole->permissions()->sync($teacherPermissionsIds);
+
+        /* $teacherPermissionsIds = [];
+        array_walk(
+            array : $teacherPermissions,
+            callback : function (string $permission) use($teacherRole, &$teacherPermissionsIds) {
+                $p = \App\Models\Permission::firstOrCreate([
+                    'name' => $permission,
+                    'slug' => \Illuminate\Support\Str::slug($permission),
+                ]);
+                $teacherPermissionsIds[] = $p->id;
+                $teacherRole->givePermissionTo($permission);
+            }
+        );
+        $teacherTypeRole->permissions()->sync($teacherPermissionsIds); */
 
     }
 }

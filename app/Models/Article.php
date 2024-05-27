@@ -34,10 +34,10 @@ class Article extends Model
     public function loans () : BelongsToMany {
         return $this->belongsToMany(
             related : \App\Models\Loan::class,
-            table : 'article_reservation',
+            table : 'article_loan',
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'loan_id'
-        )->withPivot('quantity');
+        )->withPivot(columns : 'quantity');
     }
 
     public function reservations () : BelongsToMany {
