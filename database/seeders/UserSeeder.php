@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'sex' => 'Féminin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Gestionnaire']);
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Administrateur']);
@@ -91,7 +91,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Enseignant']);
@@ -113,7 +113,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
@@ -137,7 +137,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Eneamien']);
@@ -158,7 +158,7 @@ class UserSeeder extends Seeder
             'sex' => 'Masculin',
             'has_paid' => 1,
             'has_access' => 1,
-            'debt_price' => 0,
+            'debt_amount' => 0,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Eneamien']);

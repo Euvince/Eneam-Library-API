@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->float(column : 'rising');
+            $table->float(column : 'amount');
             $table->string('status')->default(value : "Inactif");
             $table->date(column : 'subscription_date');
             $table->date(column : 'expiration_date');

@@ -16,16 +16,16 @@ class Configuration extends Model
     protected $table = 'configuration';
 
     protected $fillable = [
-        'student_debt_price',
-        'teacher_debt_price',
+        'student_debt_amount',
+        'teacher_debt_amount',
         'student_loan_delay',
         'teacher_loan_delay',
         'max_books_per_student',
         'max_books_per_teacher',
         'student_renewals_number',
         'teacher_renewals_number',
-        'extern_subscribe_rising',
-        'eneamien_subscribe_rising',
+        'extern_subscribe_amount',
+        'eneamien_subscribe_amount',
         'subscription_expiration_date',
         'max_copies_books_per_student',
         'max_copies_books_per_teacher',

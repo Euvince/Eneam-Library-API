@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('configuration', function (Blueprint $table) {
             $table->id();
-            $table->float(column : 'eneamien_subscribe_rising');
-            $table->float(column : 'extern_subscribe_rising');
+            $table->float(column : 'eneamien_subscribe_amount');
+            $table->float(column : 'extern_subscribe_amount');
             $table->integer(column : 'subscription_expiration_delay');
-            $table->float(column : 'student_debt_price');
-            $table->float(column : 'teacher_debt_price');
+            $table->float(column : 'student_debt_amount');
+            $table->float(column : 'teacher_debt_amount');
             $table->integer(column : 'student_loan_delay');
             $table->integer(column : 'teacher_loan_delay');
             $table->integer(column : 'student_renewals_number');

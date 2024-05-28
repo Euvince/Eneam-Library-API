@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->float(column : 'rising');
+            $table->float(column : 'amount');
             $table->date(column : 'payment_date');
             $table->string(column : 'status')->default(value : "Impayé");
             $table->string(column : 'created_by')->nullable()->default(value : NULL);

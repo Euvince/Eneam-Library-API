@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'sex' => fake()->randomElement(['Masculin', 'Féminin', 'Autre']),
             'has_paid' => $hasPaid,
             'has_access' => $hasPaid,
-            'debt_price' => fake()->randomFloat(min : 500, max : 2500),
+            'debt_amount' => fake()->randomFloat(min : 500, max : 2500),
             'remember_token' => Str::random(10),
             'created_by' => 'APPLICATION'
         ];

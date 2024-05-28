@@ -29,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'matricule', 'firstname', 'lastname', 'email',
         'password', 'phone_numer', 'birth_date', 'sex',
-        'hasPaid', 'hasAccess', 'debt_price', 'slug',
+        'hasPaid', 'hasAccess', 'debt_amount', 'slug',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
