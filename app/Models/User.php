@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,6 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @mixin IdeHelperUser
  */
+#[ObservedBy([\App\Observers\UserObserver::class])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
@@ -59,21 +61,21 @@ class User extends Authenticatable implements MustVerifyEmail
         'creating' => \App\Events\UserCreatingEvent::class
     ];
 
-    protected static function boot() {
+    /* protected static function boot() {
 
         parent::boot();
 
         if (!app()->runningInConsole() && auth()->check()) {
             $userFullName = Auth::user()->firstname . " " . Auth::user()->lastname;
             static::creating(callback : fn ($user) => $user->created_by = $userFullName);
-            static::creating(callback : fn ($user) => $user->updated_by = $userFullName);
+            static::updating(callback : fn ($user) => $user->updated_by = $userFullName);
             static::deleting(function ($user) use ($userFullName) {
                 $user->deleted_by = $userFullName;
                 $user->save();
             });
         }
 
-    }
+    } */
 
     public function payments () : HasMany {
         return $this->hasMany(related : \App\Models\Payment::class, foreignKey : 'user_id');

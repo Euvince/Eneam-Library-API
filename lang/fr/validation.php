@@ -179,7 +179,7 @@ return [
         'minute'                   => 'minute',
         'mobile'                   => 'portable',
         'month'                    => 'mois',
-        'name'                     => 'Libellé',
+        'name'                     => 'nom',
         'national_code'            => 'code national',
         'number'                   => 'numéro',
         'password'                 => 'mot de passe',

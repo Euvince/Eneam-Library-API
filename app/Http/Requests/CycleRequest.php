@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class CycleRequest extends FormRequest
 {
@@ -22,7 +25,24 @@ class CycleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                Rule::unique(table : 'cycles', column : 'name')
+                    ->ignore($this->route()->parameter(name : 'id'))
+                    ->withoutTrashed()
+            ],
+            'code' => ['required'],
         ];
     }
+
+    public function failedValidations (Validator $validator) : HttpResponseException {
+        throw new HttpResponseException(response()->json([
+            'status' => 422,
+            'error' => true,
+            'success' => false,
+            'message' => 'Erreurs de validations des données',
+            'errors' => $validator->errors()
+        ]));
+    }
+
 }

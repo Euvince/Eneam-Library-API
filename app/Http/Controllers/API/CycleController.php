@@ -3,49 +3,58 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Cycle;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CycleRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Cycle\CycleResource;
+use App\Responses\Cycle\SingleCycleResponse;
+use App\Responses\Cycle\CycleCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CycleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : CycleCollectionResponse | LengthAwarePaginator
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new CycleCollectionResponse(
+            statusCode : 200,
+            allowValue : 'GET',
+            total : Cycle::count(),
+            message : "Liste de tous les cycles",
+            collection : Cycle::query()->paginate(perPage : 20),
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CycleRequest $request)
+    public function store(CycleRequest $request) : SingleCycleResponse
     {
-        //
+        $cycle = Cycle::create(
+            array_merge($request->validated(), [
+                'slug' => \Illuminate\Support\Str::slug($request->name)
+            ])
+        );
+        return new SingleCycleResponse(
+            statusCode : 201,
+            allowValue : 'POST',
+            message : "Le cycle a été crée avec succès",
+            resource : new CycleResource(resource : $cycle)
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Cycle $cycle)
+    public function show(Cycle $cycle) : SingleCycleResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cycle $cycle)
-    {
-        //
+        return new SingleCycleResponse(
+            statusCode : 200,
+            allowValue : 'GET',
+            message : "Informations sur le cycle",
+            resource : new CycleResource(resource : $cycle)
+        );
     }
 
     /**
@@ -53,7 +62,17 @@ class CycleController extends Controller
      */
     public function update(CycleRequest $request, Cycle $cycle)
     {
-        //
+        $cycle->update(
+            array_merge($request->validated(), [
+                'slug' => \Illuminate\Support\Str::slug($request->name)
+            ])
+        );
+        return new SingleCycleResponse(
+            statusCode : 200,
+            allowValue : 'POST',
+            message : "Le cycle a été modifé avec succès",
+            resource : new CycleResource(resource : $cycle)
+        );
     }
 
     /**
@@ -61,6 +80,10 @@ class CycleController extends Controller
      */
     public function destroy(Cycle $cycle)
     {
-        //
+        $cycle->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => "Le cycle a àté supprimée avec succès",
+        ]);
     }
 }
