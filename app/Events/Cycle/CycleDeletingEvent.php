@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CycleCreatingEvent
+class CycleDeletingEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,6 +21,7 @@ class CycleCreatingEvent
         public readonly \App\Models\Cycle $cycle
     )
     {
+        //
     }
 
     /**

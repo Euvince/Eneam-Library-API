@@ -3,15 +3,32 @@
 namespace App\Observers;
 
 use App\Models\Cycle;
+use Illuminate\Auth\AuthManager;
 
 class CycleObserver
 {
+    public function __construct(
+        private readonly AuthManager $auth
+    )
+    {
+    }
+
+    private function canDoEvent () : bool {
+        return !app()->runningInConsole() && $this->auth->check();
+    }
+
     /**
      * Handle the Cycle "created" event.
      */
     public function created(Cycle $cycle): void
     {
-        //
+    }
+
+    public function creating(Cycle $cycle): void
+    {
+        $this->canDoEvent()
+            ? $cycle->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $cycle->created_by = NULL;
     }
 
     /**
@@ -19,7 +36,13 @@ class CycleObserver
      */
     public function updated(Cycle $cycle): void
     {
-        //
+    }
+
+    public function updating(Cycle $cycle): void
+    {
+        $this->canDoEvent()
+            ? $cycle->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $cycle->updated_by = NULL;
     }
 
     /**
@@ -27,7 +50,14 @@ class CycleObserver
      */
     public function deleted(Cycle $cycle): void
     {
-        //
+    }
+
+    public function deleting(Cycle $cycle): void
+    {
+        $this->canDoEvent()
+            ? $cycle->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $cycle->deleted_by = NULL;
+        $cycle->save();
     }
 
     /**
@@ -35,7 +65,6 @@ class CycleObserver
      */
     public function restored(Cycle $cycle): void
     {
-        //
     }
 
     /**
@@ -43,6 +72,6 @@ class CycleObserver
      */
     public function forceDeleted(Cycle $cycle): void
     {
-        //
     }
+
 }

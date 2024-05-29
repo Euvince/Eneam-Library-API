@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 /**
  * @mixin IdeHelperCycle
  */
+
 #[ObservedBy([\App\Observers\CycleObserver::class])]
+
 class Cycle extends Model
 {
     use HasFactory, SoftDeletes;
@@ -20,6 +22,12 @@ class Cycle extends Model
         'name', 'slug', 'code',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'creating' => \App\Events\Cycle\CycleCreatingEvent::class,
+        'updating' => \App\Events\Cycle\CycleUpdatingEvent::class,
+        'deleting' => \App\Events\Cycle\CycleDeletingEvent::class,
     ];
 
     public function soutenances () : HasMany {

@@ -69,7 +69,7 @@ class CycleController extends Controller
         );
         return new SingleCycleResponse(
             statusCode : 200,
-            allowValue : 'POST',
+            allowValue : 'PUT',
             message : "Le cycle a été modifé avec succès",
             resource : new CycleResource(resource : $cycle)
         );
@@ -81,9 +81,14 @@ class CycleController extends Controller
     public function destroy(Cycle $cycle)
     {
         $cycle->delete();
-        return response()->json([
-            'status' => 200,
-            'message' => "Le cycle a àté supprimée avec succès",
-        ]);
+        return response()->json(
+            status : 200,
+            headers : [
+                "Allow" => 'DELETE'
+            ],
+            data : [
+                'message' => "Le cycle a àté supprimée avec succès",
+            ],
+        );
     }
 }
