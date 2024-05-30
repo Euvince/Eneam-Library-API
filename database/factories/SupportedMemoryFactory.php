@@ -17,10 +17,14 @@ class SupportedMemoryFactory extends Factory
     public function definition(): array
     {
         $theme = fake()->sentence();
+        $start_at = fake()->time(format : 'H:i');
+        $ends_at = \Carbon\Carbon::createFromFormat('H:i', $start_at)->addHours(rand(1, 2));
+
         return [
             'theme' => $theme,
             'slug' => \Illuminate\Support\Str::slug($theme),
-            'soutenance_hour' => fake()->time(format : 'H:i'),
+            'start_at' => $start_at,
+            'ends_at' => $ends_at,
             'first_author_name' => fake()->name(),
             'second_author_name' => fake()->name(),
             'first_author_email' => fake()->unique()->email(),

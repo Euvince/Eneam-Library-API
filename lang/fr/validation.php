@@ -242,5 +242,8 @@ return [
         'destinataire'             => 'Destinataire',
         'reference'                => 'Référence',
         'datenaissance'            => 'Date de naissance',
+        'start_date'               => 'Date de début',
+        'end_date'                => 'Date de fin',
+        'cycle_id'                 => 'Cycle'
     ],
 ];

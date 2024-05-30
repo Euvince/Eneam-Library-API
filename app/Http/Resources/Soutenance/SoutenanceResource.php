@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Resources\Cycle;
+namespace App\Http\Resources\Soutenance;
 
-use App\Http\Resources\Soutenance\SoutenanceCollection;
+use App\Http\Resources\Cycle\CycleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @cycle Cycle $resource
+ * @soutenance Soutenance $resource
  */
-class CycleResource extends JsonResource
+class SoutenanceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,12 +22,15 @@ class CycleResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'slug' => $this->resource->slug,
-            'code' => $this->resource->code,
+            'year' => $this->resource->year,
+            'start_date' => $this->resource->start_date,
+            'end_date' => $this->resource->end_date,
+            'number_memories_expected' => $this->resource->number_memories_expected,
+            'cycle' => new CycleResource($this->whenLoaded('cycle')),
             'created_at' => $this->resource->created_at->format("Y-m-d"),
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
-            'soutenances' => SoutenanceCollection::make($this->whenLoaded('soutenances')),
         ];
     }
 }

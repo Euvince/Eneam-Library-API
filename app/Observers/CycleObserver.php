@@ -17,6 +17,17 @@ class CycleObserver
         return !app()->runningInConsole() && $this->auth->check();
     }
 
+
+    public function creating(Cycle $cycle): void
+    {
+        $cycle->name = ucfirst($cycle->name);
+        $cycle->code = strtoupper(string : $cycle->code);
+        $cycle->slug = \Illuminate\Support\Str::slug($cycle->name);
+        $this->canDoEvent()
+            ? $cycle->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $cycle->created_by = NULL;
+    }
+
     /**
      * Handle the Cycle "created" event.
      */
@@ -24,11 +35,15 @@ class CycleObserver
     {
     }
 
-    public function creating(Cycle $cycle): void
+
+    public function updating(Cycle $cycle): void
     {
+        $cycle->name = ucfirst($cycle->name);
+        $cycle->code = strtoupper(string : $cycle->code);
+        $cycle->slug = \Illuminate\Support\Str::slug($cycle->name);
         $this->canDoEvent()
-            ? $cycle->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $cycle->created_by = NULL;
+            ? $cycle->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $cycle->updated_by = NULL;
     }
 
     /**
@@ -38,19 +53,6 @@ class CycleObserver
     {
     }
 
-    public function updating(Cycle $cycle): void
-    {
-        $this->canDoEvent()
-            ? $cycle->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $cycle->updated_by = NULL;
-    }
-
-    /**
-     * Handle the Cycle "deleted" event.
-     */
-    public function deleted(Cycle $cycle): void
-    {
-    }
 
     public function deleting(Cycle $cycle): void
     {
@@ -58,6 +60,13 @@ class CycleObserver
             ? $cycle->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $cycle->deleted_by = NULL;
         $cycle->save();
+    }
+
+    /**
+     * Handle the Cycle "deleted" event.
+     */
+    public function deleted(Cycle $cycle): void
+    {
     }
 
     /**

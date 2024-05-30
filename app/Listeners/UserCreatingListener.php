@@ -22,6 +22,8 @@ class UserCreatingListener
      */
     public function handle(UserCreatingEvent $event): void
     {
-        $event->user->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname;
+        !app()->runningInConsole() && $this->auth->check()
+            ? $event->user->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $event->user->created_by;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Cycle;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\CycleRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Cycle\CycleResource;
@@ -22,7 +23,7 @@ class CycleController extends Controller
             allowValue : 'GET',
             total : Cycle::count(),
             message : "Liste de tous les cycles",
-            collection : Cycle::query()->paginate(perPage : 20),
+            collection : Cycle::query()->with(['soutenances'])->paginate(perPage : 20),
         );
     }
 
@@ -31,11 +32,7 @@ class CycleController extends Controller
      */
     public function store(CycleRequest $request) : SingleCycleResponse
     {
-        $cycle = Cycle::create(
-            array_merge($request->validated(), [
-                'slug' => \Illuminate\Support\Str::slug($request->name)
-            ])
-        );
+        $cycle = Cycle::create($request->validated());
         return new SingleCycleResponse(
             statusCode : 201,
             allowValue : 'POST',
@@ -53,32 +50,28 @@ class CycleController extends Controller
             statusCode : 200,
             allowValue : 'GET',
             message : "Informations sur le cycle",
-            resource : new CycleResource(resource : $cycle)
+            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
         );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CycleRequest $request, Cycle $cycle)
+    public function update(CycleRequest $request, Cycle $cycle) : SingleCycleResponse
     {
-        $cycle->update(
-            array_merge($request->validated(), [
-                'slug' => \Illuminate\Support\Str::slug($request->name)
-            ])
-        );
+        $cycle->update($request->validated());
         return new SingleCycleResponse(
             statusCode : 200,
             allowValue : 'PUT',
-            message : "Le cycle a été modifé avec succès",
-            resource : new CycleResource(resource : $cycle)
+            message : "Le cycle a été modifié avec succès",
+            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
         );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cycle $cycle)
+    public function destroy(Cycle $cycle) : JsonResponse
     {
         $cycle->delete();
         return response()->json(
@@ -87,7 +80,7 @@ class CycleController extends Controller
                 "Allow" => 'DELETE'
             ],
             data : [
-                'message' => "Le cycle a àté supprimée avec succès",
+                'message' => "Le cycle a àté supprimé avec succès",
             ],
         );
     }

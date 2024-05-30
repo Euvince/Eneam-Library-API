@@ -18,13 +18,6 @@ class SoutenanceObserver
         return !app()->runningInConsole() && $this->auth->check();
     }
 
-    /**
-     * Handle the Soutenance "created" event.
-     */
-    public function created(Soutenance $soutenance): void
-    {
-        //
-    }
 
     public function creating(Soutenance $soutenance): void
     {
@@ -34,12 +27,17 @@ class SoutenanceObserver
     }
 
     /**
-     * Handle the Soutenance "updated" event.
+     * Handle the Soutenance "created" event.
      */
-    public function updated(Soutenance $soutenance): void
+    public function created(Soutenance $soutenance): void
     {
-        //
+        if (!app()->runningInConsole()) {
+            $soutenance->name = $soutenance->cycle->name . $soutenance->year;
+            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+            $soutenance->save();
+        }
     }
+
 
     public function updating(Soutenance $soutenance): void
     {
@@ -49,12 +47,12 @@ class SoutenanceObserver
     }
 
     /**
-     * Handle the Soutenance "deleted" event.
+     * Handle the Soutenance "updated" event.
      */
-    public function deleted(Soutenance $soutenance): void
+    public function updated(Soutenance $soutenance): void
     {
-        //
     }
+
 
     public function deleting(Soutenance $soutenance): void
     {
@@ -62,6 +60,13 @@ class SoutenanceObserver
             ? $soutenance->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $soutenance->deleted_by = NULL;
         $soutenance->save();
+    }
+
+    /**
+     * Handle the Soutenance "deleted" event.
+     */
+    public function deleted(Soutenance $soutenance): void
+    {
     }
 
     /**

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('soutenances', function (Blueprint $table) {
             $table->id();
-            $table->string(column : 'name')->nullable()->default(value : NULL);
+            $table->string(column : 'name')/* ->unique() */->nullable()->default(value : NULL);
             $table->string(column : 'slug')->nullable()->default(value : NULL);
             $table->string(column : 'year');
             $table->date(column : 'start_date');

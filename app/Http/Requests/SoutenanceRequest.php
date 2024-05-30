@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\DatesRules;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SoutenanceRequest extends FormRequest
 {
@@ -22,7 +26,28 @@ class SoutenanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'year' => ['required'],
+            'start_date' => ['required', 'date'/* , new DatesRules(request()) */],
+            'end_date' => ['required', 'date'],
+            'number_memories_expected' => ['required', 'integer'],
+            'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')]
         ];
     }
+
+    public function failedValidations (Validator $validator) : HttpResponseException {
+        throw new HttpResponseException(response()->json([
+            'status' => 422,
+            'error' => true,
+            'success' => false,
+            'message' => 'Erreurs de validations des données',
+            'errors' => $validator->errors()
+        ]));
+    }
+
+    public function messages () : array {
+        return [
+            'number_memories_expected.required' => "Le nombre de mémoires attendus est obligatoire"
+        ];
+    }
+
 }

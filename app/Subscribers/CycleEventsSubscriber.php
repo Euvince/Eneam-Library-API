@@ -22,12 +22,16 @@ class CycleEventsSubscriber
     }
 
     public function creatingCycle (CycleCreatingEvent $event) : void {
+        $event->cycle->code = strtoupper(string : $event->cycle->code);
+        $event->cycle->slug = \Illuminate\Support\Str::slug($event->cycle->name);
         $this->canDoEvent()
             ? $event->cycle->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $event->cycle->created_by = NULL;
     }
 
     public function updatingCycle (CycleUpdatingEvent $event) : void {
+        $event->cycle->code = strtoupper(string : $event->cycle->code);
+        $event->cycle->slug = \Illuminate\Support\Str::slug($event->cycle->name);
         $this->canDoEvent()
             ? $event->cycle->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $event->cycle->updated_by = NULL;
