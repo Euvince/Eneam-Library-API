@@ -26,7 +26,7 @@ class SoutenanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')],
+            /* 'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')], */
             'start_date' => ['required', 'date', 'before_or_equal:end_date'/* , new DatesRules(request()) */],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'number_memories_expected' => ['required', 'integer', 'min:1'],
@@ -46,8 +46,6 @@ class SoutenanceRequest extends FormRequest
 
     public function messages () : array {
         return [
-            'year.integer'  => 'Le champ année doit être un nombre entier.',
-            'year.max'      => 'Le champ année ne peut pas dépasser l\'année actuelle.',
             'start_date.date' => 'Le champ date de début doit être une date valide.',
             'start_date.before_or_equal' => 'Le champ date de début doit être une date antérieure ou égale à la date de fin.',
             'end_date.date' => 'Le champ date de fin doit être une date valide.',

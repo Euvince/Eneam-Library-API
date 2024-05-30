@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string(column : 'name')/* ->unique() */->nullable()->default(value : NULL);
             $table->string(column : 'slug')->nullable()->default(value : NULL);
-            $table->string(column : 'year');
+            /* $table->string(column : 'year'); */
             $table->date(column : 'start_date');
             $table->date(column : 'end_date');
             $table->integer(column : 'number_memories_expected');

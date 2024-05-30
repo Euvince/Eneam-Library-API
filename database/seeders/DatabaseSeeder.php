@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\Cycle::factory()->count(3)->create()->each(callback : function (\App\Models\Cycle $cycle) {
             \App\Models\Soutenance::factory()->count(30)->create()->each(callback : function (\App\Models\Soutenance $soutenance) use($cycle) {
-                $name = $cycle->name . $soutenance->year;
+                $name = $cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
                 $soutenance->update([
                     'cycle_id' => $cycle->id,
                     'name' => $name,

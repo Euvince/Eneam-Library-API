@@ -32,7 +32,7 @@ class SoutenanceObserver
     public function created(Soutenance $soutenance): void
     {
         if (!app()->runningInConsole()) {
-            $soutenance->name = $soutenance->cycle->name . $soutenance->year;
+            $soutenance->name = $soutenance->cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
             $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
             $soutenance->save();
         }
@@ -51,6 +51,11 @@ class SoutenanceObserver
      */
     public function updated(Soutenance $soutenance): void
     {
+        if (!app()->runningInConsole()) {
+            $soutenance->name = $soutenance->cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
+            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+            $soutenance->save();
+        }
     }
 
 

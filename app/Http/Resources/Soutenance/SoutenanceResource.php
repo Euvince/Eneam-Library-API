@@ -23,7 +23,7 @@ class SoutenanceResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'slug' => $this->resource->slug,
-            'year' => $this->resource->year,
+            /* 'year' => $this->resource->year, */
             'start_date' => $this->resource->start_date,
             'end_date' => $this->resource->end_date,
             'number_memories_expected' => $this->resource->number_memories_expected,

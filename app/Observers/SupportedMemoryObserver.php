@@ -37,6 +37,7 @@ class SupportedMemoryObserver
 
     public function updating(SupportedMemory $supportedMemory): void
     {
+        $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->name);
         $this->canDoEvent()
             ? $supportedMemory->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $supportedMemory->updated_by = NULL;

@@ -20,7 +20,7 @@ class SoutenanceFactory extends Factory
         $endDate = (clone $startDate)->modify(modifier : '+' . rand(min : 3, max : 5) . ' days');
 
         return [
-            'year' => fake()->year(),
+            /* 'year' => fake()->year(), */
             'start_date' => $startDate,
             'end_date' => $endDate,
             'number_memories_expected' => rand(min : 50, max : 250),

@@ -12,6 +12,6 @@ class SoutenanceSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Cycle::factory(50)->create();
+        \App\Models\Soutenance::factory(50)->create();
     }
 }
