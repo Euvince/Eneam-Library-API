@@ -24,7 +24,7 @@ class DatesRules implements ValidationRule
     {
         if (\Str::contains($this->request->route()->getName(), 'soutenance')) {
             if ($this->request->start_date > $this->request->end_date)
-            $fail("La date de début de soutenance doit être inférieure à celle de fin.");
+            $fail("La date de début de soutenance doit être antérieure ou égale à celle de fin.");
         }
     }
 }

@@ -15,7 +15,7 @@ class Subscription extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'amount', 'status', 'subscription_date', 'expiration_date',
+        'amount', 'status', 'subscription_date', 'expiration_date', 'user_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];

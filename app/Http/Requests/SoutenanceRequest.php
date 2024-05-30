@@ -26,9 +26,9 @@ class SoutenanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => ['required'],
-            'start_date' => ['required', 'date', new DatesRules(request())],
-            'end_date' => ['required', 'date'],
+            'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')],
+            'start_date' => ['required', 'date', 'before_or_equal:end_date'/* , new DatesRules(request()) */],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'number_memories_expected' => ['required', 'integer', 'min:1'],
             'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')]
         ];
@@ -46,7 +46,13 @@ class SoutenanceRequest extends FormRequest
 
     public function messages () : array {
         return [
-            'number_memories_expected.required' => "Le nombre de mémoires attendus est obligatoire"
+            'year.integer'  => 'Le champ année doit être un nombre entier.',
+            'year.max'      => 'Le champ année ne peut pas dépasser l\'année actuelle.',
+            'start_date.date' => 'Le champ date de début doit être une date valide.',
+            'start_date.before_or_equal' => 'Le champ date de début doit être une date antérieure ou égale à la date de fin.',
+            'end_date.date' => 'Le champ date de fin doit être une date valide.',
+            'end_date.after_or_equal' => 'Le champ date de fin doit être une date postérieure ou égale à la date de début.',
+            'number_memories_expected.required' => "Le nombre de mémoires attendus est obligatoire",
         ];
     }
 

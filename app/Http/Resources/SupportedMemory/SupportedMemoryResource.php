@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\SupportedMemory;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @user User $resource
+ * @supportedMemory SupportedMemory $resource
  */
-class UserResource extends JsonResource
+class SupportedMemoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

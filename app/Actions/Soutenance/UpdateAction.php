@@ -11,19 +11,21 @@ use App\Responses\Soutenance\SingleSoutenanceResponse;
 
 class UpdateAction
 {
-    public static function handle (array $data, Request $request) : JsonResponse | SingleSoutenanceResponse {
+    public static function handle (array $data, Request $request, Soutenance $soutenance) : JsonResponse | SingleSoutenanceResponse {
         $name = Cycle::find($request->cycle_id)->name . $request->year;
-        if (Soutenance::where('name', $name)->count() > 0) {
+        if (Soutenance::where([
+            ['name',  $name], ['id', '!=', $request->route()->parameter(name : 'soutenance')['id']]
+        ])->count() > 0) {
             return response()->json(
                 status : 422,
                 data : ['errors' => "Cette soutenance existe déjà"]
             );
         }
-        $soutenance = Soutenance::create($data);
+        $soutenance->update($data);
         return new SingleSoutenanceResponse(
-            statusCode : 201,
-            allowValue : 'POST',
-            message : "La soutenance a été créee avec succès",
+            statusCode : 200,
+            allowValue : 'PUT',
+            message : "La soutenance a été modifiée avec succès",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
         );
     }

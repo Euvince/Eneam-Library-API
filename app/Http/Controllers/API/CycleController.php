@@ -80,7 +80,7 @@ class CycleController extends Controller
                 "Allow" => 'DELETE'
             ],
             data : [
-                'message' => "Le cycle a àté supprimé avec succès",
+                'message' => "Le cycle a Été supprimé avec succès",
             ],
         );
     }

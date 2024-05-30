@@ -6,11 +6,12 @@ use App\Models\Soutenance;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Actions\Soutenance\StoreAction;
+use App\Actions\Soutenance\UpdateAction;
 use App\Http\Requests\SoutenanceRequest;
 use App\Http\Resources\Soutenance\SoutenanceResource;
 use App\Responses\Soutenance\SingleSoutenanceResponse;
-use App\Responses\Soutenance\SoutenanceCollectionResponse;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Responses\Soutenance\SoutenanceCollectionResponse;
 
 class SoutenanceController extends Controller
 {
@@ -55,13 +56,8 @@ class SoutenanceController extends Controller
      */
     public function update(SoutenanceRequest $request, Soutenance $soutenance) : SingleSoutenanceResponse | JsonResponse
     {
-        $soutenance->update($request->validated());
-        return new SingleSoutenanceResponse(
-            statusCode : 200,
-            allowValue : 'PUT',
-            message : "La soutenance a été modifiée avec succès",
-            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
-        );
+        $response = UpdateAction::handle(data : $request->validated(), request : $request, soutenance : $soutenance);
+        return $response;
     }
 
     /**
@@ -76,7 +72,7 @@ class SoutenanceController extends Controller
                 "Allow" => 'DELETE'
             ],
             data : [
-                'message' => "La soutenance a àté supprimée avec succès",
+                'message' => "La soutenance a Été supprimée avec succès",
             ],
         );
     }

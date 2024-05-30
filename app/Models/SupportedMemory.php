@@ -17,7 +17,7 @@ class SupportedMemory extends Model
 
     protected $fillable = [
         'theme', 'slug', 'soutenance_date', 'soutanance_hour',
-        'first_author_name', 'second_author_name',
+        'first_author_name', 'second_author_name', 'soutenance_id', 'sector_id',
         'first_author_email', 'second_author_email',
         'first_author_phone', 'second_author_phone', 'jury_president',
         'memory_master', 'file_path', 'cover_page_path', 'cote', 'status',

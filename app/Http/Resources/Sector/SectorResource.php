@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources\Sector;
 
+use App\Models\Sector;
 use Illuminate\Http\Request;
+use App\Http\Resources\Sector\SectorCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -27,6 +29,13 @@ class SectorResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+
+            'sector' => $this->when($this->resource->type === "Spécialité", new $this($this->whenLoaded('sector'))),
+            'specialities' => $this->when($this->resource->type === "Filière", SectorCollection::make($this->whenLoaded('specialities'))),
+
+            /* $this->mergeWhen($this->resource->specialities != [], $this->resource->type === "Filière",  [
+                'specialities' => SectorCollection::make($this->whenLoaded('specialities'))
+            ]), */
         ];
     }
 }

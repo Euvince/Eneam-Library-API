@@ -244,6 +244,8 @@ return [
         'datenaissance'            => 'Date de naissance',
         'start_date'               => 'date de début',
         'end_date'                => 'date de fin',
-        'cycle_id'                 => 'cycle'
+        'cycle_id'                 => 'cycle',
+        'acronym'                 => 'acronyme',
+        'sector_id'                 => 'secteur',
     ],
 ];
