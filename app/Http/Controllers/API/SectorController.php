@@ -21,7 +21,7 @@ class SectorController extends Controller
     {
         $type = $request->validated('type');
         $collection = $type
-            ? Sector::query()->where('type', $type)->with(['sector', 'specialities'])->paginate(perPage : 20)
+            ? Sector::query()->where('type', ucfirst(strtolower($type)))->with(['sector', 'specialities'])->paginate(perPage : 20)
             : Sector::query()->with(['sector', 'specialities'])->paginate(perPage : 20);
         return new SectorCollectionResponse(
             statusCode : 200,

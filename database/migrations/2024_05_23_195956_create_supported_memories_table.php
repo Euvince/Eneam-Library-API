@@ -25,10 +25,10 @@ return new class extends Migration
             $table->string(column : 'second_author_phone');
             $table->string(column : 'jury_president');
             $table->string(column : 'memory_master');
-            $table->string(column : 'file_path')->nullable()->default(value : NULL);
-            $table->string(column : 'cover_page_path')->nullable()->default(value : NULL);
             $table->string(column : 'cote')->nullable()->default(value : NULL);
             $table->string(column : 'status')->default(value : "Invalidé");
+            $table->string(column : 'file_path')->nullable()->default(value : NULL);
+            $table->string(column : 'cover_page_path')->nullable()->default(value : NULL);
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);

@@ -17,22 +17,6 @@ class SupportedMemoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(SupportedMemoryRequest $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(SupportedMemory $supportedMemory)
@@ -40,20 +24,14 @@ class SupportedMemoryController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SupportedMemory $supportedMemory)
+    public function validateMemory()
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(SupportedMemoryRequest $request, SupportedMemory $supportedMemory)
+    public function rejectedMemory()
     {
-        //
+
     }
 
     /**

@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Soutenance;
 
-use App\Http\Resources\Cycle\CycleResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\Cycle\CycleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\SupportedMemory\SupportedMemoryCollection;
 
 /**
  * @soutenance Soutenance $resource
@@ -26,11 +27,12 @@ class SoutenanceResource extends JsonResource
             'start_date' => $this->resource->start_date,
             'end_date' => $this->resource->end_date,
             'number_memories_expected' => $this->resource->number_memories_expected,
-            'cycle' => new CycleResource($this->whenLoaded('cycle')),
             'created_at' => $this->resource->created_at->format("Y-m-d"),
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'cycle' => new CycleResource($this->whenLoaded('cycle')),
+            'supportedMemories' => SupportedMemoryCollection::make($this->whenLoaded('supportedMemories')),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sector;
 
+use App\Rules\SameSpecialityForSector;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -27,6 +28,7 @@ class SectorRequest extends FormRequest
         return [
             'name' => [
                 'required',
+                new SameSpecialityForSector(request()),
                 Rule::unique(table : 'sectors', column : 'name')
                     ->ignore($this->route()->parameter(name : 'id'))
                     ->withoutTrashed()
