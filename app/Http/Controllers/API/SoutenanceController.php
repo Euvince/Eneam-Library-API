@@ -31,9 +31,10 @@ class SoutenanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SoutenanceRequest $request) : void
+    public function store(SoutenanceRequest $request) : SingleSoutenanceResponse | JsonResponse
     {
-        StoreAction::handle(data : $request->validated(), request : $request);
+        $response = StoreAction::handle(data : $request->validated(), request : $request);
+        return $response;
     }
 
     /**
@@ -52,7 +53,7 @@ class SoutenanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SoutenanceRequest $request, Soutenance $soutenance) : SingleSoutenanceResponse
+    public function update(SoutenanceRequest $request, Soutenance $soutenance) : SingleSoutenanceResponse | JsonResponse
     {
         $soutenance->update($request->validated());
         return new SingleSoutenanceResponse(
