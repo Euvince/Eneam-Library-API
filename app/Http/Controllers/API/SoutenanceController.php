@@ -31,15 +31,9 @@ class SoutenanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SoutenanceRequest $request) : SingleSoutenanceResponse | JsonResponse
+    public function store(SoutenanceRequest $request) : void
     {
-        $soutenance = StoreAction::handle(data : $request->validated(), request : $request);
-        return new SingleSoutenanceResponse(
-            statusCode : 201,
-            allowValue : 'POST',
-            message : "La souteance a été créee avec succès",
-            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
-        );
+        StoreAction::handle(data : $request->validated(), request : $request);
     }
 
     /**

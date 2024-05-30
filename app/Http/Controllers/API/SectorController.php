@@ -13,15 +13,13 @@ class SectorController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new CycleCollectionResponse(
+            statusCode : 200,
+            allowValue : 'GET',
+            total : Cycle::count(),
+            message : "Liste de tous les cycles",
+            collection : Cycle::query()->with(['soutenances'])->paginate(perPage : 20),
+        );
     }
 
     /**
@@ -29,7 +27,13 @@ class SectorController extends Controller
      */
     public function store(SectorRequest $request)
     {
-        //
+        $cycle = Cycle::create($request->validated());
+        return new SingleCycleResponse(
+            statusCode : 201,
+            allowValue : 'POST',
+            message : "Le cycle a été crée avec succès",
+            resource : new CycleResource(resource : $cycle)
+        );
     }
 
     /**
@@ -37,15 +41,12 @@ class SectorController extends Controller
      */
     public function show(Sector $sector)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sector $sector)
-    {
-        //
+        return new SingleCycleResponse(
+            statusCode : 200,
+            allowValue : 'GET',
+            message : "Informations sur le cycle",
+            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
+        );
     }
 
     /**
@@ -53,7 +54,13 @@ class SectorController extends Controller
      */
     public function update(SectorRequest $request, Sector $sector)
     {
-        //
+        $cycle->update($request->validated());
+        return new SingleCycleResponse(
+            statusCode : 200,
+            allowValue : 'PUT',
+            message : "Le cycle a été modifié avec succès",
+            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
+        );
     }
 
     /**
@@ -61,6 +68,15 @@ class SectorController extends Controller
      */
     public function destroy(Sector $sector)
     {
-        //
+        $cycle->delete();
+        return response()->json(
+            status : 200,
+            headers : [
+                "Allow" => 'DELETE'
+            ],
+            data : [
+                'message' => "Le cycle a àté supprimé avec succès",
+            ],
+        );
     }
 }

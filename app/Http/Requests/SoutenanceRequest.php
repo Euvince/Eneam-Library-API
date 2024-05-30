@@ -27,9 +27,9 @@ class SoutenanceRequest extends FormRequest
     {
         return [
             'year' => ['required'],
-            'start_date' => ['required', 'date'/* , new DatesRules(request()) */],
+            'start_date' => ['required', 'date', new DatesRules(request())],
             'end_date' => ['required', 'date'],
-            'number_memories_expected' => ['required', 'integer'],
+            'number_memories_expected' => ['required', 'integer', 'min:1'],
             'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')]
         ];
     }

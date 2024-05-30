@@ -4,12 +4,15 @@ namespace App\Actions\Soutenance;
 
 use App\Models\Cycle;
 use App\Models\Soutenance;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\SoutenanceRequest;
+use App\Http\Resources\Soutenance\SoutenanceResource;
+use App\Responses\Soutenance\SingleSoutenanceResponse;
 
 class StoreAction
 {
-    public static function handle (array $data, Request $request) : JsonResponse | Soutenance {
+    public static function handle (array $data, SoutenanceRequest $request) : JsonResponse | SingleSoutenanceResponse {
         $name = Cycle::find($request->cycle_id)->name . $request->year;
         if (Soutenance::where('name', $name)->count() > 0) {
             return response()->json(
@@ -17,6 +20,12 @@ class StoreAction
                 data : ['errors' => "Cette soutenance existe déjà"]
             );
         }
-        return Soutenance::create($data);
+        $soutenance = Soutenance::create($data);
+        return new SingleSoutenanceResponse(
+            statusCode : 201,
+            allowValue : 'POST',
+            message : "La soutenance a été créee avec succès",
+            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
+        );
     }
 }
