@@ -2,15 +2,15 @@
 
 namespace App\Mail;
 
-use App\Models\SupportedMemory;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use App\Models\SupportedMemory;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ValidateSupportedMemoryMail extends Mailable
+class RejectSupportedMemoryMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class ValidateSupportedMemoryMail extends Mailable
     {
         return new Envelope(
             to : [$this->sm->first_author_email, $this->sm->second_author_email],
-            subject : 'Validation de dépôt de mémoire soutenu.',
+            subject : 'Rejet de dépôt de mémoire soutenu.',
         );
     }
 
@@ -40,7 +40,7 @@ class ValidateSupportedMemoryMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.validate-supported-memory-mail',
+            markdown: 'mail.reject-supported-memory-mail',
             with: ['sm' => $this->sm]
         );
     }
