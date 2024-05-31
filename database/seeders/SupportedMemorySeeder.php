@@ -14,14 +14,14 @@ class SupportedMemorySeeder extends Seeder
     {
         \App\Models\SupportedMemory::factory(150)
             ->create()
-            ->each(callback : function (\App\Models\SupportedMemory $supportedMemory) {
+            ->each(callback : function (\App\Models\SupportedMemory $sm) {
                 $soutenance = \App\Models\Soutenance::all()->random();
-                $supportedMemory->update([
+                $sm->update([
                     'sector_id' => array_rand(\App\Models\Sector::whereNotNull('sector_id')->pluck('acronym', 'id')->toArray(), 1),
                     'soutenance_id' => $soutenance->id,
                 ]);
-                $supportedMemory->update([
-                    'cote' => $soutenance->year . $supportedMemory->sector->acronym . $supportedMemory->id
+                $sm->update([
+                    'cote' => \Carbon\Carbon::parse($soutenance->start_date)->year . $sm->sector->acronym . $sm->id
                 ]);
             })
         ;

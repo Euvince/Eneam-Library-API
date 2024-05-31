@@ -5,6 +5,7 @@ namespace App\Http\Requests\SupportedMemory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Request;
 
 class DepositSupportedMemoryRequest extends FormRequest
@@ -38,7 +39,15 @@ class DepositSupportedMemoryRequest extends FormRequest
             'memory_master_name' => ['required'],
             'memory_master_email' => ['required', 'email'],
             'file_path' => ['required', 'mimes:pdf', 'max:5000000'],
-            'cover_page_path' => ['required', 'mimes:pdf', 'max:2000000'],
+            'cover_page_path' => ['required', 'file', 'max:2000000'],
+            'sector_id' => [
+                'required',
+                Rule::exists(table : 'sectors', column : 'id')
+            ],
+            'soutenance_id' => [
+                'required',
+                Rule::exists(table : 'soutenances', column : 'id')
+            ]
         ];
     }
 

@@ -248,6 +248,7 @@ return [
         'cycle_id'                 => 'cycle',
         'acronym'                  => 'acronyme',
         'sector_id'                => 'secteur',
+        'soutenance_id'            => 'soutenance',
 
         'theme'                    => "thème",
         'start_at'                 => "heure de début",

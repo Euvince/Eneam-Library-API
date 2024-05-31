@@ -31,8 +31,10 @@ class SupportedMemoryObserver
      */
     public function created(SupportedMemory $sm): void
     {
-        $sm->cote = \Carbon\Carbon::parse($sm->soutenance->start_date)->year . $sm->sector->acronym . $sm->id;
-        $sm->save();
+        if (!app()->runningInConsole()) {
+            $sm->cote = \Carbon\Carbon::parse($sm->soutenance->start_date)->year . $sm->sector->acronym . $sm->id;
+            $sm->save();
+        }
     }
 
 

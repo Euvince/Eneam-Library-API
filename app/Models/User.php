@@ -19,6 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @mixin IdeHelperUser
  */
 #[ObservedBy([\App\Observers\UserObserver::class])]
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;

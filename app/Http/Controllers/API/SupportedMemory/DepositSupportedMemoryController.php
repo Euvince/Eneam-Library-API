@@ -16,7 +16,6 @@ class DepositSupportedMemoryController extends Controller
      */
     public function __invoke(DepositSupportedMemoryRequest $request)
     {
-        dd($request);
         $supportedMemory = SupportedMemory::create($this->withDocuments(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
@@ -29,12 +28,16 @@ class DepositSupportedMemoryController extends Controller
     private function withDocuments(SupportedMemory $supportedMemory, DepositSupportedMemoryRequest $request): array
     {
         $data = $request->validated();
-        if(array_key_exists('file_path', $data))
+        if(array_key_exists('file_path', $data) &&  array_key_exists('cover_page_path', $data))
         {
-            $memoryCollection = $data['document'];
-            $data['document'] = $documentCollection->storeAs('documents', $request->file('document')->getClientOriginalName(), 'public');
-            $documentpath = 'public/' . $document->document;
-            if(Storage::exists($documentpath)) Storage::delete('public/' . $document->document);
+            $memoryCollection = $data['file_path'];
+            $coverPageCollection = $data['cover_page_path'];
+            $data['file_path'] = $memoryCollection->storeAs('Memories', $request->file('file_path')->getClientOriginalName(), 'public');
+            $data['cover_page_path'] = $coverPageCollection->storeAs('Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');
+            $memorypath = 'public/' . $supportedMemory->file_path;
+            $coverPagePath = 'public/' . $supportedMemory->cover_page_path;
+            if(Storage::exists($memorypath)) Storage::delete($memorypath);
+            if(Storage::exists($coverPagePath)) Storage::delete($coverPagePath);
         }
         return $data;
     }

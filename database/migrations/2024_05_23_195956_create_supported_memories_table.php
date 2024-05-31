@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string(column : 'second_author_email');
             $table->string(column : 'first_author_phone');
             $table->string(column : 'second_author_phone');
-            $table->string(column : 'jury_president');
+            $table->string(column : 'jury_president_name');
             $table->string(column : 'memory_master_name');
             $table->string(column : 'memory_master_email')->nullable()->default(value : NULL);
             $table->string(column : 'cote')->nullable()->default(value : NULL);

@@ -7,19 +7,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 /**
  * @mixin IdeHelperSupportedMemory
  */
+
+#[ObservedBy([\App\Observers\SupportedMemoryObserver::class])]
+
 class SupportedMemory extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'theme', 'slug', 'soutenance_date', 'soutanance_hour',
+        'theme', 'slug', 'start_at', 'ends_at',
         'first_author_name', 'second_author_name', 'soutenance_id', 'sector_id',
         'first_author_email', 'second_author_email',
-        'first_author_phone', 'second_author_phone', 'jury_president',
+        'first_author_phone', 'second_author_phone', 'jury_president_name',
         'memory_master_name', 'memory_master_email', 'file_path',
         'cover_page_path', 'cote', 'status',
         'created_by', 'updated_by', 'deleted_by',
