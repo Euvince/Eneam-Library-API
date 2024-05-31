@@ -28,7 +28,7 @@ class SectorRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                new SameSpecialityForSector(request()),
+                /* new SameSpecialityForSector(request()), */
                 Rule::unique(table : 'sectors', column : 'name')
                     ->ignore($this->route()->parameter(name : 'id'))
                     ->withoutTrashed()

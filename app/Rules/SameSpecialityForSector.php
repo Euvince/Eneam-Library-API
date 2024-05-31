@@ -3,8 +3,9 @@
 namespace App\Rules;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Request;
+
 
 class SameSpecialityForSector implements ValidationRule
 {

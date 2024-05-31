@@ -24,7 +24,7 @@ class FindSectorByTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['sometimes', 'required', \Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité']))]
+            'type' => [\Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité']))]
         ];
     }
 
