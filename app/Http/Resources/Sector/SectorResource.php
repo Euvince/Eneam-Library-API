@@ -32,19 +32,22 @@ class SectorResource extends JsonResource
             'updated_by' => $this->resource->updated_by,
 
             'sector' => $this->when(
-                strtolower($this->resource->type) === strtolower("Spécialité") && $this->resource->sector_id !== NULL,
-                new $this($this->whenLoaded('sector'))
+                mb_strtolower($this->resource->type) === mb_strtolower("Spécialité") && $this->resource->sector_id !== NULL,
+                $this->whenLoaded('sector')
+                /* new $this($this->whenLoaded('sector')) */
             ),
             'specialities' => $this->when(
-                strtolower($this->resource->type) === strtolower("Filière") && $this->resource->specialities->count() > 0,
-                SectorCollection::make($this->whenLoaded('specialities'))
+                mb_strtolower($this->resource->type) === mb_strtolower("Filière") && $this->resource->specialities->count() > 0,
+                $this->whenLoaded('specialities')
+                /* SectorCollection::make($this->whenLoaded('specialities')) */
             ),
             /* $this->mergeWhen($this->resource->specialities != [], $this->resource->type === "Filière",  [
                 'specialities' => SectorCollection::make($this->whenLoaded('specialities'))
             ]), */
             'supportedMemories' => $this->when(
                 $this->resource->supportedMemories->count() > 0,
-                SupportedMemoryCollection::make($this->whenLoaded('supportedMemories'))
+                $this->whenLoaded('supportedMemories')
+                /* SupportedMemoryCollection::make($this->whenLoaded('supportedMemories')) */
             ),
         ];
     }

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\API\SupportedMemory;
 
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SupportedMemoryRequest;
-use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
+use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
+use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
+use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
 
 class SupportedMemoryController extends Controller
 {
@@ -19,7 +22,7 @@ class SupportedMemoryController extends Controller
             statusCode : 200,
             allowValue : 'GET',
             total : SupportedMemory::count(),
-            message : "Liste des filières et spécialités",
+            message : "Liste des mémoires soutenus",
             collection : SupportedMemory::query()->with(['sector', 'soutenance'])->paginate(perPage : 20),
         );
     }
@@ -27,17 +30,21 @@ class SupportedMemoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SupportedMemory $supportedMemory)
+    public function show(SupportedMemory $supportedMemory) : SingleSupportedMemoryResponse
     {
-        //
+        return new SingleSupportedMemoryResponse(
+            statusCode : 200,
+            allowValue : 'GET',
+            message : "Informations sur le mémoire soutenu",
+            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
+        );
     }
 
-    public function validateMemory()
+    public function validateMemory() : void
     {
-
     }
 
-    public function rejectedMemory()
+    public function rejectedMemory() : void
     {
 
     }
@@ -47,6 +54,19 @@ class SupportedMemoryController extends Controller
      */
     public function destroy(SupportedMemory $supportedMemory)
     {
-        //
+        $supportedMemory->delete();
+        if(($smFilePath = $supportedMemory->file_path) !== '') {
+            $smPath = 'public/' . $smFilePath;
+            if(Storage::exists($smPath)) Storage::delete('public/' . $smFilePath);
+        }
+        if(($smCoverPagePath = $supportedMemory->cover_page_path) !== '') {
+            $smCoverPath = 'public/' . $smCoverPagePath;
+            if(Storage::exists($smCoverPath)) Storage::delete('public/' . $smCoverPagePath);
+        }
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'DELETE'],
+            data : ['message' => "Le mémoire soutenu a été supprimé avec succès",],
+        );
     }
 }

@@ -27,7 +27,14 @@ class CycleResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
-            'soutenances' => SoutenanceCollection::make($this->whenLoaded('soutenances')),
+            'soutenances' => $this->when(
+                $this->resource->soutenances->count() > 0,
+                $this->whenLoaded('soutenances')
+            ),
+            /* 'soutenances' => $this->when(
+                $this->resource->soutenances->count() > 0, 
+                SoutenanceCollection::make($this->whenLoaded('soutenances'))
+            ), */
         ];
     }
 }

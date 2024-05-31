@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Helpers;
 use App\Models\Sector;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +18,7 @@ class SectorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(FindSectorByTypeRequest $request) : SectorCollectionResponse | LengthAwarePaginator
+    public function index(/* FindSectorByTypeRequest */ Request $request) : SectorCollectionResponse | LengthAwarePaginator
     {
         /* $type = $request->validated('type'); */
         $collection = $request->has('type')
@@ -37,7 +36,7 @@ class SectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : SingleSectorResponse
+    public function store(SectorRequest $request) : SingleSectorResponse
     {
         $sector = Sector::create($request->all());
         return new SingleSectorResponse(
@@ -64,7 +63,7 @@ class SectorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sector $sector) : SingleSectorResponse
+    public function update(SectorRequest $request, Sector $sector) : SingleSectorResponse
     {
         $sector->update($request->all());
         return new SingleSectorResponse(
@@ -87,7 +86,7 @@ class SectorController extends Controller
                 "Allow" => 'DELETE'
             ],
             data : [
-                'message' => "Le cycle a àté supprimé avec succès",
+                'message' => "Le cycle a été supprimé avec succès",
             ],
         );
     }

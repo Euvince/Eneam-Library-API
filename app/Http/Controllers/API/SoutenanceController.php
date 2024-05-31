@@ -72,7 +72,7 @@ class SoutenanceController extends Controller
                 "Allow" => 'DELETE'
             ],
             data : [
-                'message' => "La soutenance a Été supprimée avec succès",
+                'message' => "La soutenance a été supprimée avec succès",
             ],
         );
     }

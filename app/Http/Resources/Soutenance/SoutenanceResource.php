@@ -31,8 +31,16 @@ class SoutenanceResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
-            'cycle' => new CycleResource($this->whenLoaded('cycle')),
-            'supportedMemories' => SupportedMemoryCollection::make($this->whenLoaded('supportedMemories')),
+            'cycle' => $this->whenLoaded('cycle'),
+            'supportedMemories' => $this->when(
+                $this->resource->supportedMemories->count() > 0,
+                $this->whenLoaded('supportedMemories')
+            ),
+            /* 'cycle' => new CycleResource($this->whenLoaded('cycle')), */
+            /* 'supportedMemories' => $this->when(
+                $this->resource->supportedMemories->count() > 0,
+                SupportedMemoryCollection::make($this->whenLoaded('supportedMemories'))
+            ), */
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Requests\SupportedMemory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Request;
 
 class DepositSupportedMemoryRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class DepositSupportedMemoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,12 +32,13 @@ class DepositSupportedMemoryRequest extends FormRequest
             'first_author_email' => ['required', 'email'],
             'second_author_name' => ['required'],
             'second_author_email' => ['required', 'email'],
-            'first_author_phone' => ['required', 'phone:INTERNATIONAL,BJ'],
-            'second_author_phone' => ['required', 'phone:INTERNATIONAL,BJ'],
-            'jury_president' => ['required'],
-            'memory_master' => ['required'],
-            'file_path' => ['required'],
-            'cover_page_path' => ['required'],
+            'first_author_phone' => ['required', 'phone:INTERNATIONAL'],
+            'second_author_phone' => ['required', 'phone:INTERNATIONAL'],
+            'jury_president_name' => ['required'],
+            'memory_master_name' => ['required'],
+            'memory_master_email' => ['required', 'email'],
+            'file_path' => ['required', 'mimes:pdf', 'max:5000000'],
+            'cover_page_path' => ['required', 'mimes:pdf', 'max:2000000'],
         ];
     }
 
@@ -51,6 +53,12 @@ class DepositSupportedMemoryRequest extends FormRequest
     }
 
     public function messages() {
+        return [
+            "start_at.before" => "L'heure de début doit être antérieure à celle de fin",
+            "ends_at.after" => "L'heure de fin doit être postérieure à celle de début",
+            "first_author_phone" => "Le numéro de téléphone du premier étudiant n'est pas valide",
+            "second_author_phone" => "Le numéro de téléphone du deuxième étudiant n'est pas valide",
+        ];
     }
 
 }

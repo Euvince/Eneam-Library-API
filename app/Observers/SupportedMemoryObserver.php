@@ -20,7 +20,7 @@ class SupportedMemoryObserver
 
     public function creating(SupportedMemory $supportedMemory): void
     {
-        $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->name);
+        $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->theme);
         $this->canDoEvent()
             ? $supportedMemory->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $supportedMemory->created_by = NULL;
@@ -29,15 +29,16 @@ class SupportedMemoryObserver
     /**
      * Handle the SupportedMemory "created" event.
      */
-    public function created(SupportedMemory $supportedMemory): void
+    public function created(SupportedMemory $sm): void
     {
-        //
+        $sm->cote = \Carbon\Carbon::parse($sm->soutenance->start_date)->year . $sm->sector->acronym . $sm->id;
+        $sm->save();
     }
 
 
     public function updating(SupportedMemory $supportedMemory): void
     {
-        $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->name);
+        $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->theme);
         $this->canDoEvent()
             ? $supportedMemory->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $supportedMemory->updated_by = NULL;
