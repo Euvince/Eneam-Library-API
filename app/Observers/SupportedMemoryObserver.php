@@ -20,6 +20,7 @@ class SupportedMemoryObserver
 
     public function creating(SupportedMemory $supportedMemory): void
     {
+        $supportedMemory->status = "Invalidé";
         $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->theme);
         $this->canDoEvent()
             ? $supportedMemory->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname

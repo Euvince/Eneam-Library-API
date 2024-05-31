@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
+use App\Jobs\RejectSupportedMemoryJob;
+use App\Jobs\ValidateSupportedMemoryJob;
 use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
 {
@@ -40,13 +43,24 @@ class SupportedMemoryController extends Controller
         );
     }
 
-    public function validateMemory() : void
+    public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
+        ValidateSupportedMemoryJob::dispatch($supportedMemory);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'PUT'],
+            data : ['message' => "Le mémoire soutenu a été validé avec succès",],
+        );
     }
 
-    public function rejectedMemory() : void
+    public function rejectMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
-
+        RejectSupportedMemoryJob::dispatch($supportedMemory);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'PUT'],
+            data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
+        );
     }
 
     /**
