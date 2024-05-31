@@ -3,6 +3,7 @@
 namespace App\Http\Resources\SupportedMemory;
 
 use App\Http\Resources\Sector\SectorResource;
+use App\Http\Resources\Soutenance\SoutenanceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -41,7 +42,7 @@ class SupportedMemoryResource extends JsonResource
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
             'sector' => new SectorResource($this->whenLoaded('sector')),
-            'soutenance' => new SectorResource($this->whenLoaded('soutenance')),
+            'soutenance' => new SoutenanceResource($this->whenLoaded('soutenance')),
         ];
     }
 }

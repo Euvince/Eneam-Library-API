@@ -20,8 +20,8 @@ class CycleObserver
 
     public function creating(Cycle $cycle): void
     {
-        $cycle->name = ucfirst($cycle->name);
-        $cycle->code = strtoupper(string : $cycle->code);
+        $cycle->name = \App\Helpers::mb_ucfirst($cycle->name);
+        $cycle->code = mb_strtoupper(string : $cycle->code);
         $cycle->slug = \Illuminate\Support\Str::slug($cycle->name);
         $this->canDoEvent()
             ? $cycle->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
@@ -38,8 +38,8 @@ class CycleObserver
 
     public function updating(Cycle $cycle): void
     {
-        $cycle->name = ucfirst($cycle->name);
-        $cycle->code = strtoupper(string : $cycle->code);
+        $cycle->name = \App\Helpers::mb_ucfirst($cycle->name);
+        $cycle->code = mb_strtoupper(string : $cycle->code);
         $cycle->slug = \Illuminate\Support\Str::slug($cycle->name);
         $this->canDoEvent()
             ? $cycle->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname

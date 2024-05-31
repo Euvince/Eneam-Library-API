@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sector;
 
+use App\Rules\SectorsRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -24,7 +25,10 @@ class FindSectorByTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [\Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité']))]
+            'type' => [
+                'sometimes', 'required',  new SectorsRequestRules(request(), ['Filière', 'Spécialité'])
+                /* \Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité'])) */
+            ]
         ];
     }
 

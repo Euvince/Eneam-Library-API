@@ -23,9 +23,9 @@ class SectorObserver
     {
         $attributs = ['type', 'name'];
         foreach ($attributs as $attribut) {
-            $sector->$attribut = ucfirst($sector->$attribut);
+            $sector->$attribut = \App\Helpers::mb_ucfirst($sector->$attribut);
         }
-        $sector->acronym = strtoupper(string : $sector->acronym);
+        $sector->acronym = mb_strtoupper(string : $sector->acronym);
         $sector->slug = \Illuminate\Support\Str::slug($sector->name);
         $this->canDoEvent()
             ? $sector->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
@@ -45,9 +45,9 @@ class SectorObserver
     {
         $attributs = ['type', 'name'];
         foreach ($attributs as $attribut) {
-            $sector->$attribut = ucfirst($sector->$attribut);
+            $sector->$attribut = \App\Helpers::mb_ucfirst($sector->$attribut);
         }
-        $sector->acronym = strtoupper(string : $sector->acronym);
+        $sector->acronym = mb_strtoupper(string : $sector->acronym);
         $sector->slug = \Illuminate\Support\Str::slug($sector->name);
         $this->canDoEvent()
             ? $sector->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname

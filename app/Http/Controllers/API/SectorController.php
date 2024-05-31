@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers;
 use App\Models\Sector;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sector\FindSectorByTypeRequest;
 use App\Http\Requests\Sector\SectorRequest;
 use App\Http\Resources\Sector\SectorResource;
 use App\Responses\Sector\SingleSectorResponse;
 use App\Responses\Sector\SectorCollectionResponse;
+use App\Http\Requests\Sector\FindSectorByTypeRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SectorController extends Controller
@@ -19,10 +21,10 @@ class SectorController extends Controller
      */
     public function index(FindSectorByTypeRequest $request) : SectorCollectionResponse | LengthAwarePaginator
     {
-        $type = $request->validated('type');
-        $collection = $type
-            ? Sector::query()->where('type', ucfirst(strtolower($type)))->with(['sector', 'specialities'])->paginate(perPage : 20)
-            : Sector::query()->with(['sector', 'specialities'])->paginate(perPage : 20);
+        /* $type = $request->validated('type'); */
+        $collection = $request->has('type')
+            ? Sector::query()->where('type', /* ucfirst(strtolower($type)) */ $request->type)->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20)
+            : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20);
         return new SectorCollectionResponse(
             statusCode : 200,
             allowValue : 'GET',
@@ -35,14 +37,14 @@ class SectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SectorRequest $request) : SingleSectorResponse
+    public function store(Request $request) : SingleSectorResponse
     {
-        $sector = Sector::create($request->validated());
+        $sector = Sector::create($request->all());
         return new SingleSectorResponse(
             statusCode : 201,
             allowValue : 'POST',
             message : $sector->sector_id !== NULL ? "La spécialité a été crée avec succès" : "La filière a été crée avec succès",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities'])->where('id', $sector->id)->first())
+            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
     }
 
@@ -55,21 +57,21 @@ class SectorController extends Controller
             statusCode : 200,
             allowValue : 'GET',
             message : "Informations sur le cycle",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities'])->where('id', $sector->id)->first())
+            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SectorRequest $request, Sector $sector) : SingleSectorResponse
+    public function update(Request $request, Sector $sector) : SingleSectorResponse
     {
-        $sector->update($request->validated());
+        $sector->update($request->all());
         return new SingleSectorResponse(
             statusCode : 200,
             allowValue : 'PUT',
-            message : "Le cycle a été modifié avec succès",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities'])->where('id', $sector->id)->first())
+            message : $sector->sector_id !== NULL ? "La spécialité a été crée avec succès" : "La filière a été crée avec succès",
+            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
     }
 

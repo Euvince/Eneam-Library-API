@@ -1,1 +1,1 @@
--Je n'ai pas fini le CRUD des Filières et Spécialités;
+-Achever les règles de validations pour le modèle Secteur et le modèle SupportedMemory;

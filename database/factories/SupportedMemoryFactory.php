@@ -32,7 +32,8 @@ class SupportedMemoryFactory extends Factory
             'first_author_phone' => fake()->unique()->phoneNumber(),
             'second_author_phone' => fake()->unique()->phoneNumber(),
             'jury_president' => fake()->name(),
-            'memory_master' => fake()->name(),
+            'memory_master_name' => fake()->name(),
+            'memory_master_email' => fake()->unique()->email(),
             'created_by' => 'APPLICATION'
         ];
     }

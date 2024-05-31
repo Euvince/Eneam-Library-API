@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Sector;
 
 use App\Rules\SameSpecialityForSector;
+use App\Rules\SectorsRequestRules;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -25,18 +26,25 @@ class SectorRequest extends FormRequest
      */
     public function rules(): array
     {
+        $request = request();
         return [
+            'type' => [
+                'required',
+                new SectorsRequestRules(request(), ['Filière', 'Spécialité'])
+                /* Rule::in(array_map('strtolower', ['Filière', 'Spécialité'])) */],
             'name' => [
                 'required',
                 /* new SameSpecialityForSector(request()), */
                 Rule::unique(table : 'sectors', column : 'name')
+                    ->where(function ($query) use($request) {
+                        $query->where(mb_strtolower('type'), mb_strtolower('Filière'));
+                    })
                     ->ignore($this->route()->parameter(name : 'id'))
                     ->withoutTrashed()
             ],
             'acronym' => ['required'],
-            'type' => ['required', Rule::in(array_map('strtolower', ['Filière', 'Spécialité']))],
             'sector_id' => [
-                Rule::requiredIf(fn () => strtolower($this->type) == strtolower("Spécialité")),
+                Rule::requiredIf(fn () => mb_strtolower($this->type) == mb_strtolower("Spécialité")),
                 Rule::exists(table : 'sectors', column : 'id')
             ]
         ];
@@ -52,10 +60,10 @@ class SectorRequest extends FormRequest
         ]));
     }
 
-    public function messages() : array {
+    /* public function messages() : array {
         return [
             'type.in' => 'Le champ type doit être *Filière* ou *Spécialité*.'
         ];
-    }
+    } */
 
 }

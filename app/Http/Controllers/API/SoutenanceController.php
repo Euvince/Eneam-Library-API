@@ -25,7 +25,7 @@ class SoutenanceController extends Controller
             allowValue : 'GET',
             total : Soutenance::count(),
             message : "Liste de toutes les soutenances",
-            collection : Soutenance::query()->with(['cycle'])->paginate(perPage : 20),
+            collection : Soutenance::query()->with(['cycle', 'supportedMemories'])->paginate(perPage : 20),
         );
     }
 
@@ -47,7 +47,7 @@ class SoutenanceController extends Controller
             statusCode : 200,
             allowValue : 'GET',
             message : "Informations sur la soutenance",
-            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
+            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );
     }
 
