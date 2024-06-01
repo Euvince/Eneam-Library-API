@@ -264,5 +264,6 @@ return [
         'memory_master_email'      => "email du maître mémoire",
         'file_path'                => "mémoire soutenu",
         'cover_page_path'          => "page de garde",
+
     ],
 ];

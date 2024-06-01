@@ -24,7 +24,7 @@ class UpdateAction
         $soutenance->update($data);
         return new SingleSoutenanceResponse(
             statusCode : 200,
-            allowValue : 'PUT',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "La soutenance a été modifiée avec succès",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );

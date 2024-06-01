@@ -20,7 +20,7 @@ class CycleController extends Controller
     {
         return new CycleCollectionResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Cycle::count(),
             message : "Liste de tous les cycles",
             collection : Cycle::query()->with(['soutenances'])->paginate(perPage : 20),
@@ -35,7 +35,7 @@ class CycleController extends Controller
         $cycle = Cycle::create($request->validated());
         return new SingleCycleResponse(
             statusCode : 201,
-            allowValue : 'POST',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Le cycle a été crée avec succès",
             resource : new CycleResource(resource : $cycle)
         );
@@ -48,7 +48,7 @@ class CycleController extends Controller
     {
         return new SingleCycleResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur le cycle",
             resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
         );
@@ -62,7 +62,7 @@ class CycleController extends Controller
         $cycle->update($request->validated());
         return new SingleCycleResponse(
             statusCode : 200,
-            allowValue : 'PUT',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Le cycle a été modifié avec succès",
             resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
         );
@@ -76,7 +76,7 @@ class CycleController extends Controller
         $cycle->delete();
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'DELETE'],
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
             data : ['message' => "Le cycle a été supprimé avec succès",],
         );
     }

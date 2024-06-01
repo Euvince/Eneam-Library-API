@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 /**
  * @mixin IdeHelperConfiguration
  */
+
+ #[ObservedBy([\App\Observers\ConfigurationObserver::class])]
+
 class Configuration extends Model
 {
     use HasFactory, SoftDeletes;
@@ -33,8 +37,8 @@ class Configuration extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    public static function getApplicationConfiguration () : self {
-        return self::first();
+    public static function appConfig () : self {
+        return self::latest()->first();
     }
 
 }

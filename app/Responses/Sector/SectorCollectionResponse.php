@@ -10,7 +10,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class SectorCollectionResponse implements Responsable
 {
     public function __construct(
-        private readonly string $allowValue,
+        private readonly string $allowedMethods,
         private readonly int|null $total = 0,
         private readonly int $statusCode = 200,
         private readonly string|null $message = "",
@@ -24,7 +24,7 @@ class SectorCollectionResponse implements Responsable
         $response = response()->json(
             status : $this->statusCode,
             headers : [
-                'Allow' => $this->allowValue,
+                'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
             data : SectorCollection::make(resource : $this->collection)->response()->getData()

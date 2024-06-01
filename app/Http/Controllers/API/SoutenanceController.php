@@ -22,7 +22,7 @@ class SoutenanceController extends Controller
     {
         return new SoutenanceCollectionResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Soutenance::count(),
             message : "Liste de toutes les soutenances",
             collection : Soutenance::query()->with(['cycle', 'supportedMemories'])->paginate(perPage : 20),
@@ -45,7 +45,7 @@ class SoutenanceController extends Controller
     {
         return new SingleSoutenanceResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur la soutenance",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );
@@ -68,7 +68,7 @@ class SoutenanceController extends Controller
         $soutenance->delete();
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'DELETE'],
+            headers : ["Allow" => 'GET, POST, PUT. PATCH, DELETE'],
             data : ['message' => "La soutenance a été supprimée avec succès",],
         );
     }

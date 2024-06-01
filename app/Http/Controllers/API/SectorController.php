@@ -26,7 +26,7 @@ class SectorController extends Controller
             : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20);
         return new SectorCollectionResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Sector::count(),
             message : "Liste des filières et spécialités",
             collection : $collection,
@@ -41,7 +41,7 @@ class SectorController extends Controller
         $sector = Sector::create($request->all());
         return new SingleSectorResponse(
             statusCode : 201,
-            allowValue : 'POST',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : $sector->sector_id !== NULL ? "La spécialité a été crée avec succès" : "La filière a été crée avec succès",
             resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
@@ -54,7 +54,7 @@ class SectorController extends Controller
     {
         return new SingleSectorResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur le cycle",
             resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
@@ -68,7 +68,7 @@ class SectorController extends Controller
         $sector->update($request->all());
         return new SingleSectorResponse(
             statusCode : 200,
-            allowValue : 'PUT',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : $sector->sector_id !== NULL ? "La spécialité a été modifiée avec succès" : "La filière a été modifiée avec succès",
             resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
@@ -82,7 +82,7 @@ class SectorController extends Controller
         $sector->delete();
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'DELETE'],
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
             data : ['message' => "Le cycle a été supprimé avec succès",],
         );
     }

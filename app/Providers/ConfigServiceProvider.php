@@ -19,7 +19,8 @@ class ConfigServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        config(['app.configuration' => \App\Models\Configuration::latest()]);
+        $config = \App\Models\Configuration::latest();
+        config(['app.configuration' => $config]);
         // Pour faire une récupération : Config::get('app.configuration.price')
     }
 }

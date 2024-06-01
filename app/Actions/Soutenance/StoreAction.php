@@ -23,7 +23,7 @@ class StoreAction
         dd($soutenance);
         return new SingleSoutenanceResponse(
             statusCode : 201,
-            allowValue : 'POST',
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "La soutenance a été créée avec succès",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );

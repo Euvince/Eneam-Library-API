@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('configuration', function (Blueprint $table) {
             $table->id();
+            $table->string(column : 'school_name');
+            $table->string(column : 'school_acronym');
+            $table->string(column : 'school_city');
             $table->float(column : 'eneamien_subscribe_amount');
             $table->float(column : 'extern_subscribe_amount');
             $table->integer(column : 'subscription_expiration_delay');

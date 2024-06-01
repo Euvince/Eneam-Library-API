@@ -22,7 +22,7 @@ class SupportedMemoryController extends Controller
     {
         return new SupportedMemoryCollectionResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
             collection : SupportedMemory::query()->with(['sector', 'soutenance'])->paginate(perPage : 20),
@@ -36,7 +36,7 @@ class SupportedMemoryController extends Controller
     {
         return new SingleSupportedMemoryResponse(
             statusCode : 200,
-            allowValue : 'GET',
+            allowedMethods : 'GET, POST, DELETE',
             message : "Informations sur le mémoire soutenu",
             resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
         );
@@ -47,7 +47,7 @@ class SupportedMemoryController extends Controller
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'PUT'],
+            headers : ["Allow" => 'GET, POST, DELETE'],
             data : ['message' => "Le mémoire soutenu a été validé avec succès",],
         );
     }
@@ -57,7 +57,7 @@ class SupportedMemoryController extends Controller
         RejectSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'PUT'],
+            headers : ["Allow" => 'GET, POST, DELETE'],
             data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
         );
     }

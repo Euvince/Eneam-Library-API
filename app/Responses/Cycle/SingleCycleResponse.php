@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Responsable;
 class SingleCycleResponse implements Responsable
 {
     public function __construct(
-        private readonly string $allowValue,
+        private readonly string $allowedMethods,
         private readonly string|null $message,
         private readonly int $statusCode = 200,
         private readonly CycleResource|array $resource,
@@ -20,7 +20,7 @@ class SingleCycleResponse implements Responsable
         $response = response()->json(
             status : $this->statusCode,
             headers : [
-                'Allow' => $this->allowValue,
+                'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
             data :  [

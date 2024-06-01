@@ -14,6 +14,9 @@ class ConfigurationSeeder extends Seeder
     public function run(): void
     {
         Configuration::create([
+            'school_name' => "École Nationnale d'Économie Appliquée et de Management",
+            'school_acronym' => "ENEAM",
+            'school_city' => "Cotonou",
             'eneamien_subscribe_amount' => 500,
             'extern_subscribe_amount' => 1000,
             'subscription_expiration_delay' => 1,

@@ -19,7 +19,7 @@ class DepositSupportedMemoryController extends Controller
         $supportedMemory = SupportedMemory::create($this->addFiles(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
-            allowValue : 'POST',
+            allowedMethods : 'GET, POST, DELETE',
             message : "Votre mémoire a été soumis avec succès",
             resource : new SupportedMemoryResource(resource : $supportedMemory)
         );

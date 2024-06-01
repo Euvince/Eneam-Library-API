@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Responses\SupportedMemory;
+namespace App\Responses\Configuration;
 
-use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
+use App\Http\Resources\Configuration\ConfigurationResource;
 use Illuminate\Contracts\Support\Responsable;
 
-class SingleSupportedMemoryResponse implements Responsable
+class SingleConfigurationResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
         private readonly string|null $message,
         private readonly int $statusCode = 200,
-        private readonly SupportedMemoryResource|array $resource,
+        private readonly ConfigurationResource|array $resource,
     )
     {
     }

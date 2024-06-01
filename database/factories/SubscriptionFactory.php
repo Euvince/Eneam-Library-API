@@ -18,7 +18,7 @@ class SubscriptionFactory extends Factory
     {
         $subscriptionDate = fake()->dateTimeBetween(startDate : '-3 years', endDate : 'now');
         $expirationDate = (clone $subscriptionDate)->modify(
-            modifier : '+' . \App\Models\Configuration::getApplicationConfiguration()->subscription_expiration_delay . ' years'
+            modifier : '+' . \App\Models\Configuration::appConfig()->subscription_expiration_delay . ' years'
         );
 
         return [
