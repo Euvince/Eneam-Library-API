@@ -24,11 +24,11 @@ class Cycle extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    protected $dispatchesEvents = [
+    /* protected $dispatchesEvents = [
         'creating' => \App\Events\Cycle\CycleCreatingEvent::class,
         'updating' => \App\Events\Cycle\CycleUpdatingEvent::class,
         'deleting' => \App\Events\Cycle\CycleDeletingEvent::class,
-    ];
+    ]; */
 
     public function soutenances () : HasMany {
         return $this->hasMany(related : \App\Models\Soutenance::class, foreignKey : 'cycle_id');

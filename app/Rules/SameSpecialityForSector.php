@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\Sector;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -23,13 +24,15 @@ class SameSpecialityForSector implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $divisions = $this->request->route()->getName() === 'sector.store'
-                ? Service::find($this->request->service_id)->divisions
-                : Service::find($this->request->service_id)->divisions->where('id', '!=', $this->request->route()->parameter('division')['id']);
-        $divisions->each(function ($division) use ($fail) {
-            if (strtolower($division->division) === strtolower($this->request->division)) {
-                $fail('Cette Division existe déjà pour le service spécifié.');
-            }
-        });
+        if (mb_strtolower($this->request->type) === mb_strtolower('Spécialité')) {
+            $specialities = $this->request->route()->getName() === 'sector.store'
+                ? Sector::find($this->request->sector_id)->specialities
+                : Sector::find($this->request->sector_id)->specialities->where('id', '!=', $this->request->route()->parameter('sector')['id']);
+            $specialities->each(function ($speciality) use ($fail) {
+                if (mb_strtolower($speciality->name) === mb_strtolower($this->request->name)) {
+                    $fail('Cette spécialité existe déjà pour le secteur spécifié.');
+                }
+            });
+        }
     }
 }

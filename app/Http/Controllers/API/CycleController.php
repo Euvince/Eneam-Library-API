@@ -76,12 +76,8 @@ class CycleController extends Controller
         $cycle->delete();
         return response()->json(
             status : 200,
-            headers : [
-                "Allow" => 'DELETE'
-            ],
-            data : [
-                'message' => "Le cycle a été supprimé avec succès",
-            ],
+            headers : ["Allow" => 'DELETE'],
+            data : ['message' => "Le cycle a été supprimé avec succès",],
         );
     }
 }

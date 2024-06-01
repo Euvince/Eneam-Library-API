@@ -69,7 +69,7 @@ class SectorController extends Controller
         return new SingleSectorResponse(
             statusCode : 200,
             allowValue : 'PUT',
-            message : $sector->sector_id !== NULL ? "La spécialité a été crée avec succès" : "La filière a été crée avec succès",
+            message : $sector->sector_id !== NULL ? "La spécialité a été modifiée avec succès" : "La filière a été modifiée avec succès",
             resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
     }
@@ -82,12 +82,8 @@ class SectorController extends Controller
         $sector->delete();
         return response()->json(
             status : 200,
-            headers : [
-                "Allow" => 'DELETE'
-            ],
-            data : [
-                'message' => "Le cycle a été supprimé avec succès",
-            ],
+            headers : ["Allow" => 'DELETE'],
+            data : ['message' => "Le cycle a été supprimé avec succès",],
         );
     }
 }

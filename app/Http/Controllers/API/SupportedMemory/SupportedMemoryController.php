@@ -6,7 +6,6 @@ use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use App\Jobs\RejectSupportedMemoryJob;
 use App\Jobs\ValidateSupportedMemoryJob;

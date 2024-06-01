@@ -68,12 +68,8 @@ class SoutenanceController extends Controller
         $soutenance->delete();
         return response()->json(
             status : 200,
-            headers : [
-                "Allow" => 'DELETE'
-            ],
-            data : [
-                'message' => "La soutenance a été supprimée avec succès",
-            ],
+            headers : ["Allow" => 'DELETE'],
+            data : ['message' => "La soutenance a été supprimée avec succès",],
         );
     }
 }

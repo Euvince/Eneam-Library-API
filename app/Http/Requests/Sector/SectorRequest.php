@@ -26,28 +26,29 @@ class SectorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $request = request();
-        return [
+        $rules = [
             'type' => [
                 'required',
-                new SectorsRequestRules(request(), ['Filière', 'Spécialité'])
-                /* Rule::in(array_map('strtolower', ['Filière', 'Spécialité'])) */],
-            'name' => [
-                'required',
-                /* new SameSpecialityForSector(request()), */
-                Rule::unique(table : 'sectors', column : 'name')
-                    ->where(function ($query) use($request) {
-                        $query->where(mb_strtolower('type'), mb_strtolower('Filière'));
-                    })
-                    ->ignore(request()->route()->parameter(name : 'sector'))
-                    ->withoutTrashed()
-            ],
+                new SectorsRequestRules(request(), ['Filière', 'Spécialité'])],
+            'name' => ['required', new SameSpecialityForSector(request())],
             'acronym' => ['required'],
             'sector_id' => [
                 Rule::requiredIf(fn () => mb_strtolower($this->type) == mb_strtolower("Spécialité")),
                 Rule::exists(table : 'sectors', column : 'id')
             ]
         ];
+        if (mb_strtolower($this->type) === mb_strtolower('Filière'))
+        $rules['name'] = [
+            'required', new SameSpecialityForSector(request()),
+            Rule::unique(table : 'sectors', column : 'name')
+            ->where(function ($query) {
+                return $query->where('type',  'Filière');
+            })
+            ->ignore(request()->route()->parameter(name : 'sector'))
+            ->withoutTrashed()
+        ];
+
+        return $rules;
     }
 
     public function failedValidations (Validator $validator) : HttpResponseException {

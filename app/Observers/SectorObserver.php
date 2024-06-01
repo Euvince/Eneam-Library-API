@@ -27,6 +27,7 @@ class SectorObserver
         }
         $sector->acronym = mb_strtoupper(string : $sector->acronym);
         $sector->slug = \Illuminate\Support\Str::slug($sector->name);
+        if (mb_strtolower($sector->type) === mb_strtolower('Filière')) $sector->sector_id = NULL;
         $this->canDoEvent()
             ? $sector->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $sector->created_by = NULL;
@@ -49,6 +50,7 @@ class SectorObserver
         }
         $sector->acronym = mb_strtoupper(string : $sector->acronym);
         $sector->slug = \Illuminate\Support\Str::slug($sector->name);
+        if (mb_strtolower($sector->type) === mb_strtolower('Filière')) $sector->sector_id = NULL;
         $this->canDoEvent()
             ? $sector->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $sector->updated_by = NULL;

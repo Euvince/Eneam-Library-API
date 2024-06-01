@@ -16,7 +16,7 @@ class DepositSupportedMemoryController extends Controller
      */
     public function __invoke(DepositSupportedMemoryRequest $request) : SingleSupportedMemoryResponse
     {
-        $supportedMemory = SupportedMemory::create($this->withDocuments(new SupportedMemory(), $request));
+        $supportedMemory = SupportedMemory::create($this->addFiles(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
             allowValue : 'POST',
@@ -25,7 +25,7 @@ class DepositSupportedMemoryController extends Controller
         );
     }
 
-    private function withDocuments(SupportedMemory $supportedMemory, DepositSupportedMemoryRequest $request): array
+    private function addFiles(SupportedMemory $supportedMemory, DepositSupportedMemoryRequest $request): array
     {
         $data = $request->validated();
         if(array_key_exists('file_path', $data) &&  array_key_exists('cover_page_path', $data))
