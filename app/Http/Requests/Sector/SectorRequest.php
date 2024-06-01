@@ -39,7 +39,7 @@ class SectorRequest extends FormRequest
                     ->where(function ($query) use($request) {
                         $query->where(mb_strtolower('type'), mb_strtolower('Filière'));
                     })
-                    ->ignore($this->route()->parameter(name : 'id'))
+                    ->ignore(request()->route()->parameter(name : 'sector'))
                     ->withoutTrashed()
             ],
             'acronym' => ['required'],

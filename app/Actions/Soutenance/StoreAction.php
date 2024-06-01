@@ -26,5 +26,6 @@ class StoreAction
             message : "La soutenance a été créee avec succès",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );
+
     }
 }

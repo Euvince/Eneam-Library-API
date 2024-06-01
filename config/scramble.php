@@ -29,7 +29,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => "Documentation des API's de la Librairie de L'ENEAM",
     ],
 
     /*

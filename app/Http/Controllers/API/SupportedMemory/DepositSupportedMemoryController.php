@@ -14,7 +14,7 @@ class DepositSupportedMemoryController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(DepositSupportedMemoryRequest $request)
+    public function __invoke(DepositSupportedMemoryRequest $request) : SingleSupportedMemoryResponse
     {
         $supportedMemory = SupportedMemory::create($this->withDocuments(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
