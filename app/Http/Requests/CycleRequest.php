@@ -25,22 +25,12 @@ class CycleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            /**
-             * The name that you can use.
-             * @var string{name: string}
-             * @example {"name": "Licence"}
-             */
             'name' => [
                 'required',
                 Rule::unique(table : 'cycles', column : 'name')
                     ->ignore(request()->route()->parameter(name : 'cycle'))
                     ->withoutTrashed()
             ],
-            /**
-             * The code that you can use.
-             * @var string{code: string}
-             * @example {"code": "L"}
-             */
             'code' => ['required'],
         ];
     }

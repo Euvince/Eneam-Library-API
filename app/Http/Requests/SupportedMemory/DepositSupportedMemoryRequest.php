@@ -38,7 +38,7 @@ class DepositSupportedMemoryRequest extends FormRequest
             'jury_president_name' => ['required'],
             'memory_master_name' => ['required'],
             'memory_master_email' => ['required', 'email'],
-            'file_path' => ['required', 'mimes:pdf', 'max:5000000'],
+            'file_path' => ['required', 'mimes:pdf', 'file', 'max:5000000'],
             'cover_page_path' => ['required', 'file', 'max:2000000'],
             'sector_id' => [
                 'required',
