@@ -20,7 +20,6 @@ class StoreAction
             );
         }
         $soutenance = Soutenance::create($data);
-        dd($soutenance);
         return new SingleSoutenanceResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',

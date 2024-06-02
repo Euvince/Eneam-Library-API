@@ -4,11 +4,13 @@ namespace App\Observers;
 
 use App\Models\Soutenance;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 
 class SoutenanceObserver
 {
 
     public function __construct(
+        private readonly Request $request,
         private readonly AuthManager $auth
     )
     {
@@ -21,6 +23,10 @@ class SoutenanceObserver
 
     public function creating(Soutenance $soutenance): void
     {
+        if (!app()->runningInConsole()) {
+            $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
+            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+        }
         $this->canDoEvent()
             ? $soutenance->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $soutenance->created_by = NULL;
@@ -31,16 +37,15 @@ class SoutenanceObserver
      */
     public function created(Soutenance $soutenance): void
     {
-        if (!app()->runningInConsole()) {
-            $soutenance->name = $soutenance->cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
-            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
-            $soutenance->save();
-        }
     }
 
 
     public function updating(Soutenance $soutenance): void
     {
+        if (!app()->runningInConsole()) {
+            $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
+            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+        }
         $this->canDoEvent()
             ? $soutenance->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $soutenance->updated_by = NULL;
@@ -51,11 +56,6 @@ class SoutenanceObserver
      */
     public function updated(Soutenance $soutenance): void
     {
-        if (!app()->runningInConsole()) {
-            $soutenance->name = $soutenance->cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
-            $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
-            $soutenance->save();
-        }
     }
 
 

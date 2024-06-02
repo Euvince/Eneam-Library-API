@@ -20,7 +20,7 @@ class ConfigurationResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'school_name' => $this->resource->school,
+            'school_name' => $this->resource->school_name,
             'school_acronym' => $this->resource->school_acronym,
             'school_city' => $this->resource->school_city,
             'eneamien_subscribe_amount' => $this->resource->eneamien_subscribe_amount,

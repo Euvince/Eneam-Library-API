@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
  * @mixin IdeHelperConfiguration
  */
 
- #[ObservedBy([\App\Observers\ConfigurationObserver::class])]
+#[ObservedBy([\App\Observers\ConfigurationObserver::class])]
 
 class Configuration extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'configuration';
+    protected $table = 'configurations';
 
     protected $fillable = [
+        'school_name',
+        'school_acronym',
+        'school_city',
         'student_debt_amount',
         'teacher_debt_amount',
         'student_loan_delay',

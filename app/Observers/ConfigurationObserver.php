@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use Illuminate\Http\Request;
 use App\Models\Configuration;
 use Illuminate\Auth\AuthManager;
 
@@ -9,7 +10,8 @@ class ConfigurationObserver
 {
 
     public function __construct(
-        private readonly AuthManager $auth
+        private readonly Request $request,
+        private readonly AuthManager $auth,
     )
     {
     }
@@ -20,9 +22,6 @@ class ConfigurationObserver
 
     public function creating(Configuration $configuration): void
     {
-        $this->canDoEvent()
-            ? $configuration->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $configuration->created_by = NULL;
     }
 
     /**
@@ -30,14 +29,13 @@ class ConfigurationObserver
      */
     public function created(Configuration $configuration): void
     {
-        if (!app()->runningInConsole()) {
-            $configuration->school_acronym = mb_strtoupper(string : $configuration->code);
-            $configuration->save();
-        }
     }
 
     public function updating(Configuration $configuration): void
     {
+        if (!app()->runningInConsole() && $this->request->has('school_acronym')) {
+            $configuration->school_acronym = mb_strtoupper(string : $configuration->school_acronym);
+        }
         $this->canDoEvent()
             ? $configuration->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $configuration->updated_by = NULL;
@@ -48,10 +46,6 @@ class ConfigurationObserver
      */
     public function updated(Configuration $configuration): void
     {
-        if (!app()->runningInConsole()) {
-            $configuration->school_acronym = mb_strtoupper(string : $configuration->code);
-            $configuration->save();
-        }
     }
 
     public function deleting(Configuration $configuration): void
