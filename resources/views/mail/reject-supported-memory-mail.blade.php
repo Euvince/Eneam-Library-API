@@ -1,12 +1,14 @@
 <x-mail::message>
-# Introduction
+Bonjour {{ $name }},
 
-The body of your message.
+Nous vous informons que votre dépôt de mémoire de fin de formation a été rejeté après étude.
 
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+Motif du rejet : {{ $reason }}
 
-Thanks,<br>
-{{ config('app.name') }}
+Vous pouvez soumettre une version révisée de votre mémoire en respectant les délais fixés par l'établissement. Pour toute question ou clarification, n'hésitez pas à contacter le service académique à [adresse email de contact].
+
+Nous restons à votre disposition pour toute assistance complémentaire.
+
+Cordialement,<br>
+L'ENEAM.
 </x-mail::message>

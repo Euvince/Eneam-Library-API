@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-class SectorsRequestRules implements ValidationRule
+class ValueInValuesRequestRules implements ValidationRule
 {
 
     public function __construct(
-        private readonly Request $request,
         private readonly array $values,
+        private readonly string $message,
+        private readonly Request $request,
     )
     {
     }
@@ -30,6 +31,6 @@ class SectorsRequestRules implements ValidationRule
                 fn (string $value) => mb_strtolower($value), $this->values
             )
         ))
-        $fail("Le champ type doit être 'Filière' ou 'Spécialité'.");
+        $fail($this->message);
     }
 }

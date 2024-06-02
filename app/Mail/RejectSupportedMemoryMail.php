@@ -18,6 +18,8 @@ class RejectSupportedMemoryMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
+        private readonly string $name,
+        private readonly string $email,
         private readonly string $reason,
         private readonly SupportedMemory $sm
     )
@@ -30,7 +32,7 @@ class RejectSupportedMemoryMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : [$this->sm->first_author_email, $this->sm->second_author_email],
+            to : [$this->email],
             subject : 'Rejet de dépôt de mémoire soutenu.',
         );
     }
@@ -42,7 +44,7 @@ class RejectSupportedMemoryMail extends Mailable
     {
         return new Content(
             markdown: 'mail.reject-supported-memory-mail',
-            with: ['sm' => $this->sm]
+            with: ['name' =>$this->name, 'reason' => $this->reason, 'sm' => $this->sm]
         );
     }
 

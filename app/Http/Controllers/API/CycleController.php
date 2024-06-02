@@ -49,7 +49,7 @@ class CycleController extends Controller
         return new SingleCycleResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Informations sur le cycle",
+            message : "Informations sur le cycle $cycle->name",
             resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
         );
     }

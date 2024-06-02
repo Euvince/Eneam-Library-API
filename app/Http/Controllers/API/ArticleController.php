@@ -2,50 +2,60 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\Article\ArticleRequest;
+use App\Http\Resources\Article\ArticleResource;
+use App\Responses\Article\SingleArticleResponse;
+use App\Responses\Article\ArticleCollectionResponse;
+use App\Http\Requests\Article\FindArticleByTypeRequest;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(FindArticleByTypeRequest $request) : ArticleCollectionResponse | LengthAwarePaginator
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $articles = $request->has('type')
+            ? Article::query()->with(['comments', 'loans'])->where('type', Helpers::mb_ucfirst($request->type))->paginate(perPage : 20)
+            : Article::query()->with(['comments', 'loans'])->paginate(perPage : 20);
+        return new ArticleCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            total : Article::count(),
+            message : "Liste de tous les articles",
+            collection : $articles,
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request) : SingleArticleResponse
     {
-        //
+        $article = Article::create($request->validated());
+        return new SingleArticleResponse(
+            statusCode : 201,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "L'article a été crée avec succès",
+            resource : new ArticleResource(resource : $article)
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(Article $article) : SingleArticleResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        //
+        return new SingleArticleResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Informations sur l'article $article->title",
+            resource : new ArticleResource(resource : Article::query()->with(['comments', 'loans'])->where('id', $article->id)->first())
+        );
     }
 
     /**
@@ -53,7 +63,13 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, Article $article)
     {
-        //
+        $article->update($request->validated());
+        return new SingleArticleResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "L'article a été modifié avec succès",
+            resource : new ArticleResource(resource : Article::query()->with(['comments', 'loans'])->where('id', $article->id)->first())
+        );
     }
 
     /**
@@ -61,6 +77,11 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "L'article a été supprimé avec succès",],
+        );
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Sector;
+namespace App\Http\Requests\Article;
 
 use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FindSectorByTypeRequest extends FormRequest
+class FindArticleByTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,10 +29,9 @@ class FindSectorByTypeRequest extends FormRequest
                 'sometimes', 'required',
                 new ValueInValuesRequestRules(
                     request : request(),
-                    message : "Le type doit être 'Filière' ou 'Spécialité'.",
-                    values : ['Filière', 'Spécialité']
+                    message : "Le type doit être 'Livre' ou 'Podcast'.",
+                    values : ['Livre', 'Podcast']
                 )
-                /* \Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité'])) */
             ]
         ];
     }
@@ -49,7 +48,7 @@ class FindSectorByTypeRequest extends FormRequest
 
     public function messages() : array {
         return [
-            'type.in' => 'Le champ type doit être *Filière* ou *Spécialité*.'
+            'type.in' => 'Le champ type doit être *Livre* ou *Podcast*.'
         ];
     }
 

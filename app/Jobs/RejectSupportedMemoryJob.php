@@ -34,6 +34,10 @@ class RejectSupportedMemoryJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::send(new RejectSupportedMemoryMail($this->reason, $this->supportedMemory));
+        $emails[$this->supportedMemory->first_author_name] = $this->supportedMemory->first_author_email;
+        $emails[$this->supportedMemory->second_author_name] = $this->supportedMemory->second_author_email;
+        foreach ($emails as $name => $email) {
+            Mail::send(new RejectSupportedMemoryMail($name, $email, $this->reason, $this->supportedMemory));
+        }
     }
 }

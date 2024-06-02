@@ -46,7 +46,7 @@ class SoutenanceController extends Controller
         return new SingleSoutenanceResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Informations sur la soutenance",
+            message : "Informations sur la soutenance $soutenance->name",
             resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
         );
     }

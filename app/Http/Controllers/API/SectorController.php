@@ -22,13 +22,16 @@ class SectorController extends Controller
     {
         /* $type = $request->validated('type'); */
         $collection = $request->has('type')
-            ? Sector::query()->where('type', /* ucfirst(strtolower($type)) */ $request->type)->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20)
+            ? Sector::query()->where('type', $request->type)->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20)
             : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->paginate(perPage : 20);
+        $message = !$request->has('type')
+            ? "Liste des filières et spécialités"
+            : ($request->has('type') && mb_strtolower($request->type) === mb_strtolower('Filière') ? "Liste des filières" : "Liste des spécialités");
         return new SectorCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Sector::count(),
-            message : "Liste des filières et spécialités",
+            message : $message,
             collection : $collection,
         );
     }
@@ -55,7 +58,9 @@ class SectorController extends Controller
         return new SingleSectorResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Informations sur le cycle",
+            message : $sector->sector_id !== NULL
+                ? "Informations sur la spécialité $sector->name"
+                : "Informations sur la filière $sector->name",
             resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
         );
     }
@@ -79,11 +84,12 @@ class SectorController extends Controller
      */
     public function destroy(Sector $sector) : JsonResponse
     {
+        $message = $sector->sector_id !== NULL ? "La spécialité a été supprimée avec succès" : "La filière a été supprimée avec succès";
         $sector->delete();
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "Le cycle a été supprimé avec succès",],
+            data : ['message' => $message],
         );
     }
 }

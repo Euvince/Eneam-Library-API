@@ -38,7 +38,7 @@ class SupportedMemoryController extends Controller
         return new SingleSupportedMemoryResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, DELETE',
-            message : "Informations sur le mémoire soutenu",
+            message : "Informations sur le mémoire soutenu ayant pour thème $supportedMemory->theme",
             resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
         );
     }

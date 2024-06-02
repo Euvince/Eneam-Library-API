@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Sector;
+namespace App\Http\Requests\Article;
 
-use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FindSectorByTypeRequest extends FormRequest
+class ArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +24,20 @@ class FindSectorByTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [
-                'sometimes', 'required',
-                new ValueInValuesRequestRules(
-                    request : request(),
-                    message : "Le type doit être 'Filière' ou 'Spécialité'.",
-                    values : ['Filière', 'Spécialité']
-                )
-                /* \Illuminate\Validation\Rule::in(array_map('strtolower', ['Filière', 'Spécialité'])) */
-            ]
+            'type' => ['required'],
+            'title' => ['required'],
+            'summary' => ['required'],
+            'author' => ['required'],
+            'editor' => ['required'],
+            'editing_year' => ['date_format:Y'],
+            'number_pages' => ['required', 'numeric', 'min:1'],
+            'ISBN' => ['required'],
+            'available_stock' => ['required', 'numeric', 'min:1'],
+            'has_ebook' => ['required', 'boolean'],
+            'has_podcast' => ['required', 'boolean'],
+            'keywords' => ['required'],
+            'formats' => ['required'],
+            'access_paths' => ['required']
         ];
     }
 
@@ -47,10 +51,8 @@ class FindSectorByTypeRequest extends FormRequest
         ]));
     }
 
-    public function messages() : array {
-        return [
-            'type.in' => 'Le champ type doit être *Filière* ou *Spécialité*.'
-        ];
+    public function messages() {
+        return [];
     }
 
 }
