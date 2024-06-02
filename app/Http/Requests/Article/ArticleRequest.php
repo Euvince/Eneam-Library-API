@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Article;
 
+use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -24,15 +25,24 @@ class ArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required'],
+            'type' => [
+                'sometimes', 'required',
+                new ValueInValuesRequestRules(
+                    request : request(),
+                    message : "Le type doit être 'Livre' ou 'Podcast'.",
+                    values : ['Livre', 'Podcast']
+                )
+            ],
             'title' => ['required'],
             'summary' => ['required'],
             'author' => ['required'],
             'editor' => ['required'],
-            'editing_year' => ['date_format:Y'],
+            'editing_year' => ['required', 'date_format:Y'],
+            'cote' => ['required'],
             'number_pages' => ['required', 'numeric', 'min:1'],
             'ISBN' => ['required'],
             'available_stock' => ['required', 'numeric', 'min:1'],
+            'available' => ['required', 'boolean'],
             'has_ebook' => ['required', 'boolean'],
             'has_podcast' => ['required', 'boolean'],
             'keywords' => ['required'],

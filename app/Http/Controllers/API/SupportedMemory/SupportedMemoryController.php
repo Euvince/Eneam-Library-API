@@ -26,7 +26,7 @@ class SupportedMemoryController extends Controller
             allowedMethods : 'GET, POST, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
-            collection : SupportedMemory::query()->with(['sector', 'soutenance'])->paginate(perPage : 20),
+            collection : SupportedMemory::query()->with(['sector', 'soutenance'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 

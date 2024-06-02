@@ -265,7 +265,12 @@ return [
         'file_path'                => "mémoire soutenu",
         'cover_page_path'          => "page de garde",
 
-        'reason'                   => 'raison'
+        'summary'                  => 'résumé',
+        'author'                   => 'autheur',
+        'editor'                   => 'éditeur',
+        'number_pages'             => 'nombre de pages',
+        'ISBN'                     => 'ISBN',
+        'available_stock'          => 'stock disponible',
 
     ],
 ];

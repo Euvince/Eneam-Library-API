@@ -22,6 +22,7 @@ class SupportedMemoryResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'theme' => $this->resource->theme,
+            'slug' => $this->resource->slug,
             'start_at' => $this->resource->start_at,
             'ends_at' => $this->resource->ends_at,
             'first_author_name' => $this->resource->first_author_name,

@@ -48,7 +48,7 @@ class FindArticleByTypeRequest extends FormRequest
 
     public function messages() : array {
         return [
-            'type.in' => 'Le champ type doit être *Livre* ou *Podcast*.'
+            'type.in' => 'Le champ type doit être *Livre* ou *Podcast*.',
         ];
     }
 

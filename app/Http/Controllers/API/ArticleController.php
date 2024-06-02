@@ -20,7 +20,7 @@ class ArticleController extends Controller
     public function index(FindArticleByTypeRequest $request) : ArticleCollectionResponse | LengthAwarePaginator
     {
         $articles = $request->has('type')
-            ? Article::query()->with(['comments', 'loans'])->where('type', Helpers::mb_ucfirst($request->type))->paginate(perPage : 20)
+            ? Article::query()->with(['comments', 'loans'])->where('type', Helpers::mb_ucfirst($request->type))->orderBy('created_at', 'desc')->paginate(perPage : 20)
             : Article::query()->with(['comments', 'loans'])->paginate(perPage : 20);
         return new ArticleCollectionResponse(
             statusCode : 200,

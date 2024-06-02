@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
+use Illuminate\Http\UploadedFile;
 
 class DepositSupportedMemoryController extends Controller
 {
@@ -30,7 +31,9 @@ class DepositSupportedMemoryController extends Controller
         $data = $request->validated();
         if(array_key_exists('file_path', $data) &&  array_key_exists('cover_page_path', $data))
         {
+            /** @var UploadedFile|null $memoryCollection */
             $memoryCollection = $data['file_path'];
+            /** @var UploadedFile|null $coverPageCollection */
             $coverPageCollection = $data['cover_page_path'];
             $data['file_path'] = $memoryCollection->storeAs('Memories', $request->file('file_path')->getClientOriginalName(), 'public');
             $data['cover_page_path'] = $coverPageCollection->storeAs('Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');

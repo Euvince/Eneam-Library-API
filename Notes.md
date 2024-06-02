@@ -6,4 +6,6 @@
 
 -Partie fiche de dépôt de mémoire;
 
--La table School à introduire aux relations;
+-La table SchoolYear à introduire aux relations;
+
+-Traduction des messages d'erreur;

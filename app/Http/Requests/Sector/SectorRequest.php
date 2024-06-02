@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Sector;
 
-use App\Rules\SameSpecialityForSector;
-use App\Rules\SectorsRequestRules;
 use Illuminate\Validation\Rule;
+use App\Rules\SameSpecialityForSector;
+use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -29,7 +29,12 @@ class SectorRequest extends FormRequest
         $rules = [
             'type' => [
                 'required',
-                new SectorsRequestRules(request(), ['Filière', 'Spécialité'])],
+                new ValueInValuesRequestRules(
+                    request : request(),
+                    message : "Le type doit être 'Filière' ou 'Spécialité'.",
+                    values : ['Filière', 'Spécialité']
+                )
+            ],
             'name' => ['required', new SameSpecialityForSector(request())],
             'acronym' => ['required'],
             'sector_id' => [
