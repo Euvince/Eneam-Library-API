@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\SupportedMemory;
 
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
@@ -44,6 +45,7 @@ class SupportedMemoryController extends Controller
 
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
+        $supportedMemory->update(['status' => "Validé"]);
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
@@ -52,9 +54,11 @@ class SupportedMemoryController extends Controller
         );
     }
 
-    public function rejectMemory(SupportedMemory $supportedMemory) : JsonResponse
+    public function rejectMemory(SupportedMemoryRequest $request, SupportedMemory $supportedMemory) : JsonResponse
     {
-        RejectSupportedMemoryJob::dispatch($supportedMemory);
+        $supportedMemory->update(['status' => "Rejeté"]);
+        $supportedMemory->delete();
+        RejectSupportedMemoryJob::dispatch($request->validated('reason'), $supportedMemory);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, DELETE'],

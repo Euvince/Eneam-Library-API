@@ -37,7 +37,7 @@ class AcceptLoanMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.accept-loan-mail',
+            markdown: 'mail.accept-loan-mail',
         );
     }
 

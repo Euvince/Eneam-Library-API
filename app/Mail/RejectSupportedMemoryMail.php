@@ -18,6 +18,7 @@ class RejectSupportedMemoryMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
+        private readonly string $reason,
         private readonly SupportedMemory $sm
     )
     {

@@ -23,6 +23,7 @@ class RejectSupportedMemoryJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
+        private readonly string $reason,
         private readonly SupportedMemory $supportedMemory
     ){
         /* $this->supportedMemory = $supportedMemory->withoutRelations(); */
@@ -33,6 +34,6 @@ class RejectSupportedMemoryJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::send(new RejectSupportedMemoryMail($this->supportedMemory));
+        Mail::send(new RejectSupportedMemoryMail($this->reason, $this->supportedMemory));
     }
 }

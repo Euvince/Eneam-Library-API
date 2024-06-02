@@ -18,6 +18,8 @@ class ValidateSupportedMemoryMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
+        private readonly string $name,
+        private readonly string $email,
         private readonly SupportedMemory $sm
     )
     {
@@ -29,7 +31,7 @@ class ValidateSupportedMemoryMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : [$this->sm->first_author_email, $this->sm->second_author_email],
+            to : [$this->email],
             subject : 'Validation de dépôt de mémoire soutenu.',
         );
     }
@@ -41,7 +43,7 @@ class ValidateSupportedMemoryMail extends Mailable
     {
         return new Content(
             markdown: 'mail.validate-supported-memory-mail',
-            with: ['sm' => $this->sm]
+            with: ['name' => $this->name , 'sm' => $this->sm]
         );
     }
 

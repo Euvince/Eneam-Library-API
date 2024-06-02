@@ -3,6 +3,8 @@
 namespace App\Http\Requests\SupportedMemory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SupportedMemoryRequest extends FormRequest
 {
@@ -22,7 +24,18 @@ class SupportedMemoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'reason' => ['required']
         ];
     }
+
+    public function failedValidations (Validator $validator) : HttpResponseException {
+        throw new HttpResponseException(response()->json([
+            'status' => 422,
+            'error' => true,
+            'success' => false,
+            'message' => 'Erreurs de validations des données',
+            'errors' => $validator->errors()
+        ]));
+    }
+
 }

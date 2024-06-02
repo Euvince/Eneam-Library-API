@@ -265,5 +265,7 @@ return [
         'file_path'                => "mémoire soutenu",
         'cover_page_path'          => "page de garde",
 
+        'reason'                   => 'raison'
+
     ],
 ];
