@@ -23,7 +23,7 @@ class SupportedMemoryController extends Controller
     {
         return new SupportedMemoryCollectionResponse(
             statusCode : 200,
-            allowedMethods : 'GET, POST, DELETE',
+            allowedMethods : 'GET, POST, PATCH DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
             collection : SupportedMemory::query()->with(['sector', 'soutenance'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
@@ -37,7 +37,7 @@ class SupportedMemoryController extends Controller
     {
         return new SingleSupportedMemoryResponse(
             statusCode : 200,
-            allowedMethods : 'GET, POST, DELETE',
+            allowedMethods : 'GET, POST, PATCH DELETE',
             message : "Informations sur le mémoire soutenu ayant pour thème $supportedMemory->theme",
             resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
         );
@@ -49,7 +49,7 @@ class SupportedMemoryController extends Controller
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'GET, POST, DELETE'],
+            headers : ["Allow" => 'GET, POST, PATCH DELETE'],
             data : ['message' => "Le mémoire soutenu a été validé avec succès",],
         );
     }
@@ -61,7 +61,7 @@ class SupportedMemoryController extends Controller
         RejectSupportedMemoryJob::dispatch($request->validated('reason'), $supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'GET, POST, DELETE'],
+            headers : ["Allow" => 'GET, POST, PATCH DELETE'],
             data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
         );
     }
@@ -69,7 +69,7 @@ class SupportedMemoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SupportedMemory $supportedMemory)
+    public function destroy(SupportedMemory $supportedMemory) :  JsonResponse
     {
         $supportedMemory->delete();
         if(($smFilePath = $supportedMemory->file_path) !== '') {
@@ -82,7 +82,7 @@ class SupportedMemoryController extends Controller
         }
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'DELETE'],
+            headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
             data : ['message' => "Le mémoire soutenu a été supprimé avec succès",],
         );
     }

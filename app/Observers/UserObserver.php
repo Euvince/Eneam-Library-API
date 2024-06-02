@@ -3,12 +3,26 @@
 namespace App\Observers;
 
 use App\Models\User;
+use Illuminate\Auth\AuthManager;
 
 class UserObserver
 {
+    public function __construct(
+        private readonly AuthManager $auth
+    )
+    {
+    }
 
-    private function appRunningInConsole () : bool {
-        return app()->runningInConsole();
+    private function canDoEvent () : bool {
+        return !app()->runningInConsole() && $this->auth->check();
+    }
+
+    public function creating(User $user): void
+    {
+        $user->slug = \Illuminate\Support\Str::slug($user->firstname." ". $user->lastname);
+        $this->canDoEvent()
+            ? $user->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $user->created_by = NULL;
     }
 
     /**
@@ -19,6 +33,14 @@ class UserObserver
         //
     }
 
+    public function updating(User $user): void
+    {
+        $user->slug = \Illuminate\Support\Str::slug($user->firstname." ". $user->lastname);
+        $this->canDoEvent()
+            ? $user->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $user->updated_by = NULL;
+    }
+
     /**
      * Handle the User "updated" event.
      */
@@ -26,6 +48,15 @@ class UserObserver
     {
         //
     }
+
+    public function deleting(User $user): void
+    {
+        $this->canDoEvent()
+            ? $user->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : $user->deleted_by = NULL;
+        $user->save();
+    }
+
 
     /**
      * Handle the User "deleted" event.

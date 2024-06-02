@@ -11,6 +11,7 @@ use App\Responses\Article\SingleArticleResponse;
 use App\Responses\Article\ArticleCollectionResponse;
 use App\Http\Requests\Article\FindArticleByTypeRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ArticleController extends Controller
 {
@@ -61,7 +62,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article) : SingleArticleResponse
     {
         $article->update($request->validated());
         return new SingleArticleResponse(
@@ -75,7 +76,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy(Article $article) : JsonResponse
     {
         $article->delete();
         return response()->json(

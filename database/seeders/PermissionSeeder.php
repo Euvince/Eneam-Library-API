@@ -15,14 +15,14 @@ class PermissionSeeder extends Seeder
         $adminPermissions = [
             'Gestion des Rôles',
             'Gestion des Cycles',
-            'Gestion des Paiements',
-            'Gestion des Abonnements',
             'Gestion des Utilisateurs',
             'Gestion des Secteurs et Spécialités',
         ];
         $managerPermissions = [
             'Gestion des Articles',
             'Gestion des Emprunts',
+            'Gestion des Paiements',
+            'Gestion des Abonnements',
             'Gestion des Soutenances',
             'Gestion des Réservations',
             'Gestion des Commentaires',
@@ -31,20 +31,13 @@ class PermissionSeeder extends Seeder
             'Gestion des Fiches de Dépôts de Mémoires',
         ];
         $teacherPermissions = [
-            "S'Abonner",
-            'Se Connecter',
-            'Créer un compte',
             'Prêter un Livre',
             'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
-            'Déposer un Mémoire',
             'Consulter un Mémoire',
         ];
         $eneamienSutudentPermissions = [
-            "S'Abonner",
-            'Se Connecter',
-            'Créer un compte',
             'Prêter un Livre',
             'Réserver un Livre',
             'Demander un Accès',
@@ -53,9 +46,6 @@ class PermissionSeeder extends Seeder
             'Consulter un Mémoire',
         ];
         $externSutudentPermissions = [
-            "S'Abonner",
-            'Se Connecter',
-            'Créer un compte',
             'Demander un Accès',
             'Consulter un Livre',
             'Consulter un Mémoire',
