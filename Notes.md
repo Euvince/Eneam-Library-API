@@ -8,6 +8,6 @@
 
 -La table SchoolYear à introduire aux relations;
 
--Traduction des messages d'erreur;
+-Traduction des messages d'erreurs;
 
 -Mise en suspend de la gestion des articles (Pause sur l'enrégistrement d'un article : ambigüité avec les formats et les fichiers é y associer) : Je sais qu'on peut avoir un livre en plusieurs exemplaires mais ceux ci peuvent-ils êtres de différents formats ?
