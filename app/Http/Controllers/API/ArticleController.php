@@ -7,8 +7,10 @@ use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\ArticleRequest;
 use App\Http\Resources\Article\ArticleResource;
-use App\Responses\Article\SingleArticleResponse;
-use App\Responses\Article\ArticleCollectionResponse;
+use App\Http\Responses\Article\{
+    SingleArticleResponse,
+    ArticleCollectionResponse
+};
 use App\Http\Requests\Article\FindArticleByTypeRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;

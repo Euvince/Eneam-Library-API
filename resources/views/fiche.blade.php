@@ -47,7 +47,7 @@
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->first_author_firstname." ".$memory->first_author_lastname }} </p>
-            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->name."/".$memory->sector->sector->name }} </p>
+            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->->sector->sector->name."/".$memory->sector->name }} </p>
             <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
             <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>
@@ -67,7 +67,7 @@
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->second_author_firstname." ".$memory->second_author_lastname }} </p>
-            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->name."/".$memory->sector->sector->name }} </p>
+            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->sector->name."/".$memory->sector->name }} </p>
             <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
             <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Responses\Article;
+namespace App\Http\Responses\Sector;
 
-use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Sector\SectorResource;
 use Illuminate\Contracts\Support\Responsable;
 
-class SingleArticleResponse implements Responsable
+class SingleSectorResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
         private readonly string|null $message,
         private readonly int $statusCode = 200,
-        private readonly ArticleResource|array $resource,
+        private readonly SectorResource|array $resource,
     )
     {
     }

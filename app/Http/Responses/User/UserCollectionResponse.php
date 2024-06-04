@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Responses\Soutenance;
+namespace App\Http\Responses\User;
 
-use App\Http\Resources\Soutenance\SoutenanceResource;
+use App\Http\Resources\User\UserCollection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class SingleSoutenanceResponse implements Responsable
+class UserCollectionResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
-        private readonly string|null $message,
+        private readonly int|null $total = 0,
         private readonly int $statusCode = 200,
-        private readonly SoutenanceResource|array $resource,
+        private readonly string|null $message = "",
+        private readonly Collection|LengthAwarePaginator $collection,
     )
     {
     }
 
     public function toResponse($request) {
+
         $response = response()->json(
             status : $this->statusCode,
             headers : [
                 'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
-            data :  [
-                'message' => $this->message,
-                "data" => $this->resource
-            ]
+            data : UserCollection::make(resource : $this->collection)->response()->getData()
         );
         return $response->header(key : 'Content-Length', values : strlen($response->content()));
     }

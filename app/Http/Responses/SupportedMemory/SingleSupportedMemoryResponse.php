@@ -1,33 +1,32 @@
 <?php
 
-namespace App\Responses\User;
+namespace App\Http\Responses\SupportedMemory;
 
-use App\Http\Resources\User\UserCollection;
-use Illuminate\Database\Eloquent\Collection;
+use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class UserCollectionResponse implements Responsable
+class SingleSupportedMemoryResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
-        private readonly int|null $total = 0,
+        private readonly string|null $message,
         private readonly int $statusCode = 200,
-        private readonly string|null $message = "",
-        private readonly Collection|LengthAwarePaginator $collection,
+        private readonly SupportedMemoryResource|array $resource,
     )
     {
     }
 
     public function toResponse($request) {
-
         $response = response()->json(
             status : $this->statusCode,
             headers : [
                 'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
-            data : UserCollection::make(resource : $this->collection)->response()->getData()
+            data :  [
+                'message' => $this->message,
+                "data" => $this->resource
+            ]
         );
         return $response->header(key : 'Content-Length', values : strlen($response->content()));
     }

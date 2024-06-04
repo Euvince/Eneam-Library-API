@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Responses\Soutenance;
+namespace App\Http\Responses\SupportedMemory;
 
-use App\Http\Resources\Soutenance\SoutenanceCollection;
+use App\Http\Resources\SupportedMemory\SupportedMemoryCollection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class SoutenanceCollectionResponse implements Responsable
+class SupportedMemoryCollectionResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
@@ -27,7 +27,7 @@ class SoutenanceCollectionResponse implements Responsable
                 'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
-            data : SoutenanceCollection::make(resource : $this->collection)->response()->getData()
+            data : SupportedMemoryCollection::make(resource : $this->collection)->response()->getData()
         );
         return $response->header(key : 'Content-Length', values : strlen($response->content()));
     }

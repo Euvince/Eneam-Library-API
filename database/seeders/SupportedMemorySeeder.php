@@ -21,7 +21,7 @@ class SupportedMemorySeeder extends Seeder
                     'soutenance_id' => $soutenance->id,
                 ]);
                 $sm->update([
-                    'cote' => \Carbon\Carbon::parse($soutenance->start_date)->year . $sm->sector->acronym . $sm->id
+                    'cote' => \Carbon\Carbon::parse($soutenance->start_date)->year."/".$sm->sector->acronym."/".$sm->id
                 ]);
             })
         ;

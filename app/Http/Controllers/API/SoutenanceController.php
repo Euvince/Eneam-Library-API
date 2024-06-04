@@ -9,9 +9,11 @@ use App\Actions\Soutenance\StoreAction;
 use App\Actions\Soutenance\UpdateAction;
 use App\Http\Requests\SoutenanceRequest;
 use App\Http\Resources\Soutenance\SoutenanceResource;
-use App\Responses\Soutenance\SingleSoutenanceResponse;
+use App\Http\Responses\Soutenance\{
+    SingleSoutenanceResponse,
+    SoutenanceCollectionResponse
+};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Responses\Soutenance\SoutenanceCollectionResponse;
 
 class SoutenanceController extends Controller
 {

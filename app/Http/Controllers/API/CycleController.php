@@ -7,8 +7,10 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Requests\CycleRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Cycle\CycleResource;
-use App\Responses\Cycle\SingleCycleResponse;
-use App\Responses\Cycle\CycleCollectionResponse;
+use App\Http\Responses\Cycle\{
+    SingleCycleResponse,
+    CycleCollectionResponse
+};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CycleController extends Controller

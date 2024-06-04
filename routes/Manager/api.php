@@ -4,7 +4,7 @@ use App\Http\Controllers\API\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SoutenanceController;
 use App\Http\Resources\Configuration\ConfigurationResource;
-use App\Responses\Configuration\SingleConfigurationResponse;
+use App\Http\Responses\Configuration\SingleConfigurationResponse;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
 use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
 
@@ -51,5 +51,5 @@ Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::cl
 Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::class, 'rejectMemory'])
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
-Route::get(uri : 'print-sheet/{supportedMemory}', action : [SupportedMemoryController::class, 'printSheet']);
+Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 Route::apiResource(name : 'article', controller : ArticleController::class);

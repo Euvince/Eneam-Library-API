@@ -6,7 +6,7 @@ use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
-use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
+use App\Http\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
 use Illuminate\Http\UploadedFile;
 

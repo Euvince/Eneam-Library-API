@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
-use App\Responses\User\SingleUserResponse;
-use App\Responses\User\UserCollectionResponse;
+use App\Http\Responses\User\{
+    SingleUserResponse,
+    UserCollectionResponse
+};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;

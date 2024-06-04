@@ -1,33 +1,32 @@
 <?php
 
-namespace App\Responses\SupportedMemory;
+namespace App\Http\Responses\Cycle;
 
-use App\Http\Resources\SupportedMemory\SupportedMemoryCollection;
-use Illuminate\Database\Eloquent\Collection;
+use App\Http\Resources\Cycle\CycleResource;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class SupportedMemoryCollectionResponse implements Responsable
+class SingleCycleResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
-        private readonly int|null $total = 0,
+        private readonly string|null $message,
         private readonly int $statusCode = 200,
-        private readonly string|null $message = "",
-        private readonly Collection|LengthAwarePaginator $collection,
+        private readonly CycleResource|array $resource,
     )
     {
     }
 
     public function toResponse($request) {
-
         $response = response()->json(
             status : $this->statusCode,
             headers : [
                 'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
-            data : SupportedMemoryCollection::make(resource : $this->collection)->response()->getData()
+            data :  [
+                'message' => $this->message,
+                "data" => $this->resource
+            ]
         );
         return $response->header(key : 'Content-Length', values : strlen($response->content()));
     }

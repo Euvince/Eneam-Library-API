@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Responses\Cycle;
+namespace App\Http\Responses\User;
 
-use App\Http\Resources\Cycle\CycleResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Contracts\Support\Responsable;
 
-class SingleCycleResponse implements Responsable
+class SingleUserResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
         private readonly string|null $message,
         private readonly int $statusCode = 200,
-        private readonly CycleResource|array $resource,
+        private readonly UserResource|array $resource,
     )
     {
     }

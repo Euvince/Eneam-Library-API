@@ -8,8 +8,10 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sector\SectorRequest;
 use App\Http\Resources\Sector\SectorResource;
-use App\Responses\Sector\SingleSectorResponse;
-use App\Responses\Sector\SectorCollectionResponse;
+use App\Http\Responses\Sector\{
+    SingleSectorResponse,
+    SectorCollectionResponse
+};
 use App\Http\Requests\Sector\FindSectorByTypeRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 

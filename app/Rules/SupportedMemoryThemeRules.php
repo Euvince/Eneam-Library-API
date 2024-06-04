@@ -14,6 +14,6 @@ class SupportedMemoryThemeRules implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //
+        
     }
 }

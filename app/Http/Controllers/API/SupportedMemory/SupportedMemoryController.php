@@ -11,8 +11,10 @@ use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use App\Jobs\GenerateFilingReportJob;
 use App\Jobs\RejectSupportedMemoryJob;
 use App\Jobs\ValidateSupportedMemoryJob;
-use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
-use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
+use App\Http\Responses\SupportedMemory\{
+    SingleSupportedMemoryResponse,
+    SupportedMemoryCollectionResponse
+};
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,7 +60,7 @@ class SupportedMemoryController extends Controller
         );
     }
 
-    public function printSheet (SupportedMemory $supportedMemory) {
+    public function printFilingReport (SupportedMemory $supportedMemory) {
         $pdf = FacadePdf::loadView(view : 'fiche', data : [
             'memory' => $supportedMemory,
             'config' => \App\Models\Configuration::appConfig(),

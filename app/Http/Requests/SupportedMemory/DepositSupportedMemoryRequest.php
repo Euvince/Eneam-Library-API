@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\SupportedMemory;
 
+use App\Rules\SupportedMemoryThemeRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -25,7 +26,7 @@ class DepositSupportedMemoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'theme' => ['required'],
+            'theme' => ['required', new SupportedMemoryThemeRules()],
             'start_at' => ['required', 'date_format:H:i', 'before:ends_at'],
             'ends_at' => ['required', 'date_format:H:i', 'after:start_at'],
             'first_author_firstname' => ['required'],

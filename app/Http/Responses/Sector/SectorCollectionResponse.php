@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Responses\Cycle;
+namespace App\Http\Responses\Sector;
 
-use App\Http\Resources\Cycle\CycleCollection;
+use App\Http\Resources\Sector\SectorCollection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class CycleCollectionResponse implements Responsable
+class SectorCollectionResponse implements Responsable
 {
     public function __construct(
         private readonly string $allowedMethods,
@@ -27,7 +27,7 @@ class CycleCollectionResponse implements Responsable
                 'Allow' => $this->allowedMethods,
                 'Content-Type' => 'application/json',
             ],
-            data : CycleCollection::make(resource : $this->collection)->response()->getData()
+            data : SectorCollection::make(resource : $this->collection)->response()->getData()
         );
         return $response->header(key : 'Content-Length', values : strlen($response->content()));
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Responses\Configuration;
+namespace App\Http\Responses\Configuration;
 
 use App\Http\Resources\Configuration\ConfigurationResource;
 use Illuminate\Contracts\Support\Responsable;
