@@ -16,7 +16,6 @@ use App\Http\Responses\SupportedMemory\{
     SupportedMemoryCollectionResponse
 };
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
@@ -48,6 +47,22 @@ class SupportedMemoryController extends Controller
         );
     }
 
+    /**
+     * Print supported memory filing report.
+     */
+    public function printFilingReport (SupportedMemory $supportedMemory) {
+        $pdf = FacadePdf::loadView(view : 'fiche', data : [
+            'memory' => $supportedMemory,
+            'config' => \App\Models\Configuration::appConfig(),
+        ])
+        ->setOptions(['defaultFont' => 'sans-serif'])
+        ->setPaper('A4', 'portrait');
+        return $pdf->download('fiche.pdf');
+    }
+
+    /**
+     * Validate supported memory.
+     */
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
         $supportedMemory->update(['status' => "Validé"]);
@@ -60,16 +75,9 @@ class SupportedMemoryController extends Controller
         );
     }
 
-    public function printFilingReport (SupportedMemory $supportedMemory) {
-        $pdf = FacadePdf::loadView(view : 'fiche', data : [
-            'memory' => $supportedMemory,
-            'config' => \App\Models\Configuration::appConfig(),
-        ])
-        ->setOptions(['defaultFont' => 'sans-serif'])
-        ->setPaper('A4', 'portrait');
-        return $pdf->download('fiche.pdf');
-    }
-
+    /**
+     * Reject supported memory.
+     */
     public function rejectMemory(SupportedMemoryRequest $request, SupportedMemory $supportedMemory) : JsonResponse
     {
         $supportedMemory->update(['status' => "Rejeté"]);
