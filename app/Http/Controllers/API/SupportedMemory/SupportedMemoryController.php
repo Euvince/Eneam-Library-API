@@ -8,13 +8,13 @@ use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
+use App\Jobs\GenerateFilingReportJob;
 use App\Jobs\RejectSupportedMemoryJob;
 use App\Jobs\ValidateSupportedMemoryJob;
-use App\Models\Configuration;
 use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
-use Barryvdh\DomPDF\PDF;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
@@ -49,6 +49,7 @@ class SupportedMemoryController extends Controller
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
         $supportedMemory->update(['status' => "Validé"]);
+        GenerateFilingReportJob::dispatch($supportedMemory);
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
@@ -60,7 +61,7 @@ class SupportedMemoryController extends Controller
     public function printSheet (SupportedMemory $supportedMemory) {
         $pdf = FacadePdf::loadView(view : 'fiche', data : [
             'memory' => $supportedMemory,
-            'config' => Configuration::appConfig(),
+            'config' => \App\Models\Configuration::appConfig(),
         ])
         ->setOptions(['defaultFont' => 'sans-serif'])
         ->setPaper('A4', 'portrait');

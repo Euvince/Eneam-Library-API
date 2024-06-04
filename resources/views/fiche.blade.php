@@ -41,15 +41,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>ÉCOLE NATIONALE D’ÉCONOMIE APPLIQUÉE ET DE MANAGEMENT</h2>
+            <h2>{{ $config->school_name }}</h2>
             <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
         </div>
         <div class="content">
-            <p><strong>Cotonou, le :</strong> {{ $config->school_name }} </p>
-            <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT :</strong> {{ $memory->first_author_name }} </p>
-            <p><strong>FILIÈRE & CLASSE :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>PROMOTION :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>THÈME :</strong> .......................................................................................................................................................................................</p>
+            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
+            <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->first_author_firstname." ".$memory->first_author_lastname }} </p>
+            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->name."/".$memory->sector->sector->name }} </p>
+            <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
+            <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>
         <div class="footer">
             <p>Signature de l'Étudiant</p>
@@ -61,15 +61,15 @@
     </div>
     <div class="container">
         <div class="header">
-            <h2>ÉCOLE NATIONALE D’ÉCONOMIE APPLIQUÉE ET DE MANAGEMENT</h3>
+            <h2>{{ $config->school_name }}</h2>
             <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
         </div>
         <div class="content">
-            <p><strong>Cotonou, le :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>FILIÈRE & CLASSE :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>PROMOTION :</strong> .......................................................................................................................................................................................</p>
-            <p><strong>THÈME :</strong> .......................................................................................................................................................................................</p>
+            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
+            <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->second_author_firstname." ".$memory->second_author_lastname }} </p>
+            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->name."/".$memory->sector->sector->name }} </p>
+            <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
+            <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>
         <div class="footer">
             <p>Signature de l'Étudiant</p>

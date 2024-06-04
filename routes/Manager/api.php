@@ -51,5 +51,5 @@ Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::cl
 Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::class, 'rejectMemory'])
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
-Route::get(uri : 'print-sheet{supportedMemory}', action : [SupportedMemoryController::class, 'printSheet']);
+Route::get(uri : 'print-sheet/{supportedMemory}', action : [SupportedMemoryController::class, 'printSheet']);
 Route::apiResource(name : 'article', controller : ArticleController::class);
