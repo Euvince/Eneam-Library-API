@@ -29,6 +29,8 @@ class DepositSupportedMemoryRequest extends FormRequest
             'theme' => ['required', new SupportedMemoryThemeRules()],
             'start_at' => ['required', 'date_format:H:i', 'before:ends_at'],
             'ends_at' => ['required', 'date_format:H:i', 'after:start_at'],
+            'first_author_matricule' => ['required'],
+            'second_author_matricule' => ['required'],
             'first_author_firstname' => ['required'],
             'second_author_firstname' => ['required'],
             'first_author_email' => ['required', 'email'],

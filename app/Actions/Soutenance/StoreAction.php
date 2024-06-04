@@ -7,7 +7,7 @@ use App\Models\Soutenance;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Soutenance\SoutenanceResource;
-use App\Responses\Soutenance\SingleSoutenanceResponse;
+use App\Http\Responses\Soutenance\SingleSoutenanceResponse;
 
 class StoreAction
 {

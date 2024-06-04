@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string(column : 'slug');
             $table->time(column : 'start_at');
             $table->time(column : 'ends_at');
+            $table->string(column : 'first_author_matricule');
+            $table->string(column : 'second_author_matricule');
             $table->string(column : 'first_author_firstname');
             $table->string(column : 'second_author_firstname');
             $table->string(column : 'first_author_lastname');

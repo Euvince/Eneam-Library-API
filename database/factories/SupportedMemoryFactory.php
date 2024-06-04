@@ -25,6 +25,8 @@ class SupportedMemoryFactory extends Factory
             'slug' => \Illuminate\Support\Str::slug($theme),
             'start_at' => $start_at,
             'ends_at' => $ends_at,
+            'first_author_matricule' => fake()->numberBetween(10000000, 99999999),
+            'second_author_matricule' => fake()->numberBetween(10000000, 99999999),
             'first_author_firstname' => fake()->firstName(),
             'second_author_firstname' => fake()->firstName(),
             'first_author_lastname' => fake()->lastName(),

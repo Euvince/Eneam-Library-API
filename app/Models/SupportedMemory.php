@@ -21,6 +21,7 @@ class SupportedMemory extends Model
 
     protected $fillable = [
         'theme', 'slug', 'start_at', 'ends_at',
+        'first_author_matricule', 'second_author_matricule',
         'first_author_firstname', 'second_author_firstname',
         'first_author_lastname', 'second_author_lastname',
         'first_author_email', 'second_author_email', 'soutenance_id', 'sector_id',
