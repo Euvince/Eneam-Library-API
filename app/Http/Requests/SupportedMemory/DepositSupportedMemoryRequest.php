@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
-use Request;
 
 class DepositSupportedMemoryRequest extends FormRequest
 {
@@ -29,9 +28,11 @@ class DepositSupportedMemoryRequest extends FormRequest
             'theme' => ['required'],
             'start_at' => ['required', 'date_format:H:i', 'before:ends_at'],
             'ends_at' => ['required', 'date_format:H:i', 'after:start_at'],
-            'first_author_name' => ['required'],
+            'first_author_firstname' => ['required'],
+            'first_author_lastname' => ['required'],
             'first_author_email' => ['required', 'email'],
-            'second_author_name' => ['required'],
+            'second_author_lastname' => ['required'],
+            'second_author_lastname' => ['required'],
             'second_author_email' => ['required', 'email'],
             'first_author_phone' => ['required', 'phone:INTERNATIONAL'],
             'second_author_phone' => ['required', 'phone:INTERNATIONAL'],

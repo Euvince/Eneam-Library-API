@@ -10,8 +10,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use App\Jobs\RejectSupportedMemoryJob;
 use App\Jobs\ValidateSupportedMemoryJob;
+use App\Models\Configuration;
 use App\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Responses\SupportedMemory\SupportedMemoryCollectionResponse;
+use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
@@ -23,7 +26,7 @@ class SupportedMemoryController extends Controller
     {
         return new SupportedMemoryCollectionResponse(
             statusCode : 200,
-            allowedMethods : 'GET, POST, PATCH DELETE',
+            allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
             collection : SupportedMemory::query()->with(['sector', 'soutenance'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
@@ -37,7 +40,7 @@ class SupportedMemoryController extends Controller
     {
         return new SingleSupportedMemoryResponse(
             statusCode : 200,
-            allowedMethods : 'GET, POST, PATCH DELETE',
+            allowedMethods : 'GET, POST, PATCH, DELETE',
             message : "Informations sur le mémoire soutenu ayant pour thème $supportedMemory->theme",
             resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
         );
@@ -49,9 +52,19 @@ class SupportedMemoryController extends Controller
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'GET, POST, PATCH DELETE'],
-            data : ['message' => "Le mémoire soutenu a été validé avec succès",],
+            headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
+            data : ['message' => "Le mémoire soutenu a été validé avec succès"],
         );
+    }
+
+    public function printSheet (SupportedMemory $supportedMemory) {
+        $pdf = FacadePdf::loadView(view : 'fiche', data : [
+            'memory' => $supportedMemory,
+            'config' => Configuration::appConfig(),
+        ])
+        ->setOptions(['defaultFont' => 'sans-serif'])
+        ->setPaper('A4', 'portrait');
+        return $pdf->download('fiche.pdf');
     }
 
     public function rejectMemory(SupportedMemoryRequest $request, SupportedMemory $supportedMemory) : JsonResponse
@@ -61,7 +74,7 @@ class SupportedMemoryController extends Controller
         RejectSupportedMemoryJob::dispatch($request->validated('reason'), $supportedMemory);
         return response()->json(
             status : 200,
-            headers : ["Allow" => 'GET, POST, PATCH DELETE'],
+            headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
             data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
         );
     }

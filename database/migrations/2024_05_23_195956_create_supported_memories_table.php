@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string(column : 'slug');
             $table->time(column : 'start_at');
             $table->time(column : 'ends_at');
-            $table->string(column : 'first_author_name');
-            $table->string(column : 'second_author_name');
+            $table->string(column : 'first_author_firstname');
+            $table->string(column : 'second_author_firstname');
+            $table->string(column : 'first_author_lastname');
+            $table->string(column : 'second_author_lastname');
             $table->string(column : 'first_author_email');
             $table->string(column : 'second_author_email');
             $table->string(column : 'first_author_phone');
