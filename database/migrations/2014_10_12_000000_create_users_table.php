@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string(column : 'phone_number');
             $table->string(column : 'birth_date');
             $table->string(column : 'sex');
-            $table->string(column : 'picture_profil_path')->nullable()->default(value : NULL);
+            $table->string(column : 'profile_photo_path')->nullable()->default(value : NULL);
             $table->boolean(column : 'has_paid')->default(value : false);
             $table->boolean(column : 'has_access')->default(value : false);
             $table->float(column : 'debt_amount')->default(value : 0);

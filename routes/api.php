@@ -20,3 +20,33 @@ $slugRegex = '[0-9a-z\-]+';
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::get('/check-mbstring', function () {
+    if (extension_loaded('mbstring')) {
+        return 'Mbstring is installed and loaded.';
+    } else {
+        return 'Mbstring is not installed.';
+    }
+});
+
+Route::get('/check-imagick', function () {
+    if (extension_loaded('imagick')) {
+        return 'Imagick is installed and loaded.';
+    } else {
+        return 'Imagick is not installed.';
+    }
+});
+
+Route::get('/check-ghostscript', function () {
+    $output = null;
+    $retval = null;
+    exec('gswin64c --version', $output, $retval);
+    if ($retval == 0) {
+        return 'Ghostscript is installed: ' . implode(' ', $output);
+    } else {
+        return 'Ghostscript is not installed.';
+    }
+});
+

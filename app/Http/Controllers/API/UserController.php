@@ -42,6 +42,15 @@ class UserController extends Controller
      */
     public function show(User $user) : SingleUserResponse
     {
+       $myModel = User::find(3);
+       $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
+            ->preservingOriginal()
+            ->toMediaCollection();
+
+        /* $myModel = User::find(3);
+        $myModel->addMediaFromUrl("https://placehold.co/600x400/png")
+                ->toMediaCollection(); */
+
         return new SingleUserResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
