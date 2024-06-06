@@ -22,7 +22,7 @@ class LoanSeeder extends Seeder
                     $loan->articles()->sync(
                         ids : [
                             $article->id => [
-                                'quantity' => \App\Models\Configuration::appConfig()->max_copies_books_per_student
+                                'number_copies' => \App\Models\Configuration::appConfig()->max_copies_books_per_student
                             ]
                         ]
                     );

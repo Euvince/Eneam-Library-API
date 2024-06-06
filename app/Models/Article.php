@@ -44,7 +44,7 @@ class Article extends Model
             table : 'article_loan',
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'loan_id'
-        )->withPivot(columns : 'quantity');
+        )->withPivot(columns : 'number_copies');
     }
 
     public function reservations () : BelongsToMany {

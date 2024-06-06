@@ -29,6 +29,6 @@ class ArticleCollectionResponse implements Responsable
             ],
             data : ArticleCollection::make(resource : $this->collection)->response()->getData()
         );
-        return $response->header(key : 'Content-Length', values : strlen($response->content()));
+        return $response->header(key : 'Content-Length', values : mb_strlen($response->content()));
     }
 }

@@ -28,6 +28,6 @@ class SingleSectorResponse implements Responsable
                 "data" => $this->resource
             ]
         );
-        return $response->header(key : 'Content-Length', values : strlen($response->content()));
+        return $response->header(key : 'Content-Length', values : mb_strlen($response->content()));
     }
 }
