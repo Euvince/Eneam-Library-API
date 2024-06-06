@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ConfigurationRequest extends FormRequest
 {
@@ -44,4 +46,19 @@ class ConfigurationRequest extends FormRequest
 
         return $rules;
     }
+
+    public function failedValidations (Validator $validator) : HttpResponseException {
+        throw new HttpResponseException(response()->json([
+            'status' => 422,
+            'error' => true,
+            'success' => false,
+            'message' => 'Erreurs de validations des données',
+            'errors' => $validator->errors()
+        ]));
+    }
+
+    public function messages() : array {
+        return [];
+    }
+
 }

@@ -66,10 +66,8 @@ class SectorRequest extends FormRequest
         ]));
     }
 
-    /* public function messages() : array {
-        return [
-            'type.in' => 'Le champ type doit être *Filière* ou *Spécialité*.'
-        ];
-    } */
+    public function messages() : array {
+        return [];
+    }
 
 }
