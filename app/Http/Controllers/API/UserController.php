@@ -42,14 +42,18 @@ class UserController extends Controller
      */
     public function show(User $user) : SingleUserResponse
     {
-       $myModel = User::find(3);
-       $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
+       /* $myModel = User::find(3); */
+       /* $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
             ->preservingOriginal()
-            ->toMediaCollection();
+            ->toMediaCollection('pdfs'); */
 
         /* $myModel = User::find(3);
         $myModel->addMediaFromUrl("https://placehold.co/600x400/png")
                 ->toMediaCollection(); */
+
+        /* $pdf = new \Spatie\PdfToImage\Pdf("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Base de Données\TP en Oracle.pdf");
+        $pdf->saveImage(storage_path('app/public/test.jpg'));
+        dd($pdf->getNumberOfPages()); */
 
         return new SingleUserResponse(
             statusCode : 200,
