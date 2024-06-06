@@ -24,7 +24,7 @@ class Article extends Model
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
         'available', 'loaned', 'reserved', 'hasEbook', 'hasPodcast',
-        'keywords', 'formats', 'access_paths', 'year_id',
+        'keywords', 'formats', 'access_paths', 'school_year_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];

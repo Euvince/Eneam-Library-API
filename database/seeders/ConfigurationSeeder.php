@@ -33,7 +33,7 @@ class ConfigurationSeeder extends Seeder
                 'max_copies_books_per_student' => 1,
                 'max_copies_books_per_teacher' => 1,
                 'created_by' => "APPLICATION",
-                'year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
+                'school_year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
             ]);
         }
     }

@@ -79,7 +79,7 @@ return new class extends Migration
 
         foreach (['configurations', 'soutenances', 'articles'] as $tableName) {
             Schema::table($tableName, callback : function (Blueprint $table) {
-                $table->foreignIdFor(model : App\Models\SchoolYear::class, column : 'year_id')
+                $table->foreignIdFor(model : App\Models\SchoolYear::class, column : 'school_year_id')
                     ->nullable()
                     ->default(value : NULL);
             });

@@ -21,7 +21,7 @@ class Soutenance extends Model
 
     protected $fillable = [
         'name', 'slug','start_date', 'end_date',
-        'number_memories_expected', 'cycle_id', 'year_id',
+        'number_memories_expected', 'cycle_id', 'school_year_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];

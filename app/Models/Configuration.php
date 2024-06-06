@@ -21,7 +21,7 @@ class Configuration extends Model
     protected $table = 'configurations';
 
     protected $fillable = [
-        'year_id',
+        'school_year_id',
         'school_name',
         'school_acronym',
         'school_city',

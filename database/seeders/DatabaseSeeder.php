@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(\Database\Seeders\SchoolYearSeeder::class);
+
         \App\Models\Cycle::factory()->count(3)->create()->each(callback : function (\App\Models\Cycle $cycle) {
             \App\Models\Soutenance::factory()->count(30)->create()->each(callback : function (\App\Models\Soutenance $soutenance) use($cycle) {
                 $name = $cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
@@ -20,10 +22,11 @@ class DatabaseSeeder extends Seeder
                     'cycle_id' => $cycle->id,
                     'name' => $name,
                     'slug' => \Illuminate\Support\Str::slug($name),
+                    'school_year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
                 ]);
             });
         });
-        $this->call(\Database\Seeders\SchoolYearSeeder::class);
+
         $this->call(\Database\Seeders\ConfigurationSeeder::class);
         $this->call(\Database\Seeders\SectorSeeder::class);
         $this->call(\Database\Seeders\SupportedMemorySeeder::class);

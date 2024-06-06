@@ -31,7 +31,7 @@ class SoutenanceRequest extends FormRequest
             'end_date' => ['required', 'date', /* 'before_or_equal:today', */ 'after_or_equal:start_date'],
             'number_memories_expected' => ['required', 'integer', 'min:1'],
             'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')],
-            'year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
+            'school_year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
         ];
     }
 
