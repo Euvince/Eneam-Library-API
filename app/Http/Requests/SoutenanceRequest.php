@@ -27,10 +27,11 @@ class SoutenanceRequest extends FormRequest
     {
         return [
             /* 'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')], */
-            'start_date' => ['required', 'date', 'before_or_equal:end_date'/* , new DatesRules(request()) */],
-            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+            'start_date' => ['required', 'date', /* 'before_or_equal:today', */ 'before_or_equal:end_date'/* , new DatesRules(request()) */],
+            'end_date' => ['required', 'date', /* 'before_or_equal:today', */ 'after_or_equal:start_date'],
             'number_memories_expected' => ['required', 'integer', 'min:1'],
-            'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')]
+            'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')],
+            'year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
         ];
     }
 

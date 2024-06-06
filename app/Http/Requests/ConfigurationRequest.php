@@ -29,7 +29,7 @@ class ConfigurationRequest extends FormRequest
         $routeName = request()->route()->getName();
         if (Str::contains($routeName, 'school-name')) $rules = ['school_name' => 'required'];
         if (Str::contains($routeName, 'school-acronym')) $rules = ['school_acronym' => 'required'];
-        if (Str::contains($routeName, 'school-city')) $rules = ['school_city' => 'required'];
+        if (Str::contains($routeName, 'archivist-full-name')) $rules = ['archivist_full_name' => 'required'];
         if (Str::contains($routeName, 'eneamien-subscribe-amount')) $rules = ['eneamien_subscribe_amount' => 'required|numeric|min:0'];
         if (Str::contains($routeName, 'extern-subscribe-amount')) $rules = ['extern_subscribe_amount' => 'required|numeric|min:0'];
         if (Str::contains($routeName, 'subscription-expiration-delay')) $rules = ['subscription_expiration_delay' => 'required|numeric|min:0'];

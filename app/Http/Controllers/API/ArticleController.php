@@ -24,7 +24,7 @@ class ArticleController extends Controller
     {
         $articles = $request->has('type')
             ? Article::query()->with(['comments', 'loans'])->where('type', Helpers::mb_ucfirst($request->type))->orderBy('created_at', 'desc')->paginate(perPage : 20)
-            : Article::query()->with(['comments', 'loans'])->paginate(perPage : 20);
+            : Article::query()->with(['schoolYear', 'comments', 'loans'])->paginate(perPage : 20);
         return new ArticleCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',

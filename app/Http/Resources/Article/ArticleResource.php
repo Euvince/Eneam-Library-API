@@ -46,6 +46,7 @@ class ArticleResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'school_year' => $this->whenLoaded('schoolYear'),
             'comments' => $this->when(
                 $this->resource->comments->count() > 0,
                 $this->whenLoaded('comments')

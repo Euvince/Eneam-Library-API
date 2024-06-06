@@ -16,8 +16,14 @@ class SchoolYearFactory extends Factory
      */
     public function definition(): array
     {
+
+        $startDate = fake()->dateTimeBetween(startDate : '-15 years', endDate : 'now');
+        $endDate = (clone $startDate)->modify(modifier : '+1  year');
+
         return [
-            //
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'school_year' => \Carbon\Carbon::parse($startDate)->year . "-" . \Carbon\Carbon::parse($endDate)->year
         ];
     }
 }

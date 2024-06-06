@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             });
         });
+        $this->call(\Database\Seeders\SchoolYearSeeder::class);
         $this->call(\Database\Seeders\ConfigurationSeeder::class);
         $this->call(\Database\Seeders\SectorSeeder::class);
         $this->call(\Database\Seeders\SupportedMemorySeeder::class);

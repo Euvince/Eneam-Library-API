@@ -77,6 +77,14 @@ return new class extends Migration
                 /* ->after('likes_number') */;
         });
 
+        foreach (['configurations', 'soutenances', 'articles'] as $tableName) {
+            Schema::table($tableName, callback : function (Blueprint $table) {
+                $table->foreignIdFor(model : App\Models\SchoolYear::class, column : 'year_id')
+                    ->nullable()
+                    ->default(value : NULL);
+            });
+        }
+
     }
 
     /**

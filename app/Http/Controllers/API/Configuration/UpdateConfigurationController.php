@@ -19,6 +19,7 @@ class UpdateConfigurationController extends Controller
         if (Str::contains($routeName, 'school-name')) $config->update(['school_name' => $request->school_name]);
         if (Str::contains($routeName, 'school-acronym')) $config->update(['school_acronym' => $request->school_acronym]);
         if (Str::contains($routeName, 'school-city')) $config->update(['school_city' => $request->school_city]);
+        if (Str::contains($routeName, 'archivist-full-name')) $config->update(['archivist_full_name' => $request->archivist_full_name]);
         if (Str::contains($routeName, 'eneamien-subscribe-amount')) $config->update(['eneamien_subscribe_amount' => $request->eneamien_subscribe_amount]);
         if (Str::contains($routeName, 'extern-subscribe-amount')) $config->update(['extern_subscribe_amount' => $request->extern_subscribe_amount]);
         if (Str::contains($routeName, 'subscription-expiration-delay')) $config->update(['subscription_expiration_delay' => $request->subscription_expiration_delay]);
@@ -37,6 +38,7 @@ class UpdateConfigurationController extends Controller
         if (Str::contains($routeName, 'school-name')) $message = "Le nom de l'école a bien été modifié";
         if (Str::contains($routeName, 'school-acronym')) $message = "L'acronyme de l'école a bien été modifié";
         if (Str::contains($routeName, 'school-city')) $message = "La ville dans laquelle se situe l'école a bien été modifiée";
+        if (Str::contains($routeName, 'archivist-full-name')) $message = "Le nom et le(s) prénom(s) de l'archiviste ont bien été modifié";
         if (Str::contains($routeName, 'eneamien-subscribe-amount')) $message = "Le montant d'abonnement des étudiants internes a bien été modifié";
         if (Str::contains($routeName, 'extern-subscribe-amount')) $message = "Le montant d'abonnement des étudiants externes a bien été modifié";
         if (Str::contains($routeName, 'subscription-expiration-delay')) $message = "Le délai d'expiration d'un abonnement a bien été modifié";

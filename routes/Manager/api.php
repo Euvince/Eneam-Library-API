@@ -15,6 +15,7 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
     Route::get(
         uri : 'last',
         action : function () : SingleConfigurationResponse {
+           /*  dd(\App\Models\Configuration::first()->getAttributes()); */
             return new SingleConfigurationResponse(
                 statusCode : 200, allowedMethods : 'PATCH', message : "Configuration de l'année en cours",
                 resource : new ConfigurationResource(resource : \App\Models\Configuration::appConfig())
@@ -26,6 +27,7 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
         Route::patch(uri : 'school-name', action : UpdateConfigurationController::class)->name(name : 'school-name');
         Route::patch(uri : 'school-acronym', action : UpdateConfigurationController::class)->name(name : 'school-acronym');
         Route::patch(uri : 'school-city', action : UpdateConfigurationController::class)->name(name : 'school-city');
+        Route::patch(uri : 'archivist-full-name', action : UpdateConfigurationController::class)->name(name : 'archivist-full-name');
         Route::patch(uri : 'eneamien-subscribe-amount', action : UpdateConfigurationController::class)->name(name : 'eneamien-subscribe-amount');
         Route::patch(uri : 'extern-subscribe-amount', action : UpdateConfigurationController::class)->name(name : 'extern-subscribe-amount');
         Route::patch(uri : 'subscription-expiration-delay', action : UpdateConfigurationController::class)->name(name : 'subscription-expiration-delay');

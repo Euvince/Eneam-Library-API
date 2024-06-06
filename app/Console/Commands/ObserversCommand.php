@@ -20,7 +20,11 @@ class ObserversCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = "
+        Une commande qui devrait permettre de créer un
+        Observateur avec les méthodes souhaitées qui
+        écoutent un modèle tout au long de son cycle de vie"
+    ;
 
     /**
      * Execute the console command.

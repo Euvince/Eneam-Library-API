@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,7 +24,7 @@ class Article extends Model
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
         'available', 'loaned', 'reserved', 'hasEbook', 'hasPodcast',
-        'keywords', 'formats', 'access_paths',
+        'keywords', 'formats', 'access_paths', 'year_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
@@ -33,6 +34,10 @@ class Article extends Model
         'formats' => 'array',
         'access_paths' => 'array'
     ];
+
+    public function schoolYear () : BelongsTo {
+        return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'year_id');
+    }
 
     public function comments () : HasMany {
         return $this->hasMany(related : \App\Models\Comment::class, foreignKey : 'article_id');

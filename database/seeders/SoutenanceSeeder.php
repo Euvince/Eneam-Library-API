@@ -12,6 +12,11 @@ class SoutenanceSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Soutenance::factory(50)->create();
+        \App\Models\Soutenance::factory(50)->create()
+            ->each(callback : fn (\App\Models\Soutenance $soutenance) => $soutenance->update([
+                    'year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
+                ])
+            )
+        ;
     }
 }

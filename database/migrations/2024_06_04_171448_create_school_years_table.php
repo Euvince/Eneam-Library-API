@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('school_years', function (Blueprint $table) {
             $table->id();
+            $table->date(column : 'start_date');
+            $table->date(column : 'end_date');
+            $table->string(column : 'school_year');
+            $table->string(column : 'created_by')->nullable()->default(value : NULL);
+            $table->string(column : 'updated_by')->nullable()->default(value : NULL);
+            $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

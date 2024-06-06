@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SchoolYear;
-use App\Http\Requests\SchoolYearRequest;
+use App\Models\Keyword;
+use App\Http\Requests\KeywordRequest;
 
-class SchoolYearController extends Controller
+class KeywordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class SchoolYearController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SchoolYearRequest $request)
+    public function store(KeywordRequest $request)
     {
         //
     }
@@ -34,7 +34,7 @@ class SchoolYearController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SchoolYear $schoolYear)
+    public function show(Keyword $keyword)
     {
         //
     }
@@ -42,7 +42,7 @@ class SchoolYearController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SchoolYear $schoolYear)
+    public function edit(Keyword $keyword)
     {
         //
     }
@@ -50,7 +50,7 @@ class SchoolYearController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SchoolYearRequest $request, SchoolYear $schoolYear)
+    public function update(KeywordRequest $request, Keyword $keyword)
     {
         //
     }
@@ -58,7 +58,7 @@ class SchoolYearController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SchoolYear $schoolYear)
+    public function destroy(Keyword $keyword)
     {
         //
     }

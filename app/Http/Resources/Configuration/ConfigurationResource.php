@@ -23,6 +23,7 @@ class ConfigurationResource extends JsonResource
             'school_name' => $this->resource->school_name,
             'school_acronym' => $this->resource->school_acronym,
             'school_city' => $this->resource->school_city,
+            'archivist_name' => $this->resource->archivist_name,
             'eneamien_subscribe_amount' => $this->resource->eneamien_subscribe_amount,
             'extern_subscribe_amount' => $this->resource->extern_subscribe_amount,
             'student_debt_amount' => $this->resource->student_debt_amount,
@@ -39,6 +40,7 @@ class ConfigurationResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'school_year' => $this->whenLoaded('schoolYear'),
         ];
     }
 }

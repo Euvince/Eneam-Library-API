@@ -31,6 +31,7 @@ class SoutenanceResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'school_year' => $this->whenLoaded('schoolYear'),
             'cycle' => $this->whenLoaded('cycle'),
             'supportedMemories' => $this->when(
                 $this->resource->supportedMemories->count() > 0,

@@ -26,16 +26,16 @@ class DepositSupportedMemoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'theme' => ['required', new SupportedMemoryThemeRules()],
+            'theme' => ['required', /* new SupportedMemoryThemeRules(request()) */],
             'start_at' => ['required', 'date_format:H:i', 'before:ends_at'],
             'ends_at' => ['required', 'date_format:H:i', 'after:start_at'],
-            'first_author_matricule' => ['required'],
-            'second_author_matricule' => ['required'],
+            'first_author_matricule' => ['required', 'digits:8', 'integer'],
+            'second_author_matricule' => ['required', 'digits:8', 'integer'],
             'first_author_firstname' => ['required'],
             'second_author_firstname' => ['required'],
-            'first_author_email' => ['required', 'email'],
             'first_author_lastname' => ['required'],
             'second_author_lastname' => ['required'],
+            'first_author_email' => ['required', 'email'],
             'second_author_email' => ['required', 'email'],
             'first_author_phone' => ['required', 'phone:INTERNATIONAL'],
             'second_author_phone' => ['required', 'phone:INTERNATIONAL'],

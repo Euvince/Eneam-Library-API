@@ -16,9 +16,9 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $type
  * @property string $title
  * @property string $slug
- * @property string $type
  * @property string $summary
  * @property string $author
  * @property string $editor
@@ -44,12 +44,14 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int|null $year_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Loan> $loans
  * @property-read int|null $loans_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
+ * @property-read \App\Models\SchoolYear|null $schoolYear
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
@@ -84,6 +86,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereViewsNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Article whereYearId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Article withoutTrashed()
  * @mixin \Eloquent
@@ -138,11 +141,15 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property float $eneamien_subscribe_rising
- * @property float $extern_subscribe_rising
+ * @property string $school_name
+ * @property string $school_acronym
+ * @property string $school_city
+ * @property string $archivist_full_name
+ * @property float $eneamien_subscribe_amount
+ * @property float $extern_subscribe_amount
  * @property int $subscription_expiration_delay
- * @property float $student_debt_price
- * @property float $teacher_debt_price
+ * @property float $student_debt_amount
+ * @property float $teacher_debt_amount
  * @property int $student_loan_delay
  * @property int $teacher_loan_delay
  * @property int $student_renewals_number
@@ -157,31 +164,38 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int|null $year_id
+ * @property-read \App\Models\SchoolYear|null $schoolYear
  * @method static \Database\Factories\ConfigurationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereArchivistFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereEneamienSubscribeRising($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereExternSubscribeRising($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereEneamienSubscribeAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereExternSubscribeAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereMaxBooksPerStudent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereMaxBooksPerTeacher($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereMaxCopiesBooksPerStudent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereMaxCopiesBooksPerTeacher($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereStudentDebtPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereSchoolAcronym($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereSchoolCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereSchoolName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereStudentDebtAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereStudentLoanDelay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereStudentRenewalsNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereSubscriptionExpirationDelay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereTeacherDebtPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereTeacherDebtAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereTeacherLoanDelay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereTeacherRenewalsNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Configuration whereYearId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Configuration withoutTrashed()
  * @mixin \Eloquent
@@ -270,6 +284,26 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\KeywordFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperKeyword {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $loan_date
  * @property string|null $processing_date
  * @property int $duration
@@ -316,7 +350,7 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property float $rising
+ * @property float $amount
  * @property string $payment_date
  * @property string $status
  * @property string|null $created_by
@@ -332,13 +366,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment wherePaymentDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Payment whereRising($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereUpdatedBy($value)
@@ -536,6 +570,49 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $start_date
+ * @property string $end_date
+ * @property string $school_year
+ * @property string|null $created_by
+ * @property string|null $updated_by
+ * @property string|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Configuration> $configurations
+ * @property-read int|null $configurations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Soutenance> $soutenances
+ * @property-read int|null $soutenances_count
+ * @method static \Database\Factories\SchoolYearFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereSchoolYear($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|SchoolYear withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperSchoolYear {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $type
  * @property string $name
  * @property string $slug
@@ -584,7 +661,6 @@ namespace App\Models{
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
- * @property string $year
  * @property string $start_date
  * @property string $end_date
  * @property int $number_memories_expected
@@ -595,7 +671,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property int|null $cycle_id
+ * @property int|null $year_id
  * @property-read \App\Models\Cycle|null $cycle
+ * @property-read \App\Models\SchoolYear|null $schoolYear
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SupportedMemory> $supportedMemories
  * @property-read int|null $supported_memories_count
  * @method static \Database\Factories\SoutenanceFactory factory($count = null, $state = [])
@@ -616,7 +694,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Soutenance whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Soutenance whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Soutenance whereUpdatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Soutenance whereYear($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Soutenance whereYearId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Soutenance withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Soutenance withoutTrashed()
  * @mixin \Eloquent
@@ -630,7 +708,7 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property float $rising
+ * @property float $amount
  * @property string $status
  * @property string $subscription_date
  * @property string $expiration_date
@@ -647,13 +725,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereExpirationDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereRising($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereSubscriptionDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription whereUpdatedAt($value)
@@ -674,19 +752,25 @@ namespace App\Models{
  * @property int $id
  * @property string $theme
  * @property string $slug
- * @property string $soutenance_hour
- * @property string $first_author_name
- * @property string $second_author_name
+ * @property string $start_at
+ * @property string $ends_at
+ * @property string $first_author_matricule
+ * @property string $second_author_matricule
+ * @property string $first_author_firstname
+ * @property string $second_author_firstname
+ * @property string $first_author_lastname
+ * @property string $second_author_lastname
  * @property string $first_author_email
  * @property string $second_author_email
  * @property string $first_author_phone
  * @property string $second_author_phone
- * @property string $jury_president
- * @property string $memory_master
- * @property string|null $file_path
- * @property string|null $cover_page_path
+ * @property string $jury_president_name
+ * @property string $memory_master_name
+ * @property string|null $memory_master_email
  * @property string|null $cote
  * @property string $status
+ * @property string|null $file_path
+ * @property string|null $cover_page_path
  * @property string|null $created_by
  * @property string|null $updated_by
  * @property string|null $deleted_by
@@ -710,20 +794,26 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFilePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorMatricule($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereFirstAuthorPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereJuryPresident($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereMemoryMaster($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereJuryPresidentName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereMemoryMasterEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereMemoryMasterName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorMatricule($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSecondAuthorPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSectorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSoutenanceHour($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereSoutenanceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereStartAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereTheme($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SupportedMemory whereUpdatedAt($value)
@@ -754,9 +844,10 @@ namespace App\Models{
  * @property string $phone_number
  * @property string $birth_date
  * @property string $sex
+ * @property string|null $profile_photo_path
  * @property int $has_paid
  * @property int $has_access
- * @property float $debt_price
+ * @property float $debt_amount
  * @property string|null $remember_token
  * @property string|null $created_by
  * @property string|null $updated_by
@@ -768,6 +859,8 @@ namespace App\Models{
  * @property-read int|null $comments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Loan> $loans
  * @property-read int|null $loans_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
@@ -791,7 +884,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDebtPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDebtAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
@@ -804,6 +897,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMatricule($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePhotoPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSex($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSlug($value)

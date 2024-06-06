@@ -14,7 +14,7 @@ class UpdateAction
     public static function handle (array $data, Request $request, Soutenance $soutenance) : JsonResponse | SingleSoutenanceResponse {
         $name = Cycle::find($request->cycle_id)->name." ".\Carbon\Carbon::parse($request->start_date)->year;
         if (Soutenance::where([
-            ['name',  $name], ['id', '!=', $request->route()->parameter(name : 'soutenance')['id']]
+            ['name', $name], ['id', '!=', $request->route()->parameter(name : 'soutenance')['id']]
         ])->count() > 0) {
             return response()->json(
                 status : 422,

@@ -12,6 +12,11 @@ class ArticleSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Article::factory(50)->create();
+        \App\Models\Article::factory(50)->create()
+            ->each(callback : fn (\App\Models\Article $article) => $article->update([
+                    'year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
+                ])
+            )
+        ;
     }
 }

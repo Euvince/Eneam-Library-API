@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
@@ -20,9 +21,11 @@ class Configuration extends Model
     protected $table = 'configurations';
 
     protected $fillable = [
+        'year_id',
         'school_name',
         'school_acronym',
         'school_city',
+        'archivist_full_name',
         'student_debt_amount',
         'teacher_debt_amount',
         'student_loan_delay',
@@ -33,15 +36,19 @@ class Configuration extends Model
         'teacher_renewals_number',
         'extern_subscribe_amount',
         'eneamien_subscribe_amount',
-        'subscription_expiration_date',
         'max_copies_books_per_student',
         'max_copies_books_per_teacher',
+        'subscription_expiration_delay',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    public static function appConfig () : self {
-        return self::latest()->first();
+    public static function appConfig () {
+        return self::latest()->with(['schoolYear'])->first();
+    }
+
+    public function schoolYear () : BelongsTo {
+        return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'year_id');
     }
 
 }
