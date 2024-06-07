@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\SupportedMemory;
 
+use App\Actions\SupportedMemory\SMHelper;
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
@@ -81,7 +82,7 @@ class SupportedMemoryController extends Controller
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
         $supportedMemory->update(['status' => "Validé"]);
-        GenerateFilingReportJob::dispatch($supportedMemory);
+        /* GenerateFilingReportJob::dispatch($supportedMemory); */
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
         return response()->json(
             status : 200,
@@ -109,7 +110,13 @@ class SupportedMemoryController extends Controller
      */
     public function update(DepositSupportedMemoryRequest $request, SupportedMemory $supportedMemory)
     {
-        //
+        $supportedMemory->update(SMHelper::helper($supportedMemory, $request));
+        return new SingleSupportedMemoryResponse(
+            statusCode : 201,
+            allowedMethods : 'GET, POST, DELETE',
+            message : "Le mémoire soutenu a été édité avec succès",
+            resource : new SupportedMemoryResource(resource : $supportedMemory)
+        );
     }
 
     /**

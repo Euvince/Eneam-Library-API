@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Actions\Article\ArticleHelper;
 use App\Helpers;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request) : SingleArticleResponse
     {
-        $article = Article::create($request->validated());
+        $article = Article::create(ArticleHelper::handle(new Article(), $request));
         return new SingleArticleResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
@@ -88,4 +89,5 @@ class ArticleController extends Controller
             data : ['message' => "L'article a été supprimé avec succès",],
         );
     }
+
 }

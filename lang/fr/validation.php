@@ -250,6 +250,7 @@ return [
         'acronym'                  => 'acronyme',
         'sector_id'                => 'secteur',
         'soutenance_id'            => 'soutenance',
+        'reason'                   => 'raison',
 
         'theme'                    => "thème",
         'start_at'                 => "heure de début",
@@ -272,6 +273,15 @@ return [
         'number_pages'             => 'nombre de pages',
         'ISBN'                     => 'ISBN',
         'available_stock'          => 'stock disponible',
+        'editing_year'             => "année d'édition",
+        'number_pages'             => 'nombre de pages',
+        'available_stock'          => 'stock disponible',
+        'available'                => 'disponibilité',
+        'has_ebooks'               => 'possède des e-books',
+        'has_audios'               => 'possède des audios',
+        'keywords'                 => 'mots clés',
+        'thumbnails_paths'             => 'fichiers',
+        'access_paths'             => 'fichiers',
 
     ],
 ];

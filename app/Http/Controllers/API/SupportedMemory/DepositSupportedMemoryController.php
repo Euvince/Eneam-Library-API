@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\SupportedMemory;
 
+use App\Actions\SupportedMemory\SMHelper;
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class DepositSupportedMemoryController extends Controller
      */
     public function __invoke(DepositSupportedMemoryRequest $request) : SingleSupportedMemoryResponse
     {
-        $supportedMemory = SupportedMemory::create($this->addFiles(new SupportedMemory(), $request));
+        $supportedMemory = SupportedMemory::create(SMHelper::helper(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, DELETE',
@@ -35,8 +36,8 @@ class DepositSupportedMemoryController extends Controller
             $memoryCollection = $data['file_path'];
             /** @var UploadedFile|null $coverPageCollection */
             $coverPageCollection = $data['cover_page_path'];
-            $data['file_path'] = $memoryCollection->storeAs('Memories', $request->file('file_path')->getClientOriginalName(), 'public');
-            $data['cover_page_path'] = $coverPageCollection->storeAs('Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');
+            $data['file_path'] = $memoryCollection->storeAs('Supported Memories/Memories', $request->file('file_path')->getClientOriginalName(), 'public');
+            $data['cover_page_path'] = $coverPageCollection->storeAs('Supported Memories/Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');
             $memorypath = 'public/' . $supportedMemory->file_path;
             $coverPagePath = 'public/' . $supportedMemory->cover_page_path;
             if(Storage::exists($memorypath)) Storage::delete($memorypath);

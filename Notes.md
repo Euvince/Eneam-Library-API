@@ -17,4 +17,6 @@
 
 -Les scopes et les casts pour personnaliser les requêtes;
 
+-Prévisualisation de fichiers;
+
 -Permissions, Polices et Conditions à la fin du projet;

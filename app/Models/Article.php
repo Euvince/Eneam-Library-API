@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -16,15 +20,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[ObservedBy([\App\Observers\ArticleObserver::class])]
 
-class Article extends Model
+class Article extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
         'available', 'loaned', 'reserved', 'has_ebooks', 'has_audios',
-        'keywords', 'formats', 'access_paths', 'school_year_id',
+        'keywords', 'formats', 'thumbnails_paths', 'access_paths', 'school_year_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
@@ -34,6 +38,15 @@ class Article extends Model
         'formats' => 'array',
         'access_paths' => 'array'
     ]; */
+
+
+    /* public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumbnail')
+            ->fit(Fit::Contain, 300, 300)
+            ->performOnCollections('pdfs');
+    } */
 
     public function schoolYear () : BelongsTo {
         return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'year_id');

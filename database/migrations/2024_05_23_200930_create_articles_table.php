@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean(column : 'has_audios')->default(value : false);
             /* $table->json('keywords')->nullable()->default(value : NULL); */
             /* $table->json('formats')->nullable()->default(value : NULL); */
+            $table->json('thumbnails_paths')->nullable()->default(value : NULL);
             $table->json('access_paths')->nullable()->default(value : NULL);
             $table->integer(column : 'likes_number')->default(value : 0);
             $table->integer(column : 'views_number')->default(value : 0);
