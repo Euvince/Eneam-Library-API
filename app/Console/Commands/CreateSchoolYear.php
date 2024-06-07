@@ -20,7 +20,7 @@ class CreateSchoolYear extends Command
      * @var string
      */
     protected $description = "
-        Une tâche planfiée qui se chargera de créer
+        Cette tâche se chargera de créer
         dynamiquement une année scolaire chaque fois
         qu'une année scolaire se terminera"
     ;
