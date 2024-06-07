@@ -7,6 +7,8 @@
 
 -Les méthodes index avec les paramètres de recherches pour les users;
 
+-Le Listing des resources pour revoir les relations à afficher au front-end;
+
 -Partie fiche de dépôt de mémoire;
 
 -Traduction des messages d'erreurs;

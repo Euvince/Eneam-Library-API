@@ -23,15 +23,15 @@ class SchoolYear extends Model
     ];
 
     public function articles () : HasMany {
-        return $this->hasMany(related : \App\Models\Article::class, foreignKey : 'year_id');
+        return $this->hasMany(related : \App\Models\Article::class, foreignKey : 'school_year_id');
     }
 
     public function soutenances () : HasMany {
-        return $this->hasMany(related : \App\Models\Soutenance::class, foreignKey : 'year_id');
+        return $this->hasMany(related : \App\Models\Soutenance::class, foreignKey : 'school_year_id');
     }
 
     public function configurations () : HasMany {
-        return $this->hasMany(related : \App\Models\Configuration::class, foreignKey : 'year_id');
+        return $this->hasMany(related : \App\Models\Configuration::class, foreignKey : 'school_year_id');
     }
 
 }

@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\DatesRules;
+use App\Rules\SoutenanceEndDateRule;
+use App\Rules\SoutenanceStartDateRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -27,8 +28,14 @@ class SoutenanceRequest extends FormRequest
     {
         return [
             /* 'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')], */
-            'start_date' => ['required', 'date', 'before_or_equal:end_date'/* , new DatesRules(request()) */],
-            'end_date' => ['required', 'date', 'before_or_equal:today', 'after_or_equal:start_date'],
+            'start_date' => [
+                'required', 'date', 'before_or_equal:end_date',
+                new SoutenanceStartDateRule(request())
+            ],
+            'end_date' => [
+                'required', 'date', /* 'before_or_equal:today', */
+                'after_or_equal:start_date', new SoutenanceEndDateRule(request())
+            ],
             'number_memories_expected' => ['required', 'integer', 'min:1'],
             'cycle_id' => ['required', Rule::exists(table : 'cycles', column : 'id')],
             'school_year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
@@ -52,6 +59,7 @@ class SoutenanceRequest extends FormRequest
             'end_date.date' => 'Le champ date de fin doit être une date valide.',
             'end_date.after_or_equal' => 'Le champ date de fin doit être une date postérieure ou égale à la date de début.',
             'number_memories_expected.required' => "Le nombre de mémoires attendus est obligatoire",
+            'end_date.before_or_equal' => "La date de fin doit être antérieure ou égale à aujourd'hui"
         ];
     }
 

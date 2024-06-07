@@ -27,7 +27,7 @@ class Soutenance extends Model
     ];
 
     public function schoolYear () : BelongsTo {
-        return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'year_id');
+        return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'school_year_id');
     }
 
     public function cycle () : BelongsTo {

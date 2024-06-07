@@ -17,12 +17,15 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Cycle::factory()->count(3)->create()->each(callback : function (\App\Models\Cycle $cycle) {
             \App\Models\Soutenance::factory()->count(30)->create()->each(callback : function (\App\Models\Soutenance $soutenance) use($cycle) {
-                $name = $cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year;
+                /* $name = $cycle->name . " " . \Carbon\Carbon::parse($soutenance->start_date)->year; */
                 $soutenance->update([
                     'cycle_id' => $cycle->id,
+                    'school_year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
+                ]);
+                $name = $cycle->name." ".\App\Models\SchoolYear::find($soutenance->school_year_id)->school_year;
+                $soutenance->update([
                     'name' => $name,
                     'slug' => \Illuminate\Support\Str::slug($name),
-                    'school_year_id' => \App\Models\SchoolYear::all()->random(1)->first()['id']
                 ]);
             });
         });
