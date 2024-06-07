@@ -45,7 +45,7 @@ class SoutenanceObserver
     {
         if (!app()->runningInConsole()) {
             /* $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name."".\Carbon\Carbon::parse($soutenance->start_date)->year; */
-            $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name." ".\App\Models\SchoolYear::find($this->request->year_id)->school_year;
+            $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name." ".\App\Models\SchoolYear::find($this->request->school_year_id)->school_year;
             $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
         }
         $this->canDoEvent()

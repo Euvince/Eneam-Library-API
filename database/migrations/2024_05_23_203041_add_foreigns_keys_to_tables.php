@@ -39,7 +39,7 @@ return new class extends Migration
         }
 
         Schema::create(table : 'roletype_has_permission', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Reservation::class, column : 'permission_id');
+            $table->foreignIdFor(model : App\Models\Permission::class, column : 'permission_id');
             $table->foreignIdFor(model : App\Models\RoleType::class, column : 'role_type_id');
             $table->primary(columns : ['permission_id', 'role_type_id']);
         });
