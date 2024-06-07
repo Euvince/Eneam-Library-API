@@ -13,24 +13,24 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->string(column : 'type');
+            $table->string(column : 'type')->nullable()->default(value : "Livre");
             $table->string(column : 'title');
             $table->string(column : 'slug');
             $table->longText(column : 'summary');
             $table->string(column : 'author');
             $table->string(column : 'editor');
             $table->year(column : 'editing_year');
-            $table->string(column : 'cote');
-            $table->integer(column : 'number_pages');
-            $table->string(column : 'ISBN');
-            $table->integer(column : 'available_stock');
+            $table->string(column : 'cote')->nullable()->default(value : NULL);
+            $table->integer(column : 'number_pages')->nullable()->default(value : NULL);
+            $table->string(column : 'ISBN')->nullable()->default(value : NULL);
+            $table->integer(column : 'available_stock')->nullable()->default(value : NULL);
             $table->boolean(column : 'available')->default(value : true);
             $table->boolean(column : 'loaned')->default(value : false);
             $table->boolean(column : 'reserved')->default(value : false);
-            $table->boolean(column : 'has_ebook')->default(value : false);
-            $table->boolean(column : 'has_podcast')->default(value : false);
-            $table->json('keywords')->nullable()->default(value : NULL);
-            $table->json('formats')->nullable()->default(value : NULL);
+            $table->boolean(column : 'has_ebooks')->default(value : false);
+            $table->boolean(column : 'has_audios')->default(value : false);
+            /* $table->json('keywords')->nullable()->default(value : NULL); */
+            /* $table->json('formats')->nullable()->default(value : NULL); */
             $table->json('access_paths')->nullable()->default(value : NULL);
             $table->integer(column : 'likes_number')->default(value : 0);
             $table->integer(column : 'views_number')->default(value : 0);

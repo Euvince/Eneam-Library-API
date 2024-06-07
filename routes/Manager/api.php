@@ -46,7 +46,8 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
 });
 
 Route::apiResource(name : 'soutenance', controller : SoutenanceController::class);
-Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store', 'update']);
+Route::get(uri : 'supportedMemory/no-pagination', action :[ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
+Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
     ->name(name : 'validate-memory')
     ->where(['supportedMemory' => $idRegex]);

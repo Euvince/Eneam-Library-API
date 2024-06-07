@@ -84,14 +84,14 @@ class ArticleFactory extends Factory
         ], count : rand(5, 10));
         $keywords = json_encode(array_unique($keywords));
 
-        $formats = $this->faker->randomElements(array : ['pdf', 'mobi', 'epub', 'azw', 'lit', 'fb2'], count : rand(2, 3));
+        $formats = $this->faker->randomElements(array : ['pdf', 'mobi', 'epub'/* , 'azw', 'lit', 'fb2' */], count : rand(2, 3));
         $formats = json_encode(value : $formats);
         $available = $this->faker->boolean(chanceOfGettingTrue : 90);
 
         return [
             'title' => $title,
             'slug' => \Illuminate\Support\Str::slug($title),
-            'type' => $this->faker->randomElement(['Livre', 'Podcast']),
+            /* 'type' => $this->faker->randomElement(['Livre', 'Podcast']), */
             'summary' => $this->faker->paragraph(),
             'author' => $author,
             'editor' => $author,
@@ -103,10 +103,10 @@ class ArticleFactory extends Factory
             'available' => $available,
             'loaned' => !$available,
             'reserved' => !$available,
-            'has_ebook' => $this->faker->boolean(chanceOfGettingTrue : 85),
-            'has_podcast' => $this->faker->boolean(chanceOfGettingTrue : 85),
-            'keywords' => $keywords,
-            'formats' => $formats,
+            'has_ebooks' => $this->faker->boolean(chanceOfGettingTrue : 85),
+            'has_audios' => $this->faker->boolean(chanceOfGettingTrue : 50),
+            /* 'keywords' => $keywords,
+            'formats' => $formats, */
             'created_by' => 'APPLICATION'
         ];
     }

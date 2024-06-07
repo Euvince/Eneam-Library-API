@@ -23,17 +23,17 @@ class Article extends Model
     protected $fillable = [
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
-        'available', 'loaned', 'reserved', 'hasEbook', 'hasPodcast',
+        'available', 'loaned', 'reserved', 'has_ebooks', 'has_audios',
         'keywords', 'formats', 'access_paths', 'school_year_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    protected $casts = [
+    /* protected $casts = [
         'keywords' => 'array',
         'formats' => 'array',
         'access_paths' => 'array'
-    ];
+    ]; */
 
     public function schoolYear () : BelongsTo {
         return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'year_id');
@@ -41,6 +41,15 @@ class Article extends Model
 
     public function comments () : HasMany {
         return $this->hasMany(related : \App\Models\Comment::class, foreignKey : 'article_id');
+    }
+
+    public function keywords () : BelongsToMany {
+        return $this->belongsToMany(
+            related : \App\Models\Keyword::class,
+            table : 'article_keyword',
+            foreignPivotKey : 'article_id',
+            relatedPivotKey : 'keyword_id'
+        );
     }
 
     public function loans () : BelongsToMany {

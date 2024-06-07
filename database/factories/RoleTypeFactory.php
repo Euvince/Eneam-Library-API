@@ -21,7 +21,8 @@ class RoleTypeFactory extends Factory
             'Gestionnaire',
             'Administrateur',
             'Etudiant-Eneamien',
-            'Etudiant-Externe'];
+            'Etudiant-Externe'
+        ];
         $name = fake()->unique()->randomElement($elements);
 
         return [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\SupportedMemory;
 
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -31,6 +32,20 @@ class SupportedMemoryController extends Controller
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
             collection : SupportedMemory::query()->with(['sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+        );
+    }
+
+    /**
+     * Display a listing of the resource without pagination.
+     */
+    public function indexWithoutPagination() : SupportedMemoryCollectionResponse | LengthAwarePaginator
+    {
+        return new SupportedMemoryCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PATCH, DELETE',
+            total : SupportedMemory::count(),
+            message : "Liste des mémoires soutenus",
+            collection : SupportedMemory::query()->with(['sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->get(),
         );
     }
 
@@ -88,6 +103,13 @@ class SupportedMemoryController extends Controller
             headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
             data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
         );
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(DepositSupportedMemoryRequest $request, SupportedMemory $supportedMemory)
+    {
+        //
     }
 
     /**

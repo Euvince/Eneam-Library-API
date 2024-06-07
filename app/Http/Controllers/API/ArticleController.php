@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers;
 use App\Models\Article;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\ArticleRequest;
 use App\Http\Resources\Article\ArticleResource;
@@ -20,7 +21,7 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(FindArticleByTypeRequest $request) : ArticleCollectionResponse | LengthAwarePaginator
+    public function index(/* FindArticleByTypeRequest */ Request $request) : ArticleCollectionResponse | LengthAwarePaginator
     {
         $articles = $request->has('type')
             ? Article::query()->with(['comments', 'loans'])->where('type', Helpers::mb_ucfirst($request->type))->orderBy('created_at', 'desc')->paginate(perPage : 20)
@@ -30,7 +31,7 @@ class ArticleController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Article::count(),
             message : "Liste de tous les articles",
-            collection : $articles,
+            collection : Article::query()->with(['schoolYear', 'comments', 'loans'])->paginate(perPage : 20),
         );
     }
 

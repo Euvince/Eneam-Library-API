@@ -15,4 +15,6 @@
 
 -Mise en suspend de la gestion des articles (Pause sur l'enrégistrement d'un article : ambigüité avec les formats et les fichiers é y associer) : Je sais qu'on peut avoir un livre en plusieurs exemplaires mais ceux ci peuvent-ils êtres de différents formats ?
 
--Les dates de début et de fin de soutenance doivent respecter celle de l'année scolaire choisie;
+-Les scopes et les casts pour personnaliser les requêtes;
+
+-Permissions, Polices et Conditions à la fin du projet;

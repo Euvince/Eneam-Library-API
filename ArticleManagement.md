@@ -1,0 +1,16 @@
+*Physic or Numeric Book :
+    -type : Livre
+    -title : required
+    -summary : required
+    -author : required
+    -editor : required
+    -editing_year : required
+    -cote : required
+    -number_pages : required
+    -ISBN : required
+    -available_stock : required
+    -hasEbook : can be nullable
+    -hasPodcasts : type === 'Livre' ? nullable : 'required' (à remplir dynamiquement lors de la création d'un Podcast)
+    -thumbnail : nullable
+    -access_paths : requiredIf(hasEbook === true), available_extensions are : 'pdf', 'epub',
+    -keywords : 'required'

@@ -25,14 +25,14 @@ class ArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [
+            /* 'type' => [
                 'sometimes', 'required',
                 new ValueInValuesRequestRules(
                     request : request(),
                     message : "Le type doit être 'Livre' ou 'Podcast'.",
                     values : ['Livre', 'Podcast']
                 )
-            ],
+            ], */
             'title' => ['required'],
             'summary' => ['required'],
             'author' => ['required'],
@@ -43,8 +43,8 @@ class ArticleRequest extends FormRequest
             'ISBN' => ['required'],
             'available_stock' => ['required', 'numeric', 'min:1'],
             'available' => ['required', 'boolean'],
-            'has_ebook' => ['required', 'boolean'],
-            'has_podcast' => ['required', 'boolean'],
+            'has_ebooks' => ['required', 'boolean'],
+            'has_audios' => ['required', 'boolean'],
             'keywords' => ['required'],
             'formats' => ['required'],
             'access_paths' => ['required']
