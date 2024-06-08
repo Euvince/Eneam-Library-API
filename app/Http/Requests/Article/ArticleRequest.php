@@ -44,19 +44,20 @@ class ArticleRequest extends FormRequest
             'ISBN' => ['required'],
             'available_stock' => ['required', 'numeric', 'min:1'],
             'has_ebooks' => ['nullable', 'boolean'],
-            'is_physical' => ['required', 'boolean'],
+            'is_physical' => ['nullable', 'boolean'],
             'has_audios' => ['nullable', 'boolean'],
             'keywords' => ['required', 'array'],
-            'thumbnails_paths' => ['nullable'],
-            'files_paths' => ['required',/*  'array',  */'mimes:pdf,epub,mobi'],
+            'thumbnail_path' => ['nullable', 'file', 'mimes:png,jpg,jpeg'/* , 'max:value' */],
+            'file_path' => ['required', 'file', 'mimes:pdf,epub,mobi'/* , 'max:value' */],
+            'files_paths' => ['nullable'/* , 'array' */],
+            'files_paths.*' => ['file', 'mimes:pdf,epub,mobi'/* , 'max:value' */],
             'school_year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
         ];
 
-        if (request()->has('thumbnails_paths') && request()->thumbnails_paths !== NULL)
-        $rules['thumbnails_paths'] = ['file', 'mimes:png,jpg,jpeg'];
-
-        if (request()->has('has_audios') && request()->has_audios === true)
-        $rules['files_paths'] = ['required',/*  'array', */ 'mimes:pdf,epub,mobi,mp3'];
+        if (request()->has('has_audios') && (boolean)request()->has_audios === true) {
+            $rules['files_paths'] = ['nullable'/* , 'array' */];
+            $rules['files_paths.*'] = ['file', 'mimes:pdf,epub,mobi,mp3'];
+        }
 
         return $rules;
     }
@@ -72,13 +73,23 @@ class ArticleRequest extends FormRequest
     }
 
     public function messages() : array {
-        return [
+        $messages = [
             'editing_year.date_format' => "L'année d'édition n'est pas une année valide",
             'thumbnails_paths.file' => "La couverture du livre doit être un fichier",
             'thumbnails_paths.mimes' => "La couverture du livre doit être un fichier de type : png, jpg ou jpeg",
             'has_ebooks.required' => "Vous devez précisez si le livre possède ou pas d'e-book",
             'has_audios.required' => "Vous devez précisez si le livre possède ou pas d'audio",
+            "files_paths.*.max" => "La taille de chaque fichier de livre ne peut dépassser ...",
+            "files_paths.*.file" => "Chaque fichier de livre doit être un fichier valide",
+            "files_paths.*.mimes" => "Chaque fichier de livre doit être de type : pdf, epub ou mobi.",
         ];
+        if (request()->has('has_audios') && (boolean)request()->has_audios === true) {
+            $messages['files_paths.*.max'] = "La taille de chaque fichier de livre ne peut dépassser ...";
+            $messages['files_paths.*file'] = "Chaque fichier de livre doit être un fichier valide.";
+            $messages['files_paths.*.mimes'] = "Chaque fichier de livre doit être de type : pdf, epub, mobi ou mp3.";
+        }
+
+        return $messages;
     }
 
 }

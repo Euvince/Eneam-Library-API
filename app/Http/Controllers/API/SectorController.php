@@ -24,8 +24,8 @@ class SectorController extends Controller
     {
         /* $type = $request->validated('type'); */
         $collection = $request->has('type')
-            ? Sector::query()->where('type', $request->type)->with(['sector', 'specialities', 'supportedMemories'])->orderBy('created_at', 'desc')->paginate(perPage : 20)
-            : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->orderBy('created_at', 'desc')->paginate(perPage : 20);
+            ? Sector::query()->where('type', $request->type)->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->paginate(perPage : 20)
+            : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->paginate(perPage : 20);
         $message = !$request->has('type')
             ? "Liste des filières et spécialités"
             : ($request->has('type') && mb_strtolower($request->type) === mb_strtolower('Filière') ? "Liste des filières" : "Liste des spécialités");
@@ -48,7 +48,7 @@ class SectorController extends Controller
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : $sector->sector_id !== NULL ? "La spécialité a été crée avec succès" : "La filière a été crée avec succès",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
+            resource : new SectorResource(resource : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->where('id', $sector->id)->first())
         );
     }
 
@@ -63,7 +63,7 @@ class SectorController extends Controller
             message : $sector->sector_id !== NULL
                 ? "Informations sur la spécialité $sector->name"
                 : "Informations sur la filière $sector->name",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
+            resource : new SectorResource(resource : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->where('id', $sector->id)->first())
         );
     }
 
@@ -77,7 +77,7 @@ class SectorController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : $sector->sector_id !== NULL ? "La spécialité a été modifiée avec succès" : "La filière a été modifiée avec succès",
-            resource : new SectorResource(resource : Sector::query()->with(['sector', 'specialities', 'supportedMemories'])->where('id', $sector->id)->first())
+            resource : new SectorResource(resource : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->where('id', $sector->id)->first())
         );
     }
 

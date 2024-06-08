@@ -42,8 +42,8 @@ class DepositSupportedMemoryRequest extends FormRequest
             'jury_president_name' => ['required'],
             'memory_master_name' => ['required'],
             'memory_master_email' => ['required', 'email'],
-            'file_path' => ['required', 'mimes:pdf', 'file', 'max:5000000'],
-            'cover_page_path' => ['required', 'file', 'max:2000000'],
+            'file_path' => ['required', 'mimes:pdf', 'file', 'max:5120'],
+            'cover_page_path' => ['required', 'mimes:png,jpg,jpeg', 'file', 'max:2048'],
             'sector_id' => [
                 'required',
                 Rule::exists(table : 'sectors', column : 'id')
@@ -67,10 +67,12 @@ class DepositSupportedMemoryRequest extends FormRequest
 
     public function messages() {
         return [
-            "start_at.before" => "L'heure de début doit être antérieure à celle de fin",
-            "ends_at.after" => "L'heure de fin doit être postérieure à celle de début",
-            "first_author_phone" => "Le numéro de téléphone du premier étudiant n'est pas valide",
-            "second_author_phone" => "Le numéro de téléphone du deuxième étudiant n'est pas valide",
+            "start_at.before" => "L'heure de début doit être antérieure à celle de fin.",
+            "ends_at.after" => "L'heure de fin doit être postérieure à celle de début.",
+            "first_author_phone" => "Le numéro de téléphone du premier étudiant n'est pas valide.",
+            "second_author_phone" => "Le numéro de téléphone du deuxième étudiant n'est pas valide.",
+            "cover_page_path.max" => "La taille du fichier de la page de garde ne peut dépasser 2mo.",
+            "file_path.max" => "La taille du fichier du mémoire soutenu ne peut dépassser 5mo.",
         ];
     }
 

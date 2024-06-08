@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\API\ArticleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\SoutenanceController;
 use App\Http\Resources\Configuration\ConfigurationResource;
 use App\Http\Responses\Configuration\SingleConfigurationResponse;
@@ -45,8 +47,9 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
 
 });
 
+Route::get(uri : 'schoolYear', action : [ SchoolYearController::class, 'index'])->name(name : 'schoolYear.index');
 Route::apiResource(name : 'soutenance', controller : SoutenanceController::class);
-Route::get(uri : 'supportedMemory/no-pagination', action :[ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
+Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
 Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
     ->name(name : 'validate-memory')
@@ -56,3 +59,4 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
     ->where(['supportedMemory' => $idRegex]);
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 Route::apiResource(name : 'article', controller : ArticleController::class);
+Route::apiResource(name : 'comment', controller : CommentController::class);

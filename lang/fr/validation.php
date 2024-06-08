@@ -281,8 +281,9 @@ return [
         'is_physical'              => 'disponible en physique',
         'has_audios'               => 'possède des audios',
         'keywords'                 => 'mots clés',
-        'thumbnails_paths'         => 'fichiers de couvertures',
-        'files_paths'              => 'fichiers',
+        'thumbnail_path'           => 'couverture',
+        'file_path'                => 'livre',
+        'files_paths'              => 'livres',
 
     ],
 ];

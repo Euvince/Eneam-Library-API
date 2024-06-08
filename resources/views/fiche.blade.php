@@ -45,10 +45,10 @@
             <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
         </div>
         <div class="content">
-            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
+            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->first_author_firstname." ".$memory->first_author_lastname }} </p>
-            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->->sector->sector->name."/".$memory->sector->name }} </p>
-            <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
+            <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->sector->name."/".$memory->sector->name }} </p>
+            <p><strong>PROMOTION : </strong> {{ $memory->soutenance->schoolYear->school_year }} </p>
             <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>
         <div class="footer">
@@ -56,7 +56,7 @@
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
             <br><br>
-            <p>Ghislaine AKOMIA</p>
+            <p>{{ $config->archivist_full_name }}</p>
         </div>
     </div>
     <div class="container">
@@ -65,10 +65,10 @@
             <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
         </div>
         <div class="content">
-            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('d-m-Y') }} </p>
+            <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->second_author_firstname." ".$memory->second_author_lastname }} </p>
             <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->sector->name."/".$memory->sector->name }} </p>
-            <p><strong>PROMOTION : </strong> .......................................................................................................................................................................................</p>
+            <p><strong>PROMOTION : </strong> {{ $memory->soutenance->schoolYear->school_year }} </p>
             <p><strong>THÈME : </strong> {{ $memory->theme }} </p>
         </div>
         <div class="footer">
@@ -76,7 +76,7 @@
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
             <br><br>
-            <p>Ghislaine AKOMIA</p>
+            <p>{{ $config->archivist_full_name }}</p>
         </div>
     </div>
 </body>

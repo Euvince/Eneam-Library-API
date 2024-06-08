@@ -7,6 +7,16 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SchoolYearCollection extends ResourceCollection
 {
+
+    public $collects = SchoolYearResource::class;
+
+    public function __construct(
+        public $resource,
+    )
+    {
+        parent::__construct($this->resource);
+    }
+
     /**
      * Transform the resource collection into an array.
      *
@@ -14,6 +24,8 @@ class SchoolYearCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection,
+        ];
     }
 }

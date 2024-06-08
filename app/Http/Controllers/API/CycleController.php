@@ -25,7 +25,7 @@ class CycleController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Cycle::count(),
             message : "Liste de tous les cycles",
-            collection : Cycle::query()->with(['soutenances'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Cycle::query()/* ->with(['soutenances']) */->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -52,7 +52,7 @@ class CycleController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur le cycle $cycle->name",
-            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
+            resource : new CycleResource(resource : Cycle::query()/* ->with(['soutenances']) */->where('id', $cycle->id)->first())
         );
     }
 
@@ -66,7 +66,7 @@ class CycleController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Le cycle a été modifié avec succès",
-            resource : new CycleResource(resource : Cycle::query()->with(['soutenances'])->where('id', $cycle->id)->first())
+            resource : new CycleResource(resource : Cycle::query()/* ->with(['soutenances']) */->where('id', $cycle->id)->first())
         );
     }
 

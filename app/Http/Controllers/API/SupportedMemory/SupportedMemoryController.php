@@ -32,7 +32,7 @@ class SupportedMemoryController extends Controller
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
-            collection : SupportedMemory::query()->with(['sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -46,7 +46,7 @@ class SupportedMemoryController extends Controller
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus",
-            collection : SupportedMemory::query()->with(['sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->get(),
+            collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->get(),
         );
     }
 
@@ -59,7 +59,7 @@ class SupportedMemoryController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
             message : "Informations sur le mémoire soutenu ayant pour thème $supportedMemory->theme",
-            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector', 'soutenance'])->where('id', $supportedMemory->id)->first())
+            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->where('id', $supportedMemory->id)->first())
         );
     }
 
@@ -115,7 +115,7 @@ class SupportedMemoryController extends Controller
             statusCode : 201,
             allowedMethods : 'GET, POST, DELETE',
             message : "Le mémoire soutenu a été édité avec succès",
-            resource : new SupportedMemoryResource(resource : $supportedMemory)
+            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->where('id', $supportedMemory->id)->first())
         );
     }
 

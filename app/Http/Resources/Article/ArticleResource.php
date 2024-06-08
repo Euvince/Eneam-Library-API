@@ -41,19 +41,25 @@ class ArticleResource extends JsonResource
             'stars_number' => $this->resource->stars_number,
             /* 'keywords' => json_decode($this->resource->keywords),
             'formats' => json_decode($this->resource->formats), */
-            'files_paths' => json_decode($this->resource->files_paths),
+            'thumbnail_path' => $this->when($this->resource->thumbnail_path !== NULL, $this->resource->thumbnail_path),
+            'file_path' => $this->resource->file_path,
+            'files_paths' => $this->when($this->resource->files_paths !== NULL, $this->resource->files_paths),
             'created_at' => $this->resource->created_at->format("Y-m-d"),
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
             'school_year' => $this->whenLoaded('schoolYear'),
+            'keywords' => $this->when(
+                $this->relationLoaded('keywords') && $this->resource->keywords->count() > 0,
+                $this->resource->keywords
+            ),
             'comments' => $this->when(
-                $this->resource->comments->count() > 0,
-                $this->whenLoaded('comments')
+                $this->relationLoaded('comments') && $this->resource->comments->count() > 0,
+                $this->resource->comments
             ),
             'loans' => $this->when(
-                $this->resource->loans->count() > 0,
-                $this->whenLoaded('loans')
+                $this->relationLoaded('loans') && $this->resource->loans->count() > 0,
+                $this->resource->loans
             ),
         ];
     }

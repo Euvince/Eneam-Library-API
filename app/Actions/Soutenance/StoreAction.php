@@ -26,7 +26,7 @@ class StoreAction
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "La soutenance a été créée avec succès",
-            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle', 'supportedMemories'])->where('id', $soutenance->id)->first())
+            resource : new SoutenanceResource(resource : Soutenance::query()->with(['cycle'])->where('id', $soutenance->id)->first())
         );
     }
 }

@@ -8,28 +8,54 @@ use Illuminate\Support\Facades\Storage;
 
 class ArticleHelper
 {
-    public static function handle (Article $article, Request $request) {
+    public static function traitmentWithOneFile (Article $article, Request $request) {
         $data = $request->validated();
-        if(array_key_exists('files_paths', $data))
+        unset($data['keywords']);
+        if(array_key_exists('file_path', $data))
         {
-            /** @var UploadedFile|null $filesPathsCollection */
-            $filesPathsCollection = $data['files_paths'];
-            $data['files_paths'] = json_encode($filesPathsCollection->storeAs('Articles/Articles', time().'-'.$request->file('files_paths')->getClientOriginalName(), 'public'));
-            $filespaths = 'public/' . $article->files_paths;
-            if(Storage::exists($filespaths)) Storage::delete($filespaths);
+            /** @var UploadedFile|null $filePathCollection */
+            $filePathCollection = $data['file_path'];
+            $data['file_path'] = $filePathCollection->storeAs('Articles/Articles', time().'-'.$request->file('file_path')->getClientOriginalName(), 'public');
+            $filepath = 'public/' . $article->file_path;
+            if(Storage::exists($filepath)) Storage::delete($filepath);
         }
-        if (array_key_exists('thumbnails_paths', $data)) {
-            /** @var UploadedFile|null $thumbanailsPathsCollection */
-            $thumbanailsPathsCollection = $data['thumbnails_paths'];
-            $data['thumbnails_paths'] = json_encode($thumbanailsPathsCollection->storeAs('Articles/Cover pages', time().'-'.$request->file('thumbnails_paths')->getClientOriginalName(), 'public'));
-            $thumbnailspaths = 'public/' . $article->thumbnails_paths;
-            if(Storage::exists($thumbnailspaths)) Storage::delete($thumbnailspaths);
+        if (array_key_exists('thumbnail_path', $data)) {
+            /** @var UploadedFile|null $thumbanailPathCollection */
+            $thumbanailPathCollection = $data['thumbnail_path'];
+            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/Cover pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
+            $thumbnailpath = 'public/' . $article->thumbnail_path;
+            if(Storage::exists($thumbnailpath)) Storage::delete($thumbnailpath);
         }
         return $data;
     }
 
-    private function traitmentWithManyFiles(Article $article, Request $request) {
-
+    public static function traitmentWithManyFiles(Article $article, Request $request) {
+        $data = $request->validated();
+        unset($data['keywords']);
+        if(array_key_exists('files_paths', $data))
+        {
+            $filespaths = [];
+            foreach($data['files_paths'] as $file) {
+                /** @var UploadedFile|null $filesPathsCollection */
+                $file = $file->storeAs('Articles/Articles', time().'-'.$file->getClientOriginalName(), 'public');
+                $filespaths[] = $file;
+            }
+            $data['files_paths'] = json_encode($filespaths);
+            if ($article->files_paths !== NULL) {
+                foreach(json_decode($article->files_paths) as $path) {
+                    $filepath = 'public/' . $path;
+                    if(Storage::exists($filepath)) Storage::delete($filepath);
+                }
+            }
+        }
+        if (array_key_exists('thumbnail_path', $data)) {
+            /** @var UploadedFile|null $thumbanailPathCollection */
+            $thumbanailPathCollection = $data['thumbnail_path'];
+            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/Cover pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
+            $thumbnailpath = 'public/' . $article->thumbnail_path;
+            if(Storage::exists($thumbnailpath)) Storage::delete($thumbnailpath);
+        }
+        return $data;
     }
 
 }

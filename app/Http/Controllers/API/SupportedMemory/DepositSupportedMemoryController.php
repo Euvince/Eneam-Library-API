@@ -23,7 +23,7 @@ class DepositSupportedMemoryController extends Controller
             statusCode : 201,
             allowedMethods : 'GET, POST, DELETE',
             message : "Votre mémoire a été soumis avec succès",
-            resource : new SupportedMemoryResource(resource : $supportedMemory)
+            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->where('id', $supportedMemory->id)->first())
         );
     }
 

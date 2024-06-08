@@ -37,16 +37,16 @@ class SectorResource extends JsonResource
                 /* new $this($this->whenLoaded('sector')) */
             ),
             'specialities' => $this->when(
-                mb_strtolower($this->resource->type) === mb_strtolower("Filière") && $this->resource->specialities->count() > 0,
-                $this->whenLoaded('specialities')
+                $this->relationLoaded('specialities') && mb_strtolower($this->resource->type) === mb_strtolower("Filière") && $this->resource->specialities->count() > 0,
+                $this->resource->specialities
                 /* SectorCollection::make($this->whenLoaded('specialities')) */
             ),
             /* $this->mergeWhen($this->resource->specialities != [], $this->resource->type === "Filière",  [
                 'specialities' => SectorCollection::make($this->whenLoaded('specialities'))
             ]), */
             'supportedMemories' => $this->when(
-                $this->resource->supportedMemories->count() > 0,
-                $this->whenLoaded('supportedMemories')
+                $this->relationLoaded('supportedMemories') && $this->resource->supportedMemories->count() > 0,
+                $this->resource->supportedMemories
                 /* SupportedMemoryCollection::make($this->whenLoaded('supportedMemories')) */
             ),
         ];

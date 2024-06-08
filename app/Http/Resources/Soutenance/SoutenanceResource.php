@@ -34,8 +34,8 @@ class SoutenanceResource extends JsonResource
             'school_year' => $this->whenLoaded('schoolYear'),
             'cycle' => $this->whenLoaded('cycle'),
             'supportedMemories' => $this->when(
-                $this->resource->supportedMemories->count() > 0,
-                $this->whenLoaded('supportedMemories')
+                $this->relationLoaded('supportedMemories') && $this->resource->supportedMemories->count() > 0,
+                $this->resource->supportedMemories
             ),
             /* 'cycle' => new CycleResource($this->whenLoaded('cycle')), */
             /* 'supportedMemories' => $this->when(

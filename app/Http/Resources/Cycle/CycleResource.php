@@ -28,11 +28,11 @@ class CycleResource extends JsonResource
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
             'soutenances' => $this->when(
-                $this->resource->soutenances->count() > 0,
-                $this->whenLoaded('soutenances')
+                $this->relationLoaded('soutenances') && $this->resource->soutenances->count() > 0,
+                $this->resource->soutenances
             ),
             /* 'soutenances' => $this->when(
-                $this->resource->soutenances->count() > 0, 
+                $this->resource->soutenances->count() > 0,
                 SoutenanceCollection::make($this->whenLoaded('soutenances'))
             ), */
         ];

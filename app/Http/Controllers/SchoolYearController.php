@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SchoolYear;
 use App\Http\Requests\SchoolYearRequest;
+use App\Http\Responses\SchoolYear\SchoolYearCollectionResponse;
 
 class SchoolYearController extends Controller
 {
@@ -12,15 +13,13 @@ class SchoolYearController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new SchoolYearCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            total : SchoolYear::count(),
+            message : "Liste de toutes les années scolaires",
+            collection : SchoolYear::query()->orderBy('created_at', 'desc')->paginate(perPage : 20),
+        );
     }
 
     /**
@@ -35,14 +34,6 @@ class SchoolYearController extends Controller
      * Display the specified resource.
      */
     public function show(SchoolYear $schoolYear)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SchoolYear $schoolYear)
     {
         //
     }
