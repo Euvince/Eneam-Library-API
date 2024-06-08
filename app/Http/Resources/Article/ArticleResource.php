@@ -41,7 +41,7 @@ class ArticleResource extends JsonResource
             'stars_number' => $this->resource->stars_number,
             /* 'keywords' => json_decode($this->resource->keywords),
             'formats' => json_decode($this->resource->formats), */
-            'access_paths' => json_decode($this->resource->access_paths),
+            'files_paths' => json_decode($this->resource->files_paths),
             'created_at' => $this->resource->created_at->format("Y-m-d"),
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,

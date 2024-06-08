@@ -41,7 +41,17 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request) : SingleArticleResponse
     {
+        $keywords = $request->keywords;
+        unset($request->validated()['keywords']);
         $article = Article::create(ArticleHelper::handle(new Article(), $request));
+        $keywordsIds = [];
+        array_map(function ($keyword) use($keywords, &$keywordsIds) {
+            $k = \App\Models\Keyword::firstOrCreate([
+                'keyword' => \App\Helpers::mb_ucfirst($keyword)
+            ]);
+            $keywordsIds[] = $k->id;
+        }, $keywords);
+        $article->keywords()->sync($keywordsIds);
         return new SingleArticleResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
@@ -68,7 +78,14 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, Article $article) : SingleArticleResponse
     {
-        $article->update($request->validated());
+        $article->update(ArticleHelper::handle($article, $request));
+        array_map(function ($keyword) use(&$keywordsIds) {
+            $k = \App\Models\Keyword::firstOrCreate([
+                'keyword' => \App\Helpers::mb_ucfirst($keyword)
+            ]);
+            $keywordsIds[] = $k->id;
+        }, $request->keywords);
+        $article->keywords()->sync($keywordsIds);
         return new SingleArticleResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',

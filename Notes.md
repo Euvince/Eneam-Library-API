@@ -20,3 +20,5 @@
 -Prévisualisation de fichiers;
 
 -Permissions, Polices et Conditions à la fin du projet;
+
+-Les tests unitaires;

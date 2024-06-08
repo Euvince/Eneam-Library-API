@@ -44,18 +44,19 @@ class ArticleRequest extends FormRequest
             'ISBN' => ['required'],
             'available_stock' => ['required', 'numeric', 'min:1'],
             'has_ebooks' => ['nullable', 'boolean'],
+            'is_physical' => ['required', 'boolean'],
             'has_audios' => ['nullable', 'boolean'],
             'keywords' => ['required', 'array'],
             'thumbnails_paths' => ['nullable'],
-            'access_paths' => ['required',/*  'array',  */'mimes:pdf,epub,mobi'],
+            'files_paths' => ['required',/*  'array',  */'mimes:pdf,epub,mobi'],
             'school_year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
         ];
 
-        if (request()->has('thumbnails_paths') && request()->thumbnail !== NULL)
+        if (request()->has('thumbnails_paths') && request()->thumbnails_paths !== NULL)
         $rules['thumbnails_paths'] = ['file', 'mimes:png,jpg,jpeg'];
 
         if (request()->has('has_audios') && request()->has_audios === true)
-        $rules['access_paths'] = ['required',/*  'array', */ 'mimes:pdf,epub,mobi,mp3'];
+        $rules['files_paths'] = ['required',/*  'array', */ 'mimes:pdf,epub,mobi,mp3'];
 
         return $rules;
     }

@@ -127,11 +127,11 @@ class SupportedMemoryController extends Controller
         $supportedMemory->delete();
         if(($smFilePath = $supportedMemory->file_path) !== '') {
             $smPath = 'public/' . $smFilePath;
-            if(Storage::exists($smPath)) Storage::delete('public/' . $smFilePath);
+            if(Storage::exists($smPath)) Storage::delete($smPath);
         }
         if(($smCoverPagePath = $supportedMemory->cover_page_path) !== '') {
             $smCoverPath = 'public/' . $smCoverPagePath;
-            if(Storage::exists($smCoverPath)) Storage::delete('public/' . $smCoverPagePath);
+            if(Storage::exists($smCoverPath)) Storage::delete($smCoverPath);
         }
         return response()->json(
             status : 200,

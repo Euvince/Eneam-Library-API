@@ -27,10 +27,9 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
-        'available', 'loaned', 'reserved', 'has_ebooks', 'has_audios',
-        'keywords', 'formats', 'thumbnails_paths', 'access_paths', 'school_year_id',
-        'created_by', 'updated_by', 'deleted_by',
-        'created_at', 'updated_at', 'deleted_at',
+        'available', 'loaned', 'reserved', 'is_physical', 'has_ebooks', 'has_audios',
+        'keywords', 'formats', 'thumbnails_paths', 'files_paths', 'school_year_id',
+        'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     /* protected $casts = [

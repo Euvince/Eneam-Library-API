@@ -104,6 +104,7 @@ class ArticleFactory extends Factory
             'loaned' => !$available,
             'reserved' => !$available,
             'has_ebooks' => $this->faker->boolean(chanceOfGettingTrue : 50),
+            'is_physical' => $this->faker->boolean(chanceOfGettingTrue : 50),
             'has_audios' => $this->faker->boolean(chanceOfGettingTrue : 50),
             /* 'keywords' => $keywords,
             'formats' => $formats, */

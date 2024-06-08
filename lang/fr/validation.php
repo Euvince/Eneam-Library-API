@@ -278,10 +278,11 @@ return [
         'available_stock'          => 'stock disponible',
         'available'                => 'disponibilité',
         'has_ebooks'               => 'possède des e-books',
+        'is_physical'              => 'disponible en physique',
         'has_audios'               => 'possède des audios',
         'keywords'                 => 'mots clés',
-        'thumbnails_paths'             => 'fichiers',
-        'access_paths'             => 'fichiers',
+        'thumbnails_paths'         => 'fichiers de couvertures',
+        'files_paths'              => 'fichiers',
 
     ],
 ];
