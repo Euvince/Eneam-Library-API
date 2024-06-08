@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\LoanController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CommentController;
@@ -60,3 +61,4 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 Route::apiResource(name : 'article', controller : ArticleController::class);
 Route::apiResource(name : 'comment', controller : CommentController::class);
+Route::apiResource(name : 'loan', controller : LoanController::class);

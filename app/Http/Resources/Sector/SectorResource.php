@@ -32,7 +32,7 @@ class SectorResource extends JsonResource
             'updated_by' => $this->resource->updated_by,
 
             'sector' => $this->when(
-                mb_strtolower($this->resource->type) === mb_strtolower("Spécialité") && $this->resource->sector_id !== NULL,
+                $this->relationLoaded('specialities') && mb_strtolower($this->resource->type) === mb_strtolower("Spécialité") && $this->resource->sector_id !== NULL,
                 $this->whenLoaded('sector')
                 /* new $this($this->whenLoaded('sector')) */
             ),

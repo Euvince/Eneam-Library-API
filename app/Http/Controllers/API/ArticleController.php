@@ -69,7 +69,7 @@ class ArticleController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur l'article $article->title",
-            resource : new ArticleResource(resource : Article::query()->with(['keywords', 'comments'/* , 'loans' */])->where('id', $article->id)->first())
+            resource : new ArticleResource(resource : Article::query()->with(['keywords', 'comments.user'/* , 'loans' */])->where('id', $article->id)->first())
         );
     }
 
