@@ -30,7 +30,7 @@ class ArticleResource extends JsonResource
             'cote' => $this->resource->cote,
             'number_pages' => $this->resource->number_pages,
             'IBSN' => $this->resource->IBSN,
-            'available_atock' => $this->resource->available_atock,
+            'available_stock' => $this->resource->available_atock,
             'available' => $this->resource->available,
             'loaned' => $this->resource->loaned,
             /* 'reserved' => $this->resource->reserved, */

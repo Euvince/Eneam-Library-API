@@ -79,11 +79,15 @@ class SupportedMemoryController extends Controller
     /**
      * Validate supported memory.
      */
-    public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
+    public function validateMemory(SupportedMemory $sm) : JsonResponse
     {
-        $supportedMemory->update(['status' => "Validé"]);
+        $validMemories = SupportedMemory::where('status', 'Validé')->count();
+        $sm->update([
+            'status' => "Validé",
+            'cote'   => \Carbon\Carbon::parse($sm->soutenance->start_date)->year."/".$sm->sector->acronym."/".$validMemories + 1
+        ]);
         /* GenerateFilingReportJob::dispatch($supportedMemory); */
-        ValidateSupportedMemoryJob::dispatch($supportedMemory);
+        ValidateSupportedMemoryJob::dispatch($sm);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PATCH, DELETE'],

@@ -42,7 +42,10 @@ class ArticleRequest extends FormRequest
             'cote' => ['required'],
             'number_pages' => ['required', 'numeric', 'min:1'],
             'ISBN' => ['required'],
-            'available_stock' => ['required', 'numeric', 'min:1'],
+            'available_stock' => [
+                Rule::requiredIf((boolean) request()->is_physical === true),
+                'numeric', 'min:1'
+            ],
             'has_ebooks' => ['nullable', 'boolean'],
             'is_physical' => ['nullable', 'boolean'],
             'has_audios' => ['nullable', 'boolean'],
