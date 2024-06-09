@@ -17,7 +17,7 @@ class SMHelper
             /** @var UploadedFile|null $coverPageCollection */
             $coverPageCollection = $data['cover_page_path'];
             $data['file_path'] = $memoryCollection->storeAs('Supported Memories/Memories', time().'-'.$request->file('file_path')->getClientOriginalName(), 'public');
-            $data['cover_page_path'] = $coverPageCollection->storeAs('Supported Memories/Cover pages', time().'-'.$request->file('cover_page_path')->getClientOriginalName(), 'public');
+            $data['cover_page_path'] = $coverPageCollection->storeAs('Supported Memories/cover-pages', time().'-'.$request->file('cover_page_path')->getClientOriginalName(), 'public');
             $memorypath = 'public/' . $supportedMemory->file_path;
             $coverPagePath = 'public/' . $supportedMemory->cover_page_path;
             if(Storage::exists($memorypath)) Storage::delete($memorypath);

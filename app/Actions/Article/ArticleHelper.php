@@ -15,14 +15,14 @@ class ArticleHelper
         {
             /** @var UploadedFile|null $filePathCollection */
             $filePathCollection = $data['file_path'];
-            $data['file_path'] = $filePathCollection->storeAs('Articles/Articles', time().'-'.$request->file('file_path')->getClientOriginalName(), 'public');
+            $data['file_path'] = $filePathCollection->storeAs('Articles/articles', time().'-'.$request->file('file_path')->getClientOriginalName(), 'public');
             $filepath = 'public/' . $article->file_path;
             if(Storage::exists($filepath)) Storage::delete($filepath);
         }
         if (array_key_exists('thumbnail_path', $data)) {
             /** @var UploadedFile|null $thumbanailPathCollection */
             $thumbanailPathCollection = $data['thumbnail_path'];
-            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/Cover pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
+            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/cover-pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
             $thumbnailpath = 'public/' . $article->thumbnail_path;
             if(Storage::exists($thumbnailpath)) Storage::delete($thumbnailpath);
         }
@@ -37,7 +37,7 @@ class ArticleHelper
             $filespaths = [];
             foreach($data['files_paths'] as $file) {
                 /** @var UploadedFile|null $filesPathsCollection */
-                $file = $file->storeAs('Articles/Articles', time().'-'.$file->getClientOriginalName(), 'public');
+                $file = $file->storeAs('Articles/articles', time().'-'.$file->getClientOriginalName(), 'public');
                 $filespaths[] = $file;
             }
             $data['files_paths'] = json_encode($filespaths);
@@ -51,7 +51,7 @@ class ArticleHelper
         if (array_key_exists('thumbnail_path', $data)) {
             /** @var UploadedFile|null $thumbanailPathCollection */
             $thumbanailPathCollection = $data['thumbnail_path'];
-            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/Cover pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
+            $data['thumbnail_path'] = $thumbanailPathCollection->storeAs('Articles/cover-pages', time().'-'.$request->file('thumbnail_path')->getClientOriginalName(), 'public');
             $thumbnailpath = 'public/' . $article->thumbnail_path;
             if(Storage::exists($thumbnailpath)) Storage::delete($thumbnailpath);
         }

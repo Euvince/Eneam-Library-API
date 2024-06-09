@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Traits\HasProfilePicture;
 use Spatie\Image\Enums\Fit;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
@@ -26,7 +27,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable, InteractsWithMedia;
+    use HasProfilePicture, HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -34,8 +35,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'matricule', 'firstname', 'lastname', 'email',
-        'password', 'phone_numer', 'birth_date', 'sex', 'profile_photo_path',
+        'matricule', 'firstname', 'lastname', 'email', 'name',
+        'password', 'phone_numer', 'birth_date', 'sex', 'profile_picture_path',
         'hasPaid', 'hasAccess', 'debt_amount', 'slug',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',

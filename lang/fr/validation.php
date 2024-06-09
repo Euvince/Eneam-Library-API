@@ -252,6 +252,7 @@ return [
         'soutenance_id'            => 'soutenance',
         'reason'                   => 'raison',
 
+        // Mémoires soutenus
         'theme'                    => "thème",
         'start_at'                 => "heure de début",
         'ends_at'                  => "heure de fin",
@@ -267,6 +268,7 @@ return [
         'file_path'                => "mémoire soutenu",
         'cover_page_path'          => "page de garde",
 
+        // Articles
         'summary'                  => 'résumé',
         'author'                   => 'autheur',
         'editor'                   => 'éditeur',
@@ -284,6 +286,10 @@ return [
         'thumbnail_path'           => 'couverture',
         'file_path'                => 'livre',
         'files_paths'              => 'livres',
+
+        // User
+
+        'profile_picture_path'     => 'photo de profile'
 
     ],
 ];

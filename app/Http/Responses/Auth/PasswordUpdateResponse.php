@@ -8,7 +8,7 @@ class PasswordUpdateResponse implements ContractsPasswordUpdateResponse
 {
     public function toResponse($request) {
         return response()->json(data : [
-            "message" => "Mot de passe mofifié avec succès",
+            "message" => "Votre mot de passe a été mofifié avec succès",
         ], status : 200);
     }
 }
