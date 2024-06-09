@@ -32,8 +32,22 @@ class ArticleController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Article::count(),
-            message : "Liste de tous les articles",
+            message : "Liste de tous les articles paginés",
             collection : Article::query()->with(['keywords', 'schoolYear'/* , 'comments', 'loans' */])->paginate(perPage : 20),
+        );
+    }
+
+    /**
+     * Display a listing of the resource without pagination.
+     */
+    public function indexWithoutPagination() : ArticleCollectionResponse | LengthAwarePaginator
+    {
+        return new ArticleCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PATCH, DELETE',
+            total : Article::count(),
+            message : "Liste de tous les articles sans pagination",
+            collection : Article::query()->with(['keywords', 'schoolYear'/* , 'comments', 'loans' */])->orderBy('created_at', 'desc')->get(),
         );
     }
 

@@ -68,6 +68,7 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 
 // Article
+Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])->name(name : 'article.index.no-pagination');
 Route::apiResource(name : 'article', controller : ArticleController::class);
 
 

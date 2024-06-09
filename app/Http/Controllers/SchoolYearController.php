@@ -18,7 +18,7 @@ class SchoolYearController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : SchoolYear::count(),
             message : "Liste de toutes les années scolaires",
-            collection : SchoolYear::query()->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : SchoolYear::query()->orderBy('start_date', 'desc')->paginate(perPage : 20),
         );
     }
 

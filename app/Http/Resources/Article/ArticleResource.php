@@ -35,6 +35,7 @@ class ArticleResource extends JsonResource
             'loaned' => $this->resource->loaned,
             /* 'reserved' => $this->resource->reserved, */
             'has_ebooks' => $this->resource->has_ebooks,
+            'is_physical' => $this->resource->is_physical,
             'has_audios' => $this->resource->has_audios,
             'likes_number' => $this->resource->likes_number,
             'views_number' => $this->resource->views_number,

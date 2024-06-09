@@ -31,7 +31,7 @@ class SupportedMemoryController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
-            message : "Liste des mémoires soutenus",
+            message : "Liste des mémoires soutenus paginés",
             collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
@@ -45,7 +45,7 @@ class SupportedMemoryController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
-            message : "Liste des mémoires soutenus",
+            message : "Liste des mémoires soutenus sans pagination",
             collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->get(),
         );
     }
