@@ -2,16 +2,27 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
+use App\Http\Responses\Auth\{
+    LoginResponse as AuthLoginResponse,
+    LogoutResponse as AuthLogoutResponse,
+    RegisterResponse as AuthRegisterResponse,
+    PasswordUpdateResponse as AuthPasswordUpdateResponse,
+    ProfileInformationUpdatedResponse as AuthProfileInformationUpdatedResponse
+};
+use Laravel\Fortify\Contracts\{
+    LoginResponse, LogoutResponse, PasswordUpdateResponse,
+    ProfileInformationUpdatedResponse, RegisterResponse
+};
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -20,7 +31,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->instance(abstract : LoginResponse::class, instance : new AuthLoginResponse());
+        $this->app->instance(abstract : LogoutResponse::class, instance : new AuthLogoutResponse());
+        $this->app->instance(abstract : RegisterResponse::class, instance : new AuthRegisterResponse());
+        $this->app->instance(abstract : PasswordUpdateResponse::class, instance : new AuthPasswordUpdateResponse());
+        $this->app->instance(abstract : ProfileInformationUpdatedResponse::class, instance : new AuthProfileInformationUpdatedResponse());
     }
 
     /**

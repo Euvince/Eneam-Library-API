@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string(column : 'matricule')->nullable()->default(value : NULL);
-            $table->string(column : 'firstname');
-            $table->string(column : 'lastname');
-            $table->string(column : 'slug');
+            $table->string(column : 'firstname')->nullable()->default(value : NULL);
+            $table->string(column : 'lastname')->nullable()->default(value : NULL);
+            $table->string(column : 'slug')->nullable()->default(value : NULL);
             $table->string(column : 'email')->unique();
             $table->timestamp(column : 'email_verified_at')->nullable();
             $table->string(column : 'password');
-            $table->string(column : 'phone_number');
-            $table->string(column : 'birth_date');
-            $table->string(column : 'sex');
+            $table->string(column : 'phone_number')->nullable()->default(value : NULL);
+            $table->string(column : 'birth_date')->nullable()->default(value : NULL);
+            $table->string(column : 'sex')->nullable()->default(value : NULL);
             $table->string(column : 'profile_photo_path')->nullable()->default(value : NULL);
             $table->boolean(column : 'has_paid')->default(value : false);
             $table->boolean(column : 'has_access')->default(value : false);

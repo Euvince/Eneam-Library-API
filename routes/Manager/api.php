@@ -14,6 +14,8 @@ use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
+// Configurations
+
 Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
     Route::get(
         uri : 'last',
@@ -48,8 +50,13 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
 
 });
 
+// Années scolaires
 Route::get(uri : 'schoolYear', action : [ SchoolYearController::class, 'index'])->name(name : 'schoolYear.index');
+
+// Soutenances
 Route::apiResource(name : 'soutenance', controller : SoutenanceController::class);
+
+// Mémoires soutenus
 Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
 Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
@@ -59,6 +66,10 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
+
+// Article
 Route::apiResource(name : 'article', controller : ArticleController::class);
-Route::apiResource(name : 'comment', controller : CommentController::class);
-Route::apiResource(name : 'loan', controller : LoanController::class);
+
+
+/* Route::apiResource(name : 'article.comment', controller : CommentController::class);
+Route::apiResource(name : 'loan', controller : LoanController::class); */

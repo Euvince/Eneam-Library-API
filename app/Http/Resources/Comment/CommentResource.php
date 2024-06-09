@@ -27,8 +27,12 @@ class CommentResource extends JsonResource
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
             'article' => $this->when(
-                $this->relationLoaded('specialities') && mb_strtolower($this->resource->type) === mb_strtolower("Spécialité") && $this->resource->sector_id !== NULL,
-                $this->resource->specialities
+                $this->relationLoaded('article'),
+                $this->resource->article
+            ),
+            'user' => $this->when(
+                $this->relationLoaded('user'),
+                $this->resource->user
             ),
         ];
     }
