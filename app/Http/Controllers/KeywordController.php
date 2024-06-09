@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Keyword;
 use App\Http\Requests\KeywordRequest;
+use App\Http\Responses\Keyword\KeywordCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class KeywordController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : KeywordCollectionResponse | LengthAwarePaginator
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new KeywordCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            total : Keyword::count(),
+            message : "Liste de tous les mots clés",
+            collection : Keyword::query()->orderBy('created_at', 'desc')->get(),
+        );
     }
 
     /**
@@ -35,14 +35,6 @@ class KeywordController extends Controller
      * Display the specified resource.
      */
     public function show(Keyword $keyword)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Keyword $keyword)
     {
         //
     }

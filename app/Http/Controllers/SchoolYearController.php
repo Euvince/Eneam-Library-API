@@ -5,20 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\SchoolYear;
 use App\Http\Requests\SchoolYearRequest;
 use App\Http\Responses\SchoolYear\SchoolYearCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SchoolYearController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : SchoolYearCollectionResponse | LengthAwarePaginator
     {
         return new SchoolYearCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : SchoolYear::count(),
             message : "Liste de toutes les années scolaires",
-            collection : SchoolYear::query()->orderBy('start_date', 'desc')->paginate(perPage : 20),
+            collection : SchoolYear::query()->orderBy('start_date', 'desc')->get(),
         );
     }
 

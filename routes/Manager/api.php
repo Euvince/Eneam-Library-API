@@ -10,6 +10,7 @@ use App\Http\Resources\Configuration\ConfigurationResource;
 use App\Http\Responses\Configuration\SingleConfigurationResponse;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
 use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
+use App\Http\Controllers\KeywordController;
 
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
@@ -70,6 +71,8 @@ Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMe
 // Article
 Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])->name(name : 'article.index.no-pagination');
 Route::apiResource(name : 'article', controller : ArticleController::class);
+
+Route::get(uri : 'keywords', action : [ KeywordController::class, 'index'])->name(name : 'keywords.index');
 
 
 /* Route::apiResource(name : 'article.comment', controller : CommentController::class);
