@@ -46,6 +46,8 @@ class SupportedMemoryResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'sector_id' => $this->resource->sector_id,
+            'soutenance_id' => $this->resource->soutenance_id,
             'sector' => $this->whenLoaded('sector'),
             'soutenance' => $this->whenLoaded('soutenance'),
             /* 'sector' => new SectorResource($this->whenLoaded('sector')), */

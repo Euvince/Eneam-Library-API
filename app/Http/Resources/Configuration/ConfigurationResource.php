@@ -40,6 +40,7 @@ class ConfigurationResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
+            'school_year_id' => $this->resource->school_year_id,
             'school_year' => $this->whenLoaded('schoolYear'),
         ];
     }

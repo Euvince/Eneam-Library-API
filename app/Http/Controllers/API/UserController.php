@@ -111,7 +111,7 @@ class UserController extends Controller
     public function import()
     {
         Excel::import(new UsersImport,request()->file('file'));
-        return back();
+        return back()->with(['success' => "Données importées avec succès"]);
     }
 
 }
