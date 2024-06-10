@@ -17,7 +17,7 @@ class SchoolYearFactory extends Factory
     public function definition(): array
     {
 
-        $startDate = fake()->dateTimeBetween(startDate : '-15 years', endDate : 'now');
+        $startDate = fake()->unique()->dateTimeBetween(startDate : '-15 years', endDate : 'now');
         $endDate = (clone $startDate)->modify(modifier : '+1  year');
 
         return [

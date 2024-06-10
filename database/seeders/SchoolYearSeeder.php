@@ -12,6 +12,6 @@ class SchoolYearSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\SchoolYear::factory(20)->create();
+        \App\Models\SchoolYear::factory(10)->create();
     }
 }
