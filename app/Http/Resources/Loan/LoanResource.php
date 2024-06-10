@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Resources\Comment;
+namespace App\Http\Resources\Loan;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
 /**
- * @comment Commment $resource
+ * @loan Loan $resource
  */
-class CommentResource extends JsonResource
+class LoanResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,15 +19,18 @@ class CommentResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'content' => $this->resource->content,
-            'likes_number' => $this->resource->likes_number,
+            'status' => $this->resource->status,
+            'duration' => $this->resource->duration,
+            'renewals' => $this->resource->renewals,
+            'loan_date' => $this->resource->loan_date,
+            'processing_date' => $this->resource->processing_date,
             'created_at' => $this->resource->created_at->format("Y-m-d"),
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
-            'article' => $this->when(
-                $this->relationLoaded('article'),
-                $this->resource->article
+            'articles' => $this->when(
+                $this->relationLoaded('articles'),
+                $this->resource->articles
             ),
             'user' => $this->when(
                 $this->relationLoaded('user'),

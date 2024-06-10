@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @sector Keyword $resource
+ * @keyword Keyword $resource
  */
 class KeywordResource extends JsonResource
 {

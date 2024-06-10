@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
@@ -34,7 +37,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -68,7 +70,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
     }
 
     /**
@@ -83,4 +84,34 @@ class UserController extends Controller
             data : ['message' => "L'utilisateur a été supprimé avec succès",],
         );
     }
+
+
+    // Tests sur le package maatwebsite excel
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function getUsers()
+    {
+        $users = User::get();
+        return view('users', compact('users'));
+    }
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function import()
+    {
+        Excel::import(new UsersImport,request()->file('file'));
+        return back();
+    }
+
 }

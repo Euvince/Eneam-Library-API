@@ -51,7 +51,10 @@ class ArticleRequest extends FormRequest
             'has_audios' => ['nullable', 'boolean'],
             'keywords' => ['required', 'array'],
             'thumbnail_path' => ['nullable', 'file', 'mimes:png,jpg,jpeg'/* , 'max:value' */],
-            'file_path' => ['required', 'file', 'mimes:pdf,epub,mobi'/* , 'max:value' */],
+            'file_path' => [
+                Rule::requiredIf((boolean) request()->has_ebooks === true),
+                'file', 'mimes:pdf,epub,mobi'/* , 'max:value' */
+            ],
             'files_paths' => ['nullable'/* , 'array' */],
             'files_paths.*' => ['file', 'mimes:pdf,epub,mobi'/* , 'max:value' */],
             'school_year_id' => ['required', Rule::exists(table : 'school_years', column : 'id')],
