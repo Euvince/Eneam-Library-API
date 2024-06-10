@@ -44,7 +44,7 @@ class ArticleRequest extends FormRequest
             'ISBN' => ['required'],
             'available_stock' => [
                 Rule::requiredIf((boolean) request()->is_physical === true),
-                'numeric', 'min:1'
+                'numeric', 'min:0'
             ],
             'has_ebooks' => ['nullable', 'boolean'],
             'is_physical' => ['nullable', 'boolean'],
