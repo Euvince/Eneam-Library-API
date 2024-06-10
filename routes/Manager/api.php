@@ -76,4 +76,4 @@ Route::get(uri : 'keywords', action : [ KeywordController::class, 'index'])->nam
 
 
 Route::apiResource(name : 'article.comment', controller : CommentController::class);
-/* Route::apiResource(name : 'loan', controller : LoanController::class); */
+Route::apiResource(name : 'loan', controller : LoanController::class);
