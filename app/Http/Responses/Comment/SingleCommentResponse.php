@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Responses\Cycle;
+namespace App\Http\Responses\Comment;
 
 use App\Http\Resources\Comment\CommentResource;
 use Illuminate\Contracts\Support\Responsable;

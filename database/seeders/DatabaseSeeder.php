@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\ConfigurationSeeder::class);
         $this->call(\Database\Seeders\SectorSeeder::class);
         $this->call(\Database\Seeders\SupportedMemorySeeder::class);
-        $this->call(\Database\Seeders\FilingReportSeeder::class);
+        /* $this->call(\Database\Seeders\FilingReportSeeder::class); */
         $this->call(\Database\Seeders\RoleTypeSeeder::class);
         $this->call(\Database\Seeders\RoleSeeder::class);
         $this->call(\Database\Seeders\PermissionSeeder::class);
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\KeywordSeeder::class);
         $this->call(\Database\Seeders\CommentSeeder::class);
         $this->call(\Database\Seeders\LoanSeeder::class);
-        $this->call(\Database\Seeders\ReservationSeeder::class);
+        /* $this->call(\Database\Seeders\ReservationSeeder::class); */
 
     }
 }

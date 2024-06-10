@@ -2,7 +2,7 @@
 
 -Lorsqu'on supprime une entité et que celle ci contient des enfants, retourner un avertissement au user avant de le supprimer et déclencher également la suppression de ses enfants;
 
--Ccohing sur le dashboard pour éffectuer une action sur plusieurs ressources à la fois sur le Listing : 
+-Cohing sur le dashboard pour éffectuer une action sur plusieurs ressources à la fois sur le Listing : 
 -Ex : Supprimer plusieurs ressources, Valider plusieurs mémoires, .....
 
 -Les méthodes index avec les paramètres de recherches pour les users;

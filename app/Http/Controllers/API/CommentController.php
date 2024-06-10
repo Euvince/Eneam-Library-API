@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Article;
 use App\Models\Comment;
+use Illuminate\Auth\AuthManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\Comment\CommentResource;
-use App\Http\Responses\Cycle\CommentCollectionResponse;
-use App\Http\Responses\Cycle\SingleCommentResponse;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Http\Responses\Comment\SingleCommentResponse;
+use App\Http\Responses\Comment\CommentCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CommentController extends Controller
 {
+    public function __construct(
+        private readonly AuthManager $auth
+    )
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -30,13 +38,16 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CommentRequest $request) : SingleCommentResponse
+    public function store(Article $article, CommentRequest $request) : SingleCommentResponse
     {
-        $comment = Comment::create($request->validated());
+        $comment = Comment::create($request->validated() + [
+            'article_id' => $article->id,
+            'user_id' => $this->auth->user()->id ?? 2,
+        ]);
         return new SingleCommentResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Votre commentaire a été envoyé avec succès",
+            message : "Votre commentaire a été soumis avec succès",
             resource : new CommentResource(resource : Comment::query()->with(['article', 'user'])->where('id', $comment->id)->first())
         );
     }
@@ -44,12 +55,12 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment) : SingleCommentResponse
+    public function show(Article $article, Comment $comment) : SingleCommentResponse
     {
         return new SingleCommentResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Informations sur le commentaire $comment->id",
+            message : "Informations sur le commentaire $comment->content de l'article $article->title",
             resource : new CommentResource(resource : Comment::query()->with(['article', 'user'])->where('id', $comment->id)->first())
         );
     }
@@ -57,7 +68,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CommentRequest $request, Comment $comment) : SingleCommentResponse
+    public function update(CommentRequest $request, Article $article, Comment $comment) : SingleCommentResponse
     {
         $comment->update($request->validated());
         return new SingleCommentResponse(
@@ -71,7 +82,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment) : JsonResponse
+    public function destroy(Article $article, Comment $comment) : JsonResponse
     {
         $comment->delete();
         return response()->json(
