@@ -17,6 +17,8 @@ use App\Http\Responses\User\{
 };
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Org_Heigl\Ghostscript\Ghostscript;
+use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
@@ -47,18 +49,24 @@ class UserController extends Controller
      */
     public function show(User $user) : SingleUserResponse
     {
-       $myModel = User::find(3);
+       /* $myModel = User::find(3);
        $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
             ->preservingOriginal()
-            ->toMediaCollection('pdfs');
+            ->toMediaCollection('pdfs'); */
 
         /* $myModel = User::find(3);
         $myModel->addMediaFromUrl("https://placehold.co/600x400/png")
                 ->toMediaCollection(); */
 
         /* $pdf = new \Spatie\PdfToImage\Pdf("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Base de Données\TP en Oracle.pdf");
-        $pdf->saveImage(storage_path('app/public/test.jpg'));
-        dd($pdf->getNumberOfPages()); */
+        Ghostscript::setGsPath("C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
+        $pdf->save(storage_path('app/public/test.jpg')); */
+
+        $pdf_file = public_path() . "\pdfs\\file.pdf";
+        $output_path = public_path() . "\Images\\rashid%d";
+        Ghostscript::setGsPath(path : "C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
+        $pdf = new Pdf($pdf_file);
+        $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Png)->save($output_path);
 
         return new SingleUserResponse(
             statusCode : 200,

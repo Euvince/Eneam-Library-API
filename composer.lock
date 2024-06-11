@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4dfb57e9dfee23b95d9b811be0017a6",
+    "content-hash": "95f85dfcf4b34e8e331c19313a5bd16b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3682,6 +3682,48 @@
             "time": "2023-02-08T01:06:31+00:00"
         },
         {
+            "name": "org_heigl/ghostscript",
+            "version": "2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heiglandreas/Org_Heigl_Ghostscript.git",
+                "reference": "fd73693a3f213427b585b45fa744c9cc60679f25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heiglandreas/Org_Heigl_Ghostscript/zipball/fd73693a3f213427b585b45fa744c9cc60679f25",
+                "reference": "fd73693a3f213427b585b45fa744c9cc60679f25",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "^5.5||^6.0||^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Org_Heigl\\Ghostscript\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Heigl",
+                    "email": "andreas@heigl.org"
+                }
+            ],
+            "description": "A PHP-Wrapper around the Ghostscript-CLI",
+            "support": {
+                "issues": "https://github.com/heiglandreas/Org_Heigl_Ghostscript/issues",
+                "source": "https://github.com/heiglandreas/Org_Heigl_Ghostscript/tree/2.3.2"
+            },
+            "time": "2020-09-23T05:00:00+00:00"
+        },
+        {
             "name": "paragonie/constant_time_encoding",
             "version": "v2.7.0",
             "source": {
@@ -5395,6 +5437,76 @@
                 }
             ],
             "time": "2024-04-19T12:35:28+00:00"
+        },
+        {
+            "name": "spatie/pdf-to-image",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/pdf-to-image.git",
+                "reference": "b145cf49cd232921e7d13d6d52e72c9f2581f446"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/b145cf49cd232921e7d13d6d52e72c9f2581f446",
+                "reference": "b145cf49cd232921e7d13d6d52e72c9f2581f446",
+                "shasum": ""
+            },
+            "require": {
+                "ext-imagick": "*",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "pestphp/pest": "^2.34"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\PdfToImage\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Patrick Organ",
+                    "email": "patrick@permafrost.dev",
+                    "homepage": "https://permafrost.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convert a pdf to an image",
+            "homepage": "https://github.com/spatie/pdf-to-image",
+            "keywords": [
+                "convert",
+                "image",
+                "pdf",
+                "pdf-to-image",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/pdf-to-image/issues",
+                "source": "https://github.com/spatie/pdf-to-image/tree/3.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-10T18:40:38+00:00"
         },
         {
             "name": "spatie/temporary-directory",

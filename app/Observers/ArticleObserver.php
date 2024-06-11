@@ -37,7 +37,7 @@ class ArticleObserver
 
     public function updating(Article $article): void
     {
-        $article->slug = \Illuminate\Support\Str::slug($article->name);
+        $article->slug = \Illuminate\Support\Str::slug($article->title);
         $this->canDoEvent()
             ? $article->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $article->updated_by = NULL;
