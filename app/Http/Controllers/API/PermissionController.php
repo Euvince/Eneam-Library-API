@@ -5,23 +5,25 @@ namespace App\Http\Controllers\API;
 use App\Models\Permission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionRequest;
+use App\Http\Resources\Permission\PermissionResource;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Http\Responses\Permission\SinglePermissionResponse;
+use App\Http\Responses\Permission\PermissionCollectionResponse;
 
 class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : PermissionCollectionResponse | LengthAwarePaginator
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new PermissionCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            total : Permission::count(),
+            message : "Liste de toutes les permissions",
+            collection : Permission::query()->with(['roles', 'users'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+        );
     }
 
     /**
@@ -29,7 +31,6 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request)
     {
-        //
     }
 
     /**
@@ -37,15 +38,12 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Permission $permission)
-    {
-        //
+        return new SinglePermissionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Informations sur la permission $permission->name",
+            resource : new PermissionResource(resource : Permission::query()->with(['roles', 'users'])->where('id', $permission->id)->first())
+        );
     }
 
     /**
@@ -53,7 +51,6 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission)
     {
-        //
     }
 
     /**
@@ -61,6 +58,5 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        //
     }
 }

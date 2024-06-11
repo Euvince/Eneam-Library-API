@@ -72,7 +72,7 @@ Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMe
 Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])->name(name : 'article.index.no-pagination');
 Route::apiResource(name : 'article', controller : ArticleController::class);
 
-Route::get(uri : 'keywords', action : [ KeywordController::class, 'index'])->name(name : 'keywords.index');
+Route::get(uri : 'keyword', action : [ KeywordController::class, 'index'])->name(name : 'keywords.index');
 
 
 Route::apiResource(name : 'article.comment', controller : CommentController::class);

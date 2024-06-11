@@ -5,62 +5,79 @@ namespace App\Http\Controllers\API;
 use App\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
+use App\Http\Resources\Role\RoleResource;
+use App\Http\Responses\Role\RoleCollectionResponse;
+use App\Http\Responses\Role\SingleRoleResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : RoleCollectionResponse | LengthAwarePaginator
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new RoleCollectionResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            total : Role::count(),
+            message : "Liste de tous les rôles",
+            collection : Role::query()->with(['permissions', 'users'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoleRequest $request)
+    public function store(RoleRequest $request) : SingleRoleResponse
     {
-        //
+        $role = Role::create($request->validated());
+        return new SingleRoleResponse(
+            statusCode : 201,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Le rôle a été crée avec succès",
+            resource : new RoleResource(resource : Role::query()->with(['permissions'])->where('id', $role->id)->first())
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Role $role)
+    public function show(Role $role) : SingleRoleResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Role $role)
-    {
-        //
+        return new SingleRoleResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Informations sur le rôle $role->name",
+            resource : new RoleResource(resource : Role::query()->with(['permissions', 'users'])->where('id', $role->id)->first())
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoleRequest $request, Role $role)
+    public function update(RoleRequest $request, Role $role) : SingleRoleResponse
     {
-        //
+        $role->update($request->validated());
+        return new SingleRoleResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Le rôle a été modifié avec succès",
+            resource : new RoleResource(resource : Role::query()->with(['permissions', 'users'])->where('id', $role->id)->first())
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role) : JsonResponse
     {
-        //
+        $role->delete();
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "Le rôle a été supprimé avec succès",],
+        );
     }
 }
