@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\RoleSeeder::class);
         $this->call(\Database\Seeders\PermissionSeeder::class);
         $this->call(\Database\Seeders\UserSeeder::class);
-        $this->call(\Database\Seeders\PaymentSeeder::class);
+        /* $this->call(\Database\Seeders\PaymentSeeder::class); */
         $this->call(\Database\Seeders\SubscriptionSeeder::class);
         $this->call(\Database\Seeders\ArticleSeeder::class);
         $this->call(\Database\Seeders\KeywordSeeder::class);

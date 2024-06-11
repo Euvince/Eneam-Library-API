@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Support\Facades\Validator;
 use App\Jobs\AskAgainEmailVerificationLinkJob;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -19,14 +20,24 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
-            'name' => ['nullable', 'string', 'max:255'],
-
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
+            'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'sex' => [
+                'nullable', 'before_or_equal:today',
+                new ValueInValuesRequestRules(
+                    request : request(),
+                    message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
+                    values : ['Masculin', 'Féminin', 'Autre']
+                )
+            ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore(id : $user->id),
             ],
         ])->validateWithBag('updateProfileInformation');
 

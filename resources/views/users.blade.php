@@ -11,11 +11,25 @@
         <div class="card-header">
             Importation/Exportation de données utilisateurs
         </div>
-        {{-- @if (session('success'))
-            <div class="alert alert-success">
+        @if (session('success'))
+            <div class="alert alert-success mt-3 mx-3">
                 {{ session('success') }}
             </div>
-        @endif --}}
+        @endif
+        @error('message')
+            <div class="alert alert-err mt-3 mx-3">
+                {{ $message }}
+            </div>
+        @enderror
+        @if ($errors->any())
+            <div class="alert alert-danger mt-3 mx-3">
+                <ul class="my-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card-body">
             <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf

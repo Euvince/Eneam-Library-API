@@ -23,6 +23,7 @@ class UsersImport implements ToModel
             'password' => Hash::make($row['password']),
         ]); */
 
+        $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
         $user = new User([
             'firstname' => $row[0],
             'lastname'  => $row[1],
@@ -30,6 +31,10 @@ class UsersImport implements ToModel
             'matricule' => $row[3],
             'password'  => Hash::make($row[4]),
         ]);
+        $user->assignRole(roles : ['Etudiant-Eneamien']);
+        foreach ($eneamienStudentPermissions as $permission) {
+            $user->givePermissionTo($permission);
+        }
 
         return $user;
     }

@@ -35,7 +35,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'matricule', 'firstname', 'lastname', 'email', 'name',
+        'matricule', 'firstname', 'lastname', 'email',
         'password', 'phone_numer', 'birth_date', 'sex', 'profile_picture_path',
         'hasPaid', 'hasAccess', 'debt_amount', 'slug',
         'created_by', 'updated_by', 'deleted_by',

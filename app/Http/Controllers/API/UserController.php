@@ -6,6 +6,7 @@ use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ImportRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Http\Responses\User\{
@@ -108,9 +109,10 @@ class UserController extends Controller
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function import()
+    public function import(ImportRequest $request)
     {
-        Excel::import(new UsersImport,request()->file('file'));
+        Excel::import(new UsersImport,$request->file);
+        /* Excel::import(new UsersImport,request()->file('file')); */
         return back()->with(['success' => "Données importées avec succès"]);
     }
 
