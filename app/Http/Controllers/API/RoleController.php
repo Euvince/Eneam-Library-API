@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Role;
-use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Http\Requests\RoleRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Role\RoleResource;
-use App\Http\Responses\Role\RoleCollectionResponse;
 use App\Http\Responses\Role\SingleRoleResponse;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Http\Responses\Role\RoleCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoleController extends Controller
 {
@@ -23,7 +24,7 @@ class RoleController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Role::count(),
             message : "Liste de tous les rôles",
-            collection : Role::query()->with(['permissions', 'users'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Role::query()->with(['permissions'/* , 'users' */])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -32,7 +33,13 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request) : SingleRoleResponse
     {
-        $role = Role::create($request->validated());
+        $data = $request->validated();
+        unset($data['permissions']);
+        $role = Role::create($data);
+        foreach ($request->permissions as $id) {
+            $permission = Permission::findById($id);
+            $role->givePermissionTo($permission->name);
+        }
         return new SingleRoleResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
@@ -50,7 +57,7 @@ class RoleController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur le rôle $role->name",
-            resource : new RoleResource(resource : Role::query()->with(['permissions', 'users'])->where('id', $role->id)->first())
+            resource : new RoleResource(resource : Role::query()->with(['permissions'/* , 'users' */])->where('id', $role->id)->first())
         );
     }
 
@@ -59,12 +66,21 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, Role $role) : SingleRoleResponse
     {
-        $role->update($request->validated());
+        $data = $request->validated();
+        unset($data['permissions']);
+        $role->update($data);
+        foreach ($role->permissions as $permission) {
+            $role->revokePermissionTo($permission);
+        }
+        foreach ($request->permissions as $id) {
+            $permission = Permission::findById($id);
+            $role->givePermissionTo($permission->name);
+        }
         return new SingleRoleResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Le rôle a été modifié avec succès",
-            resource : new RoleResource(resource : Role::query()->with(['permissions', 'users'])->where('id', $role->id)->first())
+            resource : new RoleResource(resource : Role::query()->with(['permissions'/* , 'users' */])->where('id', $role->id)->first())
         );
     }
 

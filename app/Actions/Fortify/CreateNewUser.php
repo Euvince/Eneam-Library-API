@@ -2,11 +2,13 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use App\Rules\ValueInValuesRequestRules;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -33,10 +35,7 @@ class CreateNewUser implements CreatesNewUsers
                     'firstname' => ['required', 'string', 'max:255'],
                     'lastname' => ['required', 'string', 'max:255'],
                     'email' => [
-                        'required',
-                        'string',
-                        'email',
-                        'max:255',
+                        'required','string','email','max:255',
                         Rule::unique(User::class),
                     ],
                     'password' => $this->passwordRules(),
@@ -54,28 +53,44 @@ class CreateNewUser implements CreatesNewUsers
                 return $user;
             break;
 
-            case "api/register-teacher" :
+            case "api/user" :
                 Validator::make($input, [
                     'firstname' => ['required', 'string', 'max:255'],
                     'lastname' => ['required', 'string', 'max:255'],
                     'email' => [
-                        'required',
-                        'string',
-                        'email',
-                        'max:255',
+                        'required','string','email','max:255',
                         Rule::unique(User::class),
                     ],
                     'password' => $this->passwordRules(),
+                    'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
+                    'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
+                    'sex' => [
+                        'nullable', 'before_or_equal:today',
+                        new ValueInValuesRequestRules(
+                            request : request(),
+                            message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
+                            values : ['Masculin', 'Féminin', 'Autre']
+                        )
+                    ],
+                    'roles' => ['required', 'array', 'exists:roles,id'],
                 ])->validate();
                 $user = User::create([
                     'firstname' => $input['firstname'],
                     'lastname' => $input['lastname'],
                     'email' => $input['email'],
                     'password' => Hash::make($input['password']),
-                ])->assignRole(['Enseignant']);
-                $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
-                foreach ($teacherPermissions as $permission) {
-                    $user->givePermissionTo($permission);
+                    'phone_number' => $input['phone_number'],
+                    'birth_date' => $input['birth_date'],
+                    'sex' => $input['sex'],
+                ]);
+                $user->roles()->sync($input['roles']);
+                /**
+                 * @var array $input
+                 */
+                foreach ($input['roles'] as $role) {
+                    foreach (Role::find($role)->permissions as $permission) {
+                        $user->givePermissionTo($permission->name);
+                    }
                 }
                 return $user;
             break;

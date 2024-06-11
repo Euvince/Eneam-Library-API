@@ -7,7 +7,9 @@ use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ImportRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
+use App\Models\Role;
 use App\Models\User;
 use App\Http\Responses\User\{
     SingleUserResponse,
@@ -36,7 +38,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
     }
 
@@ -45,10 +47,10 @@ class UserController extends Controller
      */
     public function show(User $user) : SingleUserResponse
     {
-       /* $myModel = User::find(3); */
-       /* $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
+       $myModel = User::find(3);
+       $myModel->addMedia("C:\Users\Euvince\OneDrive\Documents\Cours IG-2\Mes Cours IG2\Anglais\ENEAM Year 2 Book.pdf")
             ->preservingOriginal()
-            ->toMediaCollection('pdfs'); */
+            ->toMediaCollection('pdfs');
 
         /* $myModel = User::find(3);
         $myModel->addMediaFromUrl("https://placehold.co/600x400/png")
@@ -69,8 +71,27 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user) : SingleUserResponse
     {
+        $data = $request->validated();
+        $user->update($data);
+        if (array_key_exists('roles', $data)) {
+            $user->roles()->sync($request['roles']);
+            foreach ($user->permissions as $permission) {
+                $user->revokePermissionTo($permission);
+            }
+            foreach($request['roles'] as $role){
+                foreach (Role::find($role)->permissions as $permission) {
+                    $user->givePermissionTo($permission->name);
+                }
+            }
+        }
+        return new SingleUserResponse(
+            statusCode : 200,
+            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+            message : "Utilisateur modifié avec succès",
+            resource : new UserResource(resource : User::query()->with(['roles', 'permissions'])->where('id', $user->id)->first())
+        );
     }
 
     /**

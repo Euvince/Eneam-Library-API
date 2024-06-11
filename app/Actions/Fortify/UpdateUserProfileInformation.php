@@ -22,6 +22,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required','string','email','max:255',
+                Rule::unique('users')->ignore(id : $user->id),
+            ],
             'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
             'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'sex' => [
@@ -32,13 +36,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                     values : ['Masculin', 'Féminin', 'Autre']
                 )
             ],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore(id : $user->id),
-            ],
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
@@ -46,8 +43,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
-                'name' => $input['name'],
+                'firstname' => $input['firstname'],
+                'lastname' => $input['lastname'],
                 'email' => $input['email'],
+                'phone_number' => $input['phone_number'],
+                'birth_date' => $input['birth_date'],
+                'sex' => $input['sex'],
             ])->save();
         }
     }
@@ -60,9 +61,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
-            'name' => $input['name'],
+            'firstname' => $input['firstname'],
+            'lastname' => $input['lastname'],
             'email' => $input['email'],
             'email_verified_at' => null,
+            'phone_number' => $input['phone_number'],
+            'birth_date' => $input['birth_date'],
+            'sex' => $input['sex'],
         ])->save();
 
         AskAgainEmailVerificationLinkJob::dispatch($user);

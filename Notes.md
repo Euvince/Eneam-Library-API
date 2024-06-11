@@ -5,10 +5,6 @@
 -Cohing sur le dashboard pour éffectuer une action sur plusieurs ressources à la fois sur le Listing : 
 -Ex : Supprimer plusieurs ressources, Valider plusieurs mémoires, .....
 
--Les méthodes index avec les paramètres de recherches pour les users;
-
--Traduction des messages d'erreurs;
-
 -Les scopes et les casts pour personnaliser les requêtes;
 
 -Prévisualisation de fichiers;

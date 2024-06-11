@@ -8,10 +8,14 @@ $slugRegex = '[0-9a-z\-]+';
 /* Route::group(['middleware' => 'auth:sanctum'], function () {}); */
 
 // Users
-/* Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class); */
+Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class);
 
 // Subscriptions
 Route::apiResource(name : 'subscription', controller : App\Http\Controllers\API\SubscriptionController::class);
+
+// Permissions
+Route::apiResource(name : 'permission', controller : App\Http\Controllers\API\PermissionController::class)
+    ->except(['store', 'update', 'destroy']);
 
 // Rôles
 Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);

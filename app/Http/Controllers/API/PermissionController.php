@@ -22,7 +22,7 @@ class PermissionController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Permission::count(),
             message : "Liste de toutes les permissions",
-            collection : Permission::query()->with(['roles', 'users'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Permission::query()->with(['roles'/* , 'users' */])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -42,7 +42,7 @@ class PermissionController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur la permission $permission->name",
-            resource : new PermissionResource(resource : Permission::query()->with(['roles', 'users'])->where('id', $permission->id)->first())
+            resource : new PermissionResource(resource : Permission::query()->with(['roles'/* , 'users' */])->where('id', $permission->id)->first())
         );
     }
 

@@ -35,7 +35,6 @@ class UsersImport implements ToModel
         foreach ($eneamienStudentPermissions as $permission) {
             $user->givePermissionTo($permission);
         }
-
         return $user;
     }
 }

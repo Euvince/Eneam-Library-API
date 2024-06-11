@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 /**
  * @mixin IdeHelperRole
  */
+
+#[ObservedBy([\App\Observers\RoleObserver::class])]
+
 class Role extends \Spatie\Permission\Models\Role
 {
     use HasFactory, SoftDeletes;

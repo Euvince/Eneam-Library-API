@@ -24,7 +24,7 @@ class PermissionSeeder extends Seeder
             'Gestion des Paiements',
             'Gestion des Abonnements',
             'Gestion des Soutenances',
-            'Gestion des Réservations',
+            /* 'Gestion des Réservations', */
             'Gestion des Commentaires',
             'Gestion des Configurations',
             'Gestion des Mémoires Soutenus',
@@ -32,14 +32,14 @@ class PermissionSeeder extends Seeder
         ];
         $teacherPermissions = [
             'Prêter un Livre',
-            'Réserver un Livre',
+            /* 'Réserver un Livre', */
             'Demander un Accès',
             'Consulter un Livre',
             'Consulter un Mémoire',
         ];
         $eneamienSutudentPermissions = [
             'Prêter un Livre',
-            'Réserver un Livre',
+            /* 'Réserver un Livre', */
             'Demander un Accès',
             'Consulter un Livre',
             'Déposer un Mémoire',

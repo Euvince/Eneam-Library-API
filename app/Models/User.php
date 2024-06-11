@@ -83,18 +83,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     } */
 
-    /* public function registerMediaConversions(?Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this
             ->addMediaConversion('thumbnail')
             ->fit(Fit::Contain, 300, 300)
             ->performOnCollections('pdfs');
 
-        $this->addMediaConversion('thumb')
+        /* $this->addMediaConversion('thumb')
             ->width(368)
             ->height(232)
-            ->pdfPageNumber(2);
-    } */
+            ->pdfPageNumber(2); */
+    }
 
     public function payments () : HasMany {
         return $this->hasMany(related : \App\Models\Payment::class, foreignKey : 'user_id');
