@@ -23,3 +23,10 @@ Route::controller(UserController::class)->group(function(){
     Route::get('users-export', 'export')->name('users.export');
     Route::post('users-import', 'import')->name('users.import');
 });
+
+Route::get('generate-img-by-pdf', function () {
+    $imagick = new Imagick();
+    $imagick->readImage(public_path() . "\pdfs\\file.pdf");
+    $imagick->writeImage('converted.jpg', true);
+    dd("done");
+});

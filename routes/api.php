@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request)
 
 
 
-Route::get('/check-mbstring', function () {
+/* Route::get('/check-mbstring', function () {
     if (extension_loaded('mbstring')) {
         return 'Mbstring is installed and loaded.';
     } else {
@@ -49,8 +49,8 @@ Route::get('/check-ghostscript', function () {
         return 'Ghostscript is not installed.';
     }
 
-    /* $output = shell_exec('gswin64c -version');
-    return $output; */
+    // $output = shell_exec('gswin64c -version');
+    // return $output;
 
-});
+}); */
 

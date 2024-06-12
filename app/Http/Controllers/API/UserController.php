@@ -21,6 +21,8 @@ use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Imagick;
+
 class UserController extends Controller
 {
     /**
@@ -63,7 +65,8 @@ class UserController extends Controller
         $pdf->save(storage_path('app/public/test.jpg')); */
 
         $pdf_file = public_path() . "\pdfs\\file.pdf";
-        $output_path = public_path() . "\Images\\rashid%d";
+        /* $output_path = public_path() . "\Images\\rashid%d"; */
+        $output_path = public_path() . "\Images\\euvince";
         Ghostscript::setGsPath(path : "C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
         $pdf = new Pdf($pdf_file);
         $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Png)->save($output_path);
