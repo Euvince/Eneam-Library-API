@@ -60,6 +60,12 @@ class CycleObserver
             ? $cycle->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $cycle->deleted_by = NULL;
         $cycle->save();
+
+        if (!app()->runningInConsole() && $cycle->soutenances()->count() > 0) {
+            $cycle->soutenances()->each(function (\App\Models\Soutenance $soutenance) {
+                $soutenance->delete();
+            });
+        }
     }
 
     /**

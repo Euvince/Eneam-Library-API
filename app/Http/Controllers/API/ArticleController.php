@@ -109,6 +109,32 @@ class ArticleController extends Controller
         );
     }
 
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (Article $article) : JsonResponse
+    {
+        $loansCount = $article->loans()->count();
+        $commentsCount = $article->comments()->count();
+        $hasChildrens = ($loansCount > 0 || $commentsCount > 0) ? true : false;
+        $message = $hasChildrens === true
+            ? "Attention, cet article est relié à certaines données, souhaitez vous-vraiment le supprimer ?"
+            : "Voulez-vous vraiment supprimer cet article ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */

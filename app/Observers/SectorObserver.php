@@ -71,6 +71,20 @@ class SectorObserver
             ? $sector->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $sector->deleted_by = NULL;
         $sector->save();
+
+        if (!app()->runningInConsole()) {
+            if ($sector->type === "Filière" && $sector->specialities()->count() > 0) {
+                $sector->specialities()->each(function (\App\Models\Sector $speciality) {
+                    $speciality->delete();
+                });
+            }
+
+            if ($sector->type === "Spécialité" && $sector->supportedMemories()->count() > 0) {
+                $sector->supportedMemories()->each(function (\App\Models\SupportedMemory $supportedMemory) {
+                    $supportedMemory->delete();
+                });
+            }
+        }
     }
 
     /**

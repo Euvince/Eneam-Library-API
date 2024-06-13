@@ -64,12 +64,12 @@ class UserController extends Controller
         Ghostscript::setGsPath("C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
         $pdf->save(storage_path('app/public/test.jpg')); */
 
-        $pdf_file = public_path() . "\pdfs\\file.pdf";
-        /* $output_path = public_path() . "\Images\\rashid%d"; */
+        /* $pdf_file = public_path() . "\pdfs\\file.pdf";
+        // $output_path = public_path() . "\Images\\rashid%d";
         $output_path = public_path() . "\Images\\euvince";
-        Ghostscript::setGsPath(path : "C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
+        Ghostscript::setGsPath(path : "C:\\Program Files\\gs\\gs10.03.1\\bin\\gswin64c.exe");
         $pdf = new Pdf($pdf_file);
-        $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Png)->save($output_path);
+        $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Png)->save($output_path); */
 
         return new SingleUserResponse(
             statusCode : 200,
@@ -102,6 +102,34 @@ class UserController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Utilisateur modifié avec succès",
             resource : new UserResource(resource : User::query()->with(['roles', 'permissions'])->where('id', $user->id)->first())
+        );
+    }
+
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (User $user) : JsonResponse
+    {
+        $rolesCount = $user->roles()->count();
+        $commentsCount = $user->comments()->count();
+        $permissionsCount = $user->permissions()->count();
+        $subscriptionsCount = $user->subscriptions()->count();
+        $hasChildrens = ($commentsCount > 0 || $subscriptionsCount > 0) ? true : false;
+        $message = $hasChildrens === true
+            ? "Attention, cet utilisateur est relié à certaines données, souhaitez vous-vraiment le supprimer ?"
+            : "Voulez-vous vraiment supprimer cet utilisateur ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
         );
     }
 

@@ -70,6 +70,31 @@ class CycleController extends Controller
         );
     }
 
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (Cycle $cycle) : JsonResponse
+    {
+        $soutenancesCount = $cycle->soutenances->count();
+        $hasChildrens = $soutenancesCount > 0 ? true : false;
+        $message = $hasChildrens === true
+            ? "Ce cycle contient des soutenances, souhaitez vous-vraiment le supprimer ?"
+            : "Voulez-vous vraiment supprimer ce cycle ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -82,4 +107,28 @@ class CycleController extends Controller
             data : ['message' => "Le cycle a été supprimé avec succès",],
         );
     }
+
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param CycleRequest $request
+     * @return JsonResponse
+     */
+    public function destroyCycles (CycleRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Cycle::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les cycles ont été supprimés avec succès"
+                    : "Le cycle a été supprimé avec succès"
+            ],
+        );
+    }
+
 }

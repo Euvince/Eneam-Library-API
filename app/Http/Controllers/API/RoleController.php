@@ -84,6 +84,32 @@ class RoleController extends Controller
         );
     }
 
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (Role $role) : JsonResponse
+    {
+        $usersCount = $role->users()->count();
+        $permissionsCount = $role->permissions()->count();
+        $hasChildrens = ($usersCount > 0 || $permissionsCount > 0) ? true : false;
+        $message = $hasChildrens === true
+            ? "Attention, ce rôle est relié à certaines données, souhaitez vous-vraiment le supprimer ?"
+            : "Voulez-vous vraiment supprimer ce rôle ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */

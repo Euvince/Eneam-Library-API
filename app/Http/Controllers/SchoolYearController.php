@@ -28,7 +28,6 @@ class SchoolYearController extends Controller
      */
     public function store(SchoolYearRequest $request)
     {
-        //
     }
 
     /**
@@ -36,7 +35,6 @@ class SchoolYearController extends Controller
      */
     public function show(SchoolYear $schoolYear)
     {
-        //
     }
 
     /**
@@ -44,7 +42,6 @@ class SchoolYearController extends Controller
      */
     public function update(SchoolYearRequest $request, SchoolYear $schoolYear)
     {
-        //
     }
 
     /**
@@ -52,6 +49,5 @@ class SchoolYearController extends Controller
      */
     public function destroy(SchoolYear $schoolYear)
     {
-        //
     }
 }

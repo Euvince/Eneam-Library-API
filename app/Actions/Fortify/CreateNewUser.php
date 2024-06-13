@@ -53,7 +53,7 @@ class CreateNewUser implements CreatesNewUsers
                 return $user;
             break;
 
-            case "api/user" :
+            case "api/create-user" :
                 Validator::make($input, [
                     'firstname' => ['required', 'string', 'max:255'],
                     'lastname' => ['required', 'string', 'max:255'],

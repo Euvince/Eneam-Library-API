@@ -63,6 +63,31 @@ class SoutenanceController extends Controller
         return $response;
     }
 
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (Soutenance $soutenance) : JsonResponse
+    {
+        $supportedMemoriesCount = $soutenance->supportedMemories()->count();
+        $hasChildrens = $supportedMemoriesCount > 0 ? true : false;
+        $message = $hasChildrens === true
+            ? "Cette soutenance contient des mémoires soutenus, souhaitez vous-vraiment la supprimer ?"
+            : "Voulez-vous vraiment supprimer cette soutenance ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */

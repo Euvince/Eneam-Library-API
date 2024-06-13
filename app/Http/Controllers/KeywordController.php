@@ -28,7 +28,6 @@ class KeywordController extends Controller
      */
     public function store(KeywordRequest $request)
     {
-        //
     }
 
     /**
@@ -36,7 +35,6 @@ class KeywordController extends Controller
      */
     public function show(Keyword $keyword)
     {
-        //
     }
 
     /**
@@ -44,7 +42,6 @@ class KeywordController extends Controller
      */
     public function update(KeywordRequest $request, Keyword $keyword)
     {
-        //
     }
 
     /**
@@ -52,6 +49,5 @@ class KeywordController extends Controller
      */
     public function destroy(Keyword $keyword)
     {
-        //
     }
 }

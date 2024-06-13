@@ -24,15 +24,25 @@ class CycleRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => [
-                'required',
-                Rule::unique(table : 'cycles', column : 'name')
-                    ->ignore(request()->route()->parameter(name : 'cycle'))
-                    ->withoutTrashed()
-            ],
-            'code' => ['required'],
-        ];
+        $routeName = request()->route()->getName();
+        if ($routeName === "cycle.store" || $routeName === "cycle.update") {
+            $rules = [
+                'name' => [
+                    'required',
+                    Rule::unique(table : 'cycles', column : 'name')
+                        ->ignore(request()->route()->parameter(name : 'cycle'))
+                        ->withoutTrashed()
+                ],
+                'code' => ['required'],
+            ];
+        }
+        else if ($routeName === "destroy-cycles") {
+            $rules = [
+                'ids' => ['required', 'array'],
+            ];
+        }
+
+        return $rules;
     }
 
     public function failedValidations (Validator $validator) : HttpResponseException {
@@ -46,7 +56,13 @@ class CycleRequest extends FormRequest
     }
 
     public function messages() : array {
-        return [];
+        $messages = [];
+        $routeName = request()->route()->getName();
+        if ($routeName === "destroy-cycles") {
+            $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs cycle(s)";
+            $messages['ids.array'] = "L'ensemble de cycle(s) envoyé doit être un tableau";
+        }
+        return $messages;
     }
 
 }

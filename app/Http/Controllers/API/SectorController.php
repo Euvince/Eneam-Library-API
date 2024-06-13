@@ -81,6 +81,32 @@ class SectorController extends Controller
         );
     }
 
+
+    /**
+     * Check if the specified resource has any children.
+    */
+    public function checkChildrens (Sector $sector) : JsonResponse
+    {
+        $specialitiesCount = $sector->specialities()->count();
+        $supportedMemoriesCount = $sector->supportedMemories()->count();
+        $hasChildrens = ($supportedMemoriesCount > 0 || $specialitiesCount > 0) ? true : false;
+        $message = $hasChildrens === true
+            ? "Attention, cette filière est relié à certaines données, souhaitez vous-vraiment la supprimer ?"
+            : "Voulez-vous vraiment supprimer cette filière ?, attention, cette action est irréversible.";
+
+        return response()->json(
+            status : 200,
+            headers : [
+                'Allow' => 'GET, POST, PUT, PATCH, DELETE',
+                'Content-Type' => 'application/json',
+            ],
+            data :  [
+                'has-children' => $hasChildrens,
+                "message" => $message
+            ]
+        );
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -94,4 +120,28 @@ class SectorController extends Controller
             data : ['message' => $message],
         );
     }
+
+     /**
+     * Remove many specified resources from storage
+     *
+     * @param SectorRequest $request
+     * @return JsonResponse
+     */
+    public function destroySectors (SectorRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Sector::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les filières/spécialités ont été supprimées avec succès"
+                    : "La filière/spécialité a été supprimée avec succès"
+            ],
+        );
+    }
+
 }

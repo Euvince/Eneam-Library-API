@@ -54,26 +54,47 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
 // Années scolaires
 Route::get(uri : 'schoolYear', action : [ SchoolYearController::class, 'index'])->name(name : 'schoolYear.index');
 
+
 // Soutenances
 Route::apiResource(name : 'soutenance', controller : SoutenanceController::class);
 
+Route::get(uri : '/check-soutenance-childrens/{soutenance}', action : [App\Http\Controllers\API\SoutenanceController::class, 'checkChildrens'])
+    ->name('check-soutenance-childrens')
+    ->where(['soutenance' => $idRegex]);
+
+
 // Mémoires soutenus
-Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
 Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
+
+Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])->name(name : 'supportedMemory.index.no-pagination');
+
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
     ->name(name : 'validate-memory')
     ->where(['supportedMemory' => $idRegex]);
+
 Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::class, 'rejectMemory'])
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
+
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 
+
 // Article
-Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])->name(name : 'article.index.no-pagination');
 Route::apiResource(name : 'article', controller : ArticleController::class);
 
+Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])->name(name : 'article.index.no-pagination');
+
+Route::get(uri : '/check-article-childrens/{article}', action : [App\Http\Controllers\API\ArticleController::class, 'checkChildrens'])
+    ->name('check-article-childrens')
+    ->where(['article' => $idRegex]);
+
+
+// Mots clés
 Route::get(uri : 'keyword', action : [ KeywordController::class, 'index'])->name(name : 'keywords.index');
 
 
+// Commentaires
 Route::apiResource(name : 'article.comment', controller : CommentController::class);
+
+// Emprunts
 Route::apiResource(name : 'loan', controller : LoanController::class);
