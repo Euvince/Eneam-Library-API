@@ -100,4 +100,29 @@ class SoutenanceController extends Controller
             data : ['message' => "La soutenance a été supprimée avec succès",],
         );
     }
+
+
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param SoutenanceRequest $request
+     * @return JsonResponse
+     */
+    public function destroySoutenances (SoutenanceRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Soutenance::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les soutenances ont été supprimées avec succès"
+                    : "La soutenance a été supprimée avec succès"
+            ],
+        );
+    }
+
 }

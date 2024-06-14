@@ -25,6 +25,7 @@ class CycleRequest extends FormRequest
     public function rules(): array
     {
         $routeName = request()->route()->getName();
+
         if ($routeName === "cycle.store" || $routeName === "cycle.update") {
             $rules = [
                 'name' => [

@@ -67,6 +67,14 @@ class SoutenanceObserver
             ? $soutenance->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $soutenance->deleted_by = NULL;
         $soutenance->save();
+
+        if (!app()->runningInConsole()) {
+            if ($soutenance->supportedMemories()->count() > 0) {
+                $soutenance->supportedMemories()->each(function (\App\Models\SupportedMemory $supportedMemory) {
+                    $supportedMemory->delete();
+                });
+            }
+        }
     }
 
     /**

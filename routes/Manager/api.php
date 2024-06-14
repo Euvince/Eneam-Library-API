@@ -62,6 +62,9 @@ Route::get(uri : '/check-soutenance-childrens/{soutenance}', action : [App\Http\
     ->name('check-soutenance-childrens')
     ->where(['soutenance' => $idRegex]);
 
+Route::delete(uri : '/destroy-soutenances', action : [App\Http\Controllers\API\SoutenanceController::class, 'destroySoutenances'])
+    ->name('destroy-soutenances');
+
 
 // Mémoires soutenus
 Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
@@ -87,6 +90,9 @@ Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, '
 Route::get(uri : '/check-article-childrens/{article}', action : [App\Http\Controllers\API\ArticleController::class, 'checkChildrens'])
     ->name('check-article-childrens')
     ->where(['article' => $idRegex]);
+
+Route::delete(uri : '/destroy-articles', action : [App\Http\Controllers\API\ArticleController::class, 'destroyArticles'])
+    ->name('destroy-articles');
 
 
 // Mots clés

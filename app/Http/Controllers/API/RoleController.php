@@ -122,4 +122,28 @@ class RoleController extends Controller
             data : ['message' => "Le rôle a été supprimé avec succès",],
         );
     }
+
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param RoleRequest $request
+     * @return JsonResponse
+     */
+    public function destroyRoles (RoleRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Role::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les filières/spécialités ont été supprimées avec succès"
+                    : "La filière/spécialité a été supprimée avec succès"
+            ],
+        );
+    }
+
 }
