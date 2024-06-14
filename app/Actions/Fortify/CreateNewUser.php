@@ -30,7 +30,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         $routeUri = $this->request->route()->uri();
         switch ($routeUri) {
-            case "api/register" :
+            case "register" :
                 Validator::make($input, [
                     'firstname' => ['required', 'string', 'max:255'],
                     'lastname' => ['required', 'string', 'max:255'],

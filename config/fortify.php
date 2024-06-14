@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'home' => '/',
+    'home' => '/home',
     /* 'home' => RouteServiceProvider::HOME, */
 
     /*
@@ -88,7 +88,8 @@ return [
     |
     */
 
-    'prefix' => 'api',
+    'prefix' => '',
+    /* 'prefix' => 'api', */
 
     'domain' => null,
 
