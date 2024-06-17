@@ -172,7 +172,24 @@ class ArticleController extends Controller
     {
         $ids = $request->validated('ids');
         array_map(function (int $id) {
-            Article::find($id)->delete();
+            $article = Article::find($id);
+            $article->delete();
+
+            if(($articleFilePath = $article->file_path) !== '') {
+                $path = 'public/' . $articleFilePath;
+                if(Storage::exists($path)) Storage::delete($path);
+            }
+            if(($articleThumbnailPath = $article->thumbnail_path) !== '') {
+                $path = 'public/' . $articleThumbnailPath;
+                if(Storage::exists($path)) Storage::delete($path);
+            }
+            if ($article->files_paths !== NULL) {
+                foreach(json_decode($article->files_paths) as $filepath) {
+                    $path = 'public/' . $filepath;
+                    if(Storage::exists($path)) Storage::delete($path);
+                }
+            }
+
         }, $ids);
         return response()->json(
             status : 200,
