@@ -18,6 +18,7 @@ use App\Http\Responses\SupportedMemory\{
     SupportedMemoryCollectionResponse
 };
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
@@ -66,14 +67,37 @@ class SupportedMemoryController extends Controller
     /**
      * Print supported memory filing report.
      */
-    public function printFilingReport (SupportedMemory $supportedMemory) {
+    public function printFilingReport (SupportedMemory $supportedMemory)
+    {
         $pdf = FacadePdf::loadView(view : 'fiche', data : [
             'memory' => $supportedMemory,
             'config' => \App\Models\Configuration::appConfig(),
         ])
         ->setOptions(['defaultFont' => 'sans-serif'])
         ->setPaper('A4', 'portrait');
-        return $pdf->download('fiche.pdf');
+        return $pdf->download(filename : 'fiche.pdf');
+    }
+
+
+    /**
+     * Print filings reports for many supported memories
+     *
+     * @param SupportedMemoryRequest $request
+     * @return JsonResponse
+     */
+    public function printReports (SupportedMemoryRequest $request)
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            $supportedMemory = SupportedMemory::find($id);
+            $pdf = FacadePdf::loadView(view : 'fiche', data : [
+                'memory' => $supportedMemory,
+                'config' => \App\Models\Configuration::appConfig(),
+            ])
+            ->setOptions(['defaultFont' => 'sans-serif'])
+            ->setPaper('A4', 'portrait');
+            return $pdf->download(filename : 'fiche.pdf');
+        }, $ids);
     }
 
     /**
@@ -81,10 +105,23 @@ class SupportedMemoryController extends Controller
      */
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
-        $validMemories = SupportedMemory::where('status', 'Validé')->count();
+        /* $validMemoriesInCurrentYearNumber = \App\Models\SchoolYear::query()
+            ->find($supportedMemory->soutenance->school_year_id)
+            ->whereHas('soutenances', function (Builder $query) {
+                $query->whereHas('supportedMemories', function (Builder $query) {
+                    $query->where('status', 'Validé');
+                });
+        })->count(); */
+
+        $validMemoriesInCurrentYearNumber = SupportedMemory::query()
+            ->where('status', 'Validé')
+            ->whereHas('soutenance', function (Builder $query) use ($supportedMemory) {
+                $query->where('school_year_id', $supportedMemory->soutenance->school_year_id);
+        })->count();
+
         $supportedMemory->update([
             'status' => "Validé",
-            'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemories + 1
+            'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
         ]);
         /* GenerateFilingReportJob::dispatch($supportedMemory); */
         ValidateSupportedMemoryJob::dispatch($supportedMemory);
@@ -94,6 +131,43 @@ class SupportedMemoryController extends Controller
             data : ['message' => "Le mémoire soutenu a été validé avec succès"],
         );
     }
+
+
+    /**
+     * Validate many supported memories
+     *
+     * @param SupportedMemoryRequest $request
+     * @return JsonResponse
+     */
+    public function validateMemories (SupportedMemoryRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            $supportedMemory = SupportedMemory::find($id);
+            $validMemoriesInCurrentYearNumber = SupportedMemory::query()
+            ->where('status', 'Validé')
+            ->whereHas('soutenance', function (Builder $query) use ($supportedMemory) {
+                $query->where('school_year_id', $supportedMemory->soutenance->school_year_id);
+            })->count();
+
+            $supportedMemory->update([
+                'status' => "Validé",
+                'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
+            ]);
+            ValidateSupportedMemoryJob::dispatch($supportedMemory);
+
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les mémoires soutenus ont été validés avec succès"
+                    : "Le mémoire soutenu a été validé avec succès"
+            ],
+        );
+    }
+
 
     /**
      * Reject supported memory.
@@ -143,4 +217,39 @@ class SupportedMemoryController extends Controller
             data : ['message' => "Le mémoire soutenu a été supprimé avec succès",],
         );
     }
+
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param SupportedMemoryRequest $request
+     * @return JsonResponse
+     */
+    public function destroyMemories (SupportedMemoryRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            $supportedMemory = SupportedMemory::find($id);
+            $supportedMemory->delete();
+
+            if(($smFilePath = $supportedMemory->file_path) !== '') {
+                $smPath = 'public/' . $smFilePath;
+                if(Storage::exists($smPath)) Storage::delete($smPath);
+            }
+            if(($smCoverPagePath = $supportedMemory->cover_page_path) !== '') {
+                $smCoverPath = 'public/' . $smCoverPagePath;
+                if(Storage::exists($smCoverPath)) Storage::delete($smCoverPath);
+            }
+
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les mémoires soutenus ont été supprimés avec succès"
+                    : "Le mémoire soutenu a été supprimé avec succès"
+            ],
+        );
+    }
+
 }

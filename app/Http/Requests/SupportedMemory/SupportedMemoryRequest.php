@@ -23,9 +23,23 @@ class SupportedMemoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'reason' => ['required']
-        ];
+        $routeName = request()->route()->getName();
+        if ($routeName === "reject-memory") {
+            $rules = [
+                'reason' => ['required']
+            ];
+        }
+        else if (
+            $routeName === "destroy-memories" ||
+            $routeName === "validate-memories" ||
+            $routeName === "print-reports"
+        ) {
+            $rules = [
+                'ids' => ['required', 'array']
+            ];
+        }
+
+        return $rules;
     }
 
     public function failedValidations (Validator $validator) : HttpResponseException {
@@ -39,7 +53,17 @@ class SupportedMemoryRequest extends FormRequest
     }
 
     public function messages()  :array {
-        return [];
+        $messages = [];
+        $routeName = request()->route()->getName();
+        if (
+            $routeName === "destroy-memories" ||
+            $routeName === "validate-memories" ||
+            $routeName === "print-reports"
+        ) {
+            $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs mémoire(s)";
+            $messages['ids.array'] = "L'ensemble de mémoire(s) envoyé doit être un tableau";
+        }
+        return $messages;
     }
 
 }

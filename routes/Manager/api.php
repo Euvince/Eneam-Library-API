@@ -75,11 +75,20 @@ Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::cl
     ->name(name : 'validate-memory')
     ->where(['supportedMemory' => $idRegex]);
 
+Route::patch(uri : '/validate-memories', action : [SupportedMemoryController::class, 'validateMemories'])
+    ->name('validate-memories');
+
 Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::class, 'rejectMemory'])
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
 
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
+
+Route::delete(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
+    ->name('print-reports');
+
+Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])
+    ->name('destroy-memories');
 
 
 // Article

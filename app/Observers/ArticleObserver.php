@@ -58,6 +58,21 @@ class ArticleObserver
             ? $article->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $article->deleted_by = NULL;
         $article->save();
+
+        if (!app()->runningInConsole()) {
+            if ($article->comments()->count() > 0) {
+                $article->comments()->each(function (\App\Models\Comment $comment) {
+                    $comment->delete();
+                });
+            }
+
+            if ($article->loans()->count() > 0) {
+                $article->loans()->each(function (\App\Models\Loan $loan) {
+                    $loan->delete();
+                });
+            }
+        }
+
     }
 
     /**

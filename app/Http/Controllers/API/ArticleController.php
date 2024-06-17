@@ -162,4 +162,27 @@ class ArticleController extends Controller
         );
     }
 
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param ArticleRequest $request
+     * @return JsonResponse
+     */
+    public function destroyArticles (ArticleRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Article::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les articles ont été supprimées avec succès"
+                    : "L'article a été supprimée avec succès"
+            ],
+        );
+    }
+
 }

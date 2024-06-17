@@ -20,9 +20,9 @@ class SupportedMemorySeeder extends Seeder
                     'sector_id' => array_rand(\App\Models\Sector::whereNotNull('sector_id')->pluck('acronym', 'id')->toArray(), 1),
                     'soutenance_id' => $soutenance->id,
                 ]);
-                $sm->update([
+                /* $sm->update([
                     'cote' => \Carbon\Carbon::parse($soutenance->start_date)->year."/".$sm->sector->acronym."/".$sm->id
-                ]);
+                ]); */
             })
         ;
     }

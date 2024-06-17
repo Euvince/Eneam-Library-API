@@ -1,5 +1,5 @@
 <x-mail::message>
-# Bonjour {{ $name }}
+# Bonjour <strong>{{ $name }}</strong>
 
 Nous avons le plaisir de vous informer que votre mémoire de fin de formation a été validé avec succès.
 
@@ -16,5 +16,5 @@ N'oubliez pas d'apporter une pièce d'identité pour le retrait de votre diplôm
 Encore toutes nos félicitations et nous vous souhaitons une brillante carrière professionnelle.
 
 Cordialement,<br>
-L'ENEAM.
+L'<strong>ENEAM</strong>.
 </x-mail::message>
