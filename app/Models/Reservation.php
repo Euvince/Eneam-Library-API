@@ -32,7 +32,7 @@ class Reservation extends Model
             table : 'article_reservation',
             foreignPivotKey : 'reservation_id',
             relatedPivotKey : 'article_id'
-        );
+        )->withPivot(columns : ['deleted_at']);
     }
 
 }

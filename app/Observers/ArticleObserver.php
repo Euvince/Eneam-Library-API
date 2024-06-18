@@ -67,8 +67,17 @@ class ArticleObserver
             }
 
             if ($article->loans()->count() > 0) {
-                $article->loans()->each(function (\App\Models\Loan $loan) {
+                $article->loans()->each(function (\App\Models\Loan $loan) use ($article) {
+                    /* $article->loans()->detach(ids : [$loan->id]); */
+                    $article->loans()->updateExistingPivot($loan->id, ['deleted_at' => now()]);
                     $loan->delete();
+                });
+            }
+
+            if ($article->keywords()->count() > 0) {
+                $article->keywords()->each(function (\App\Models\Keyword $keyword) use ($article) {
+                    /* $article->keywords()->detach(ids : [$keyword->id]); */
+                    $article->keywords()->updateExistingPivot($keyword->id, ['deleted_at' => now()]);
                 });
             }
         }

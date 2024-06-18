@@ -61,7 +61,7 @@ class Article extends Model implements HasMedia
             table : 'article_keyword',
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'keyword_id'
-        );
+        )->withPivot(columns : ['deleted_at']);
     }
 
     public function loans () : BelongsToMany {
@@ -70,7 +70,7 @@ class Article extends Model implements HasMedia
             table : 'article_loan',
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'loan_id'
-        )->withPivot(columns : 'number_copies');
+        )->withPivot(columns : ['number_copies', 'deleted_at']);
     }
 
     public function reservations () : BelongsToMany {
@@ -79,7 +79,7 @@ class Article extends Model implements HasMedia
             table : 'article_reservation',
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'reservation_id'
-        );
+        )->withPivot(columns : ['deleted_at']);
     }
 
 }

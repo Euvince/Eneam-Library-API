@@ -32,7 +32,7 @@ class Loan extends Model
             table : 'article_loan',
             foreignPivotKey : 'loan_id',
             relatedPivotKey : 'article_id'
-        )->withPivot(columns : 'number_copies');
+        )->withPivot(columns : ['number_copies', 'deleted_at']);
     }
 
 }

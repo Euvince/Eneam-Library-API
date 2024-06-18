@@ -16,6 +16,7 @@ use App\Http\Responses\Article\{
 };
 use App\Http\Requests\Article\FindArticleByTypeRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ArticleController extends Controller
@@ -79,11 +80,17 @@ class ArticleController extends Controller
      */
     public function show(Article $article) : SingleArticleResponse
     {
+        $articleWithRelations = Article::query()->with([
+            'comments.user',
+            'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
+            'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL)
+        ])->where('id', $article->id)->first();
+
         return new SingleArticleResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur l'article $article->title",
-            resource : new ArticleResource(resource : Article::query()->with(['keywords', 'comments.user'/* , 'loans' */])->where('id', $article->id)->first())
+            resource : new ArticleResource(resource : $articleWithRelations)
         );
     }
 

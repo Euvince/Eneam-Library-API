@@ -84,7 +84,7 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
 
 Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 
-Route::delete(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
+Route::post(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');
 
 Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])

@@ -28,7 +28,7 @@ class Keyword extends Model
             table : 'article_keyword',
             foreignPivotKey : 'keyword_id',
             relatedPivotKey : 'article_id'
-        );
+        )->withPivot(columns : ['deleted_at']);
     }
 
 }
