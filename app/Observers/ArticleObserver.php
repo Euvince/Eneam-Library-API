@@ -54,8 +54,10 @@ class ArticleObserver
 
     public function deleting(Article $article): void
     {
+        $userFullName = $this->auth->user()->firstname . " " . $this->auth->user()->lastname;
+
         $this->canDoEvent()
-            ? $article->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            ? $article->deleted_by = $userFullName
             : $article->deleted_by = NULL;
         $article->save();
 
@@ -67,17 +69,23 @@ class ArticleObserver
             }
 
             if ($article->loans()->count() > 0) {
-                $article->loans()->each(function (\App\Models\Loan $loan) use ($article) {
+                $article->loans()->each(function (\App\Models\Loan $loan) use ($article, $userFullName) {
                     /* $article->loans()->detach(ids : [$loan->id]); */
-                    $article->loans()->updateExistingPivot($loan->id, ['deleted_at' => now()]);
+                    $article->loans()->updateExistingPivot($loan->id, [
+                        'deleted_at' => now(),
+                        /* 'deleted_by' => $userFullName */
+                    ]);
                     $loan->delete();
                 });
             }
 
             if ($article->keywords()->count() > 0) {
-                $article->keywords()->each(function (\App\Models\Keyword $keyword) use ($article) {
+                $article->keywords()->each(function (\App\Models\Keyword $keyword) use ($article, $userFullName) {
                     /* $article->keywords()->detach(ids : [$keyword->id]); */
-                    $article->keywords()->updateExistingPivot($keyword->id, ['deleted_at' => now()]);
+                    $article->keywords()->updateExistingPivot($keyword->id, [
+                        'deleted_at' => now(),
+                        /* 'deleted_by' => $userFullName */
+                    ]);
                 });
             }
         }

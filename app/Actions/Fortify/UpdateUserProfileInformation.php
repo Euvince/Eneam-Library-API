@@ -28,14 +28,15 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             ],
             'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
             'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'sex' => [
+            /* 'sex' => [
                 'nullable', 'before_or_equal:today',
                 new ValueInValuesRequestRules(
                     request : request(),
                     message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
                     values : ['Masculin', 'Féminin', 'Autre']
                 )
-            ],
+            ], */
+            'sex' => ['in:Masculin,Féminin,Autre']
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&

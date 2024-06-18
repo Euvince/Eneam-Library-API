@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\User;
 
-use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use App\Actions\Fortify\PasswordValidationRules;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRequest extends FormRequest
 {
@@ -27,25 +29,60 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required','string','email','max:255',
-                Rule::unique(User::class),
-            ],
-            'password' => $this->passwordRules(),
-            'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
-            'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'sex' => [
-                'nullable', 'before_or_equal:today',
-                new ValueInValuesRequestRules(
-                    request : request(),
-                    message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
-                    values : ['Masculin', 'Féminin', 'Autre']
-                )
-            ],
-            'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'],
-        ];
+        $routeName = request()->route()->getName();
+
+        if ($routeName === "user.update") {
+            $rules = [
+                'firstname' => ['required', 'string', 'max:255'],
+                'lastname' => ['required', 'string', 'max:255'],
+                'email' => [
+                    'required','string','email','max:255',
+                    Rule::unique(User::class),
+                ],
+                'password' => $this->passwordRules(),
+                'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
+                'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
+                'sex' => [
+                    'nullable', 'before_or_equal:today',
+                    new ValueInValuesRequestRules(
+                        request : request(),
+                        message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
+                        values : ['Masculin', 'Féminin', 'Autre']
+                    )
+                ],
+                'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'],
+            ];
+        }
+
+        else if ($routeName === 'destroy-users') {
+            $rules = [
+                'ids' => ['required', 'array'],
+            ];
+        }
+
+        return $rules;
     }
+
+    public function failedValidations (Validator $validator) : HttpResponseException {
+        throw new HttpResponseException(response()->json([
+            'status' => 422,
+            'error' => true,
+            'success' => false,
+            'message' => 'Erreurs de validations des données',
+            'errors' => $validator->errors()
+        ]));
+    }
+
+    public function messages () : array {
+        $messages = [];
+        $routeName = request()->route()->getName();
+
+        if ($routeName === "destroy-users") {
+            $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs utilisateur(s)";
+            $messages['ids.array'] = "L'ensemble d'utilisateur(s) envoyé doit être un tableau";
+        }
+
+        return $messages;
+    }
+
 }

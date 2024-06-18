@@ -24,14 +24,25 @@ class RoleRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string',
-                Rule::unique('roles')
-                ->ignore($this->route()->parameter('role'))
-                ->withoutTrashed()
-            ],
-            'permissions' => ['required', 'array', 'exists:permissions,id'],
-        ];
+        $routeName = request()->route()->getName();
+
+        if ($routeName === "role.store" || $routeName === "role.update") {
+            $rules = [
+                'name' => ['required', 'string',
+                    Rule::unique('roles')
+                    ->ignore($this->route()->parameter('role'))
+                    ->withoutTrashed()
+                ],
+                'permissions' => ['required', 'array', 'exists:permissions,id'],
+            ];
+        }
+        else if ($routeName === 'destroy-roles') {
+            $rules = [
+                'ids' => ['required', 'array'],
+            ];
+        }
+
+        return $rules;
     }
 
     public function failedValidations (Validator $validator) : HttpResponseException {
@@ -46,7 +57,16 @@ class RoleRequest extends FormRequest
 
     public function messages () : array {
         $messages = [];
-        if (count(request()->permissions) > 1) $messages['permissions.exists'] = "Une des permissions sélectionnées est invalide.";
+        $routeName = request()->route()->getName();
+
+        if ($routeName === "role.store" || $routeName === "role.update") {
+            if (count(request()->permissions) > 1) $messages['permissions.exists'] = "Une des permissions sélectionnées est invalide.";
+        }
+        else if ($routeName === "destroy-roles") {
+            $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs rôle(s)";
+            $messages['ids.array'] = "L'ensemble de rôle(s) envoyé doit être un tableau";
+        }
+
         return $messages;
     }
 

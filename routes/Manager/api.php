@@ -88,7 +88,8 @@ Route::delete(uri : '/destroy-soutenances', action : [App\Http\Controllers\API\S
 Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])
     ->name(name : 'supportedMemory.index.no-pagination');
 
-Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)->except(methods : ['store']);
+Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)
+    ->except(methods : ['store']);
 
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
     ->name(name : 'validate-memory')

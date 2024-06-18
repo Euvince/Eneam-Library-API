@@ -32,12 +32,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        /* $this->app->instance(abstract : LoginResponse::class, instance : new AuthLoginResponse());
+        $this->app->instance(abstract : LoginResponse::class, instance : new AuthLoginResponse());
         $this->app->instance(abstract : LogoutResponse::class, instance : new AuthLogoutResponse());
         $this->app->instance(abstract : RegisterResponse::class, instance : new AuthRegisterResponse());
         $this->app->instance(abstract : PasswordResetResponse::class, instance : new AuthPasswordResetResponse());
         $this->app->instance(abstract : PasswordUpdateResponse::class, instance : new AuthPasswordUpdateResponse());
-        $this->app->instance(abstract : ProfileInformationUpdatedResponse::class, instance : new AuthProfileInformationUpdatedResponse()); */
+        $this->app->instance(abstract : ProfileInformationUpdatedResponse::class, instance : new AuthProfileInformationUpdatedResponse());
     }
 
     /**

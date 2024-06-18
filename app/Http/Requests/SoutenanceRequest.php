@@ -28,7 +28,7 @@ class SoutenanceRequest extends FormRequest
     {
         $routeName = request()->route()->getName();
 
-        if ($routeName === "soutenanc.store" || $routeName === "soutenance.update") {
+        if ($routeName === "soutenance.store" || $routeName === "soutenance.update") {
             $rules = [
                 /* 'year' => ['required', 'integer', 'digits:4', 'max:' . date('Y')], */
                 'start_date' => [

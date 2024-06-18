@@ -6,4 +6,6 @@
 
 -Les tests unitaires;
 
+-Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
+
 -Acesseurs et Mutateurs plus tard pour alléger les Observateurs;

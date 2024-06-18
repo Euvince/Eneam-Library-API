@@ -140,8 +140,8 @@ class RoleController extends Controller
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
             data : [
                 'message' => count($ids) > 1
-                    ? "Les filières/spécialités ont été supprimées avec succès"
-                    : "La filière/spécialité a été supprimée avec succès"
+                    ? "Les rôles ont été supprimés avec succès"
+                    : "Le rôle a été supprimé avec succès"
             ],
         );
     }

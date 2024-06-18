@@ -146,6 +146,29 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param UserRequest $request
+     * @return JsonResponse
+     */
+    public function destroyUsers (UserRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            User::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les utilisateurs ont été supprimés avec succès"
+                    : "L'utilisateur a été supprimé avec succès"
+            ],
+        );
+    }
+
 
     // Tests sur le package maatwebsite excel
 
