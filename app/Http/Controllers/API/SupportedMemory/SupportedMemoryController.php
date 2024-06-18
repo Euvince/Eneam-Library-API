@@ -23,6 +23,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(SupportedMemory::class, 'supportedMemory');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -42,6 +48,7 @@ class SupportedMemoryController extends Controller
      */
     public function indexWithoutPagination() : SupportedMemoryCollectionResponse | LengthAwarePaginator
     {
+        $this->authorize('viewAnyWithoutPagination', SupportedMemory::class);
         return new SupportedMemoryCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',

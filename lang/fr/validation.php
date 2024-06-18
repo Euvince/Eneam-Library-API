@@ -270,7 +270,9 @@ return [
         // User
 
         'profile_picture_path'     => 'photo de profile',
-        'file'                     => 'fichier'
+        'file'                     => 'fichier',
+        'firstname'                => 'nom',
+        'lastname'                 => 'prénom',
 
     ],
 ];

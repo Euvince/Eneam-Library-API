@@ -13,7 +13,7 @@ class SectorPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -21,7 +21,7 @@ class SectorPolicy
      */
     public function view(User $user, Sector $sector): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -29,7 +29,7 @@ class SectorPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -37,7 +37,7 @@ class SectorPolicy
      */
     public function update(User $user, Sector $sector): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -45,7 +45,7 @@ class SectorPolicy
      */
     public function delete(User $user, Sector $sector): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -53,7 +53,7 @@ class SectorPolicy
      */
     public function restore(User $user, Sector $sector): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 
     /**
@@ -61,6 +61,6 @@ class SectorPolicy
      */
     public function forceDelete(User $user, Sector $sector): bool
     {
-        //
+        return $user->can("Gérer les Secteurs et Spécialités");
     }
 }

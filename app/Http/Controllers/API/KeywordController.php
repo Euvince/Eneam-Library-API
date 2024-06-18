@@ -1,14 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Keyword;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\KeywordRequest;
 use App\Http\Responses\Keyword\KeywordCollectionResponse;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class KeywordController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Keyword::class);
+    }
+
     /**
      * Display a listing of the resource.
      */

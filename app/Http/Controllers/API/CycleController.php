@@ -15,6 +15,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CycleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Cycle::class, 'cycle');
+    }
+
     /**
      * Display a listing of the resource.
      */

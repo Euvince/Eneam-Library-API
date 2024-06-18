@@ -13,7 +13,15 @@ class SupportedMemoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
+    }
+
+    /**
+     * Determine whether the user can view any models without pagination.
+     */
+    public function viewAnyWithoutPagination(User $user): bool
+    {
+        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -21,7 +29,7 @@ class SupportedMemoryPolicy
      */
     public function view(User $user, SupportedMemory $supportedMemory): bool
     {
-        //
+        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -29,7 +37,7 @@ class SupportedMemoryPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Déposer un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -37,7 +45,7 @@ class SupportedMemoryPolicy
      */
     public function update(User $user, SupportedMemory $supportedMemory): bool
     {
-        //
+        return $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -45,7 +53,7 @@ class SupportedMemoryPolicy
      */
     public function delete(User $user, SupportedMemory $supportedMemory): bool
     {
-        //
+        return $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -53,7 +61,7 @@ class SupportedMemoryPolicy
      */
     public function restore(User $user, SupportedMemory $supportedMemory): bool
     {
-        //
+        return $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -61,6 +69,6 @@ class SupportedMemoryPolicy
      */
     public function forceDelete(User $user, SupportedMemory $supportedMemory): bool
     {
-        //
+        return $user->can("Gérer les Mémoires Soutenus");
     }
 }

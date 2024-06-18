@@ -18,6 +18,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SoutenanceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Soutenance::class, 'soutenance');
+    }
+
     /**
      * Display a listing of the resource.
      */

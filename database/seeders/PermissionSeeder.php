@@ -13,33 +13,34 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $adminPermissions = [
-            'Gestion des Rôles',
-            'Gestion des Cycles',
-            'Gestion des Utilisateurs',
-            'Gestion des Secteurs et Spécialités',
+            'Gérer les Rôles',
+            'Gérer les Cycles',
+            'Gérer les Utilisateurs',
+            'Gérer les Secteurs et Spécialités',
         ];
         $managerPermissions = [
-            'Gestion des Articles',
-            'Gestion des Emprunts',
-            'Gestion des Paiements',
-            'Gestion des Abonnements',
-            'Gestion des Soutenances',
-            /* 'Gestion des Réservations', */
-            'Gestion des Commentaires',
-            'Gestion des Configurations',
-            'Gestion des Mémoires Soutenus',
-            'Gestion des Fiches de Dépôts de Mémoires',
+            'Gérer les Articles',
+            'Gérer les Emprunts',
+            'Gérer les Mots clés',
+            'Gérer les Paiements',
+            'Gérer les Abonnements',
+            'Gérer les Soutenances',
+            'Gérer les Réservations',
+            'Gérer les Commentaires',
+            'Gérer les Configurations',
+            'Gérer les Mémoires Soutenus',
+            'Gérer les Fiches de Dépôts de Mémoires',
         ];
         $teacherPermissions = [
             'Prêter un Livre',
-            /* 'Réserver un Livre', */
+            'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
             'Consulter un Mémoire',
         ];
         $eneamienSutudentPermissions = [
             'Prêter un Livre',
-            /* 'Réserver un Livre', */
+            'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
             'Déposer un Mémoire',

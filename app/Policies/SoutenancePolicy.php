@@ -13,7 +13,7 @@ class SoutenancePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -21,7 +21,7 @@ class SoutenancePolicy
      */
     public function view(User $user, Soutenance $soutenance): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -29,7 +29,7 @@ class SoutenancePolicy
      */
     public function create(User $user): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -37,7 +37,7 @@ class SoutenancePolicy
      */
     public function update(User $user, Soutenance $soutenance): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -45,7 +45,7 @@ class SoutenancePolicy
      */
     public function delete(User $user, Soutenance $soutenance): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -53,7 +53,7 @@ class SoutenancePolicy
      */
     public function restore(User $user, Soutenance $soutenance): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -61,6 +61,6 @@ class SoutenancePolicy
      */
     public function forceDelete(User $user, Soutenance $soutenance): bool
     {
-        //
+         return $user->can("Gérer les Soutenances");
     }
 }

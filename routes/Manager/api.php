@@ -5,12 +5,12 @@ use App\Http\Controllers\API\LoanController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\KeywordController;
 use App\Http\Controllers\API\SoutenanceController;
 use App\Http\Resources\Configuration\ConfigurationResource;
 use App\Http\Responses\Configuration\SingleConfigurationResponse;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
 use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
-use App\Http\Controllers\KeywordController;
 
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
@@ -102,7 +102,7 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
 
-Route::post(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
+Route::get(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport']);
 
 Route::post(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');

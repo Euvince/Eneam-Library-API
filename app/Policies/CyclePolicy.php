@@ -13,7 +13,7 @@ class CyclePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -21,7 +21,7 @@ class CyclePolicy
      */
     public function view(User $user, Cycle $cycle): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -29,7 +29,7 @@ class CyclePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -37,7 +37,7 @@ class CyclePolicy
      */
     public function update(User $user, Cycle $cycle): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -45,7 +45,7 @@ class CyclePolicy
      */
     public function delete(User $user, Cycle $cycle): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -53,7 +53,7 @@ class CyclePolicy
      */
     public function restore(User $user, Cycle $cycle): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 
     /**
@@ -61,6 +61,6 @@ class CyclePolicy
      */
     public function forceDelete(User $user, Cycle $cycle): bool
     {
-        //
+        return $user->can("Gérer les Cycles");
     }
 }

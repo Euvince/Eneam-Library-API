@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +13,13 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
+
+    public function __construct(
+        private readonly Request $request
+    )
+    {
+    }
+
     /**
      * Validate and update the given user's profile information.
      *
@@ -39,17 +47,28 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'sex' => ['in:Masculin,Féminin,Autre']
         ])->validateWithBag('updateProfileInformation');
 
+        $sex = $this->request->has('sex')
+            ? $input['sex']
+            : NULL;
+        $birthDate = $this->request->has('birth_date')
+            ? $input['birth_date']
+            : NULL;
+        $phoneNumber = $this->request->has('phone_number')
+            ? $input['phone_number']
+            : NULL;
+
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
-        } else {
+        }
+        else {
             $user->forceFill([
                 'firstname' => $input['firstname'],
                 'lastname' => $input['lastname'],
                 'email' => $input['email'],
-                'phone_number' => $input['phone_number'],
-                'birth_date' => $input['birth_date'],
-                'sex' => $input['sex'],
+                'phone_number' => $phoneNumber,
+                'birth_date' => $birthDate,
+                'sex' => $sex,
             ])->save();
         }
     }
@@ -61,14 +80,24 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     protected function updateVerifiedUser(User $user, array $input): void
     {
+        $sex = $this->request->has('sex')
+            ? $input['sex']
+            : NULL;
+        $birthDate = $this->request->has('birth_date')
+            ? $input['birth_date']
+            : NULL;
+        $phoneNumber = $this->request->has('phone_number')
+            ? $input['phone_number']
+            : NULL;
+
         $user->forceFill([
             'firstname' => $input['firstname'],
             'lastname' => $input['lastname'],
             'email' => $input['email'],
             'email_verified_at' => null,
-            'phone_number' => $input['phone_number'],
-            'birth_date' => $input['birth_date'],
-            'sex' => $input['sex'],
+            'phone_number' => $phoneNumber,
+            'birth_date' => $birthDate,
+            'sex' => $sex,
         ])->save();
 
         AskAgainEmailVerificationLinkJob::dispatch($user);

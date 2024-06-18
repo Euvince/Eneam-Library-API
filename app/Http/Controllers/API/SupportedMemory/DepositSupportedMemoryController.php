@@ -18,6 +18,7 @@ class DepositSupportedMemoryController extends Controller
      */
     public function __invoke(DepositSupportedMemoryRequest $request) : SingleSupportedMemoryResponse
     {
+        $this->authorize('create', SupportedMemory::class);
         $supportedMemory = SupportedMemory::create(SMHelper::helper(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
@@ -36,8 +37,8 @@ class DepositSupportedMemoryController extends Controller
             $memoryCollection = $data['file_path'];
             /** @var UploadedFile|null $coverPageCollection */
             $coverPageCollection = $data['cover_page_path'];
-            $data['file_path'] = $memoryCollection->storeAs('Supported Memories/Memories', $request->file('file_path')->getClientOriginalName(), 'public');
-            $data['cover_page_path'] = $coverPageCollection->storeAs('Supported Memories/Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');
+            $data['file_path'] = $memoryCollection->storeAs('SupportedMemories/memories', $request->file('file_path')->getClientOriginalName(), 'public');
+            $data['cover_page_path'] = $coverPageCollection->storeAs('SupportedMemories/Cover pages', $request->file('cover_page_path')->getClientOriginalName(), 'public');
             $memorypath = 'public/' . $supportedMemory->file_path;
             $coverPagePath = 'public/' . $supportedMemory->cover_page_path;
             if(Storage::exists($memorypath)) Storage::delete($memorypath);
