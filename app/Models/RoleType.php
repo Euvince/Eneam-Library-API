@@ -23,6 +23,11 @@ class RoleType extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function roles () : HasMany {
         return $this->hasMany(related : \App\Models\Role::class, foreignKey : 'role_type_id');
     }

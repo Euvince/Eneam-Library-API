@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -32,11 +33,13 @@ class Article extends Model implements HasMedia
         'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at',
     ];
 
-    /* protected $casts = [
-        'keywords' => 'array',
-        'formats' => 'array',
-        'access_paths' => 'array'
-    ]; */
+    protected $casts = [
+        /* 'keywords' => 'array',
+        'formats' => 'array', */
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'files_paths' => 'json'
+    ];
 
 
     /* public function registerMediaConversions(?Media $media = null): void
@@ -80,6 +83,14 @@ class Article extends Model implements HasMedia
             foreignPivotKey : 'article_id',
             relatedPivotKey : 'reservation_id'
         )->withPivot(columns : ['deleted_at']);
+    }
+
+    public function scopeAvailable (Builder $builder, bool $available = true) : Builder {
+        return $builder->where('available', $available);
+    }
+
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
     }
 
 }

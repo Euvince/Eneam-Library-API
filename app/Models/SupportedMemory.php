@@ -32,6 +32,11 @@ class SupportedMemory extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function soutenance () : BelongsTo {
         return $this->belongsTo(related : \App\Models\Soutenance::class, foreignKey : 'soutenance_id');
     }

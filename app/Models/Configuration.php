@@ -43,6 +43,11 @@ class Configuration extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public static function appConfig () {
         return self::latest()->with(['schoolYear'])->first();
     }

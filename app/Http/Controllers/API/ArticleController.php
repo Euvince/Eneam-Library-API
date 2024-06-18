@@ -29,12 +29,20 @@ class ArticleController extends Controller
         $articles = $request->has('type')
             ? Article::query()->with(['keywords', 'schoolYear' /* , 'comments', 'loans' */])->where('type', Helpers::mb_ucfirst($request->type))->orderBy('created_at', 'desc')->paginate(perPage : 20)
             : Article::query()->with(['keywords', 'schoolYear'/* , 'comments', 'loans' */])->paginate(perPage : 20);
+
+        $articlesAndRelations = Article::query()->with([
+            /* 'comments', */
+            'schoolYear',
+            'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
+            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
+        ])->orderBy('created_at', 'desc')->paginate(perPage : 20);
+
         return new ArticleCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Article::count(),
             message : "Liste de tous les articles paginés",
-            collection : Article::query()->with(['keywords', 'schoolYear'/* , 'comments', 'loans' */])->paginate(perPage : 20),
+            collection : $articlesAndRelations,
         );
     }
 
@@ -43,12 +51,19 @@ class ArticleController extends Controller
      */
     public function indexWithoutPagination() : ArticleCollectionResponse | LengthAwarePaginator
     {
+        $articles = Article::query()->with([
+            /* 'comments', */
+            'schoolYear',
+            'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
+            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
+        ])->orderBy('created_at', 'desc')->get();
+
         return new ArticleCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : Article::count(),
             message : "Liste de tous les articles sans pagination",
-            collection : Article::query()->with(['keywords', 'schoolYear'/* , 'comments', 'loans' */])->orderBy('created_at', 'desc')->get(),
+            collection : $articles,
         );
     }
 
@@ -67,11 +82,18 @@ class ArticleController extends Controller
             $keywordsIds[] = $k->id;
         }, $request->keywords);
         $article->keywords()->sync($keywordsIds);
+
+        $articleWithRelations = Article::query()->with([
+            /* 'comments.user', */
+            'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
+            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
+        ])->where('id', $article->id)->first();
+
         return new SingleArticleResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "L'article a été crée avec succès",
-            resource : new ArticleResource(resource : Article::query()->with(['keywords'/* , 'comments', 'loans' */])->where('id', $article->id)->first())
+            resource : new ArticleResource(resource : $articleWithRelations)
         );
     }
 
@@ -83,7 +105,7 @@ class ArticleController extends Controller
         $articleWithRelations = Article::query()->with([
             'comments.user',
             'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
-            'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL)
+            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
         ])->where('id', $article->id)->first();
 
         return new SingleArticleResponse(
@@ -108,11 +130,18 @@ class ArticleController extends Controller
             $keywordsIds[] = $k->id;
         }, $request->keywords);
         $article->keywords()->sync($keywordsIds);
+
+        $articleWithRelations = Article::query()->with([
+            /* 'comments.user', */
+            'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
+            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
+        ])->where('id', $article->id)->first();
+
         return new SingleArticleResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "L'article a été modifié avec succès",
-            resource : new ArticleResource(resource : Article::query()->with(['keywords'/* , 'comments', 'loans' */])->where('id', $article->id)->first())
+            resource : new ArticleResource(resource : $articleWithRelations)
         );
     }
 

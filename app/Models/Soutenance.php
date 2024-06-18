@@ -26,6 +26,11 @@ class Soutenance extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function schoolYear () : BelongsTo {
         return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'school_year_id');
     }

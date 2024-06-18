@@ -25,6 +25,11 @@ class Sector extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function sector () : BelongsTo {
         return $this->belongsTo(related : \App\Models\Sector::class, foreignKey : 'sector_id');
     }

@@ -24,6 +24,11 @@ class Comment extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    /* protected $casts = [
+        'created_at' => 'dateTime',
+        'updated_at' => 'dateTime',
+    ]; */
+
     public function user () : BelongsTo {
         return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }

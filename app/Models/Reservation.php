@@ -22,6 +22,11 @@ class Reservation extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function user () : BelongsTo {
         return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }

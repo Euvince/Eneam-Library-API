@@ -22,6 +22,11 @@ class Keyword extends Model
         'keyword', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function articles () : BelongsToMany {
         return $this->belongsToMany(
             related : \App\Models\Keyword::class,

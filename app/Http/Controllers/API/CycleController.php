@@ -25,7 +25,7 @@ class CycleController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Cycle::count(),
             message : "Liste de tous les cycles",
-            collection : Cycle::query()/* ->with(['soutenances']) */->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Cycle::query()/* ->with(['soutenances']) */->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 

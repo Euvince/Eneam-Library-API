@@ -24,6 +24,11 @@ class Cycle extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     /* protected $dispatchesEvents = [
         'creating' => \App\Events\Cycle\CycleCreatingEvent::class,
         'updating' => \App\Events\Cycle\CycleUpdatingEvent::class,
