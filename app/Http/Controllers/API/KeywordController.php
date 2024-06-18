@@ -11,10 +11,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class KeywordController extends Controller
 {
 
-    public function __construct()
+    /* public function __construct()
     {
         $this->authorizeResource(Keyword::class);
-    }
+    } */
 
     /**
      * Display a listing of the resource.

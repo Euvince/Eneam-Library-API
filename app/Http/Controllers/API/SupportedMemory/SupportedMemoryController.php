@@ -24,10 +24,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class SupportedMemoryController extends Controller
 {
 
-    public function __construct()
+    /* public function __construct()
     {
         $this->authorizeResource(SupportedMemory::class, 'supportedMemory');
-    }
+    } */
 
     /**
      * Display a listing of the resource.

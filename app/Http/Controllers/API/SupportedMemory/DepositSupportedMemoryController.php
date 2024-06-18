@@ -18,7 +18,7 @@ class DepositSupportedMemoryController extends Controller
      */
     public function __invoke(DepositSupportedMemoryRequest $request) : SingleSupportedMemoryResponse
     {
-        $this->authorize('create', SupportedMemory::class);
+        /* $this->authorize('create', SupportedMemory::class); */
         $supportedMemory = SupportedMemory::create(SMHelper::helper(new SupportedMemory(), $request));
         return new SingleSupportedMemoryResponse(
             statusCode : 201,

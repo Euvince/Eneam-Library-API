@@ -18,10 +18,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class SectorController extends Controller
 {
 
-    public function __construct()
+    /* public function __construct()
     {
         $this->authorizeResource(Sector::class, 'sector');
-    }
+    } */
 
     /**
      * Display a listing of the resource.
