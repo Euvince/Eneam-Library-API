@@ -25,6 +25,10 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia;
 
+    const IS_LOANED = true;
+    const IS_PHYSICAL = true;
+    const IS_AVAILABLE = true;
+
     protected $fillable = [
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
         'editor', 'editing_year', 'number_pages', 'available_stock',
@@ -38,7 +42,13 @@ class Article extends Model implements HasMedia
         'formats' => 'array', */
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'files_paths' => 'json'
+        'files_paths' => 'json',
+
+        'loaned' => 'bool',
+        'available' => 'bool',
+        'is_physical' => 'bool',
+        'has_ebooks' => 'bool',
+        'has_audios' => 'bool',
     ];
 
 
@@ -85,12 +95,36 @@ class Article extends Model implements HasMedia
         )->withPivot(columns : ['deleted_at']);
     }
 
-    public function scopeAvailable (Builder $builder, bool $available = true) : Builder {
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
+    }
+
+    public function scopeAvailable (Builder $builder, bool $available = self::IS_AVAILABLE) : Builder {
         return $builder->where('available', $available);
     }
 
-    public function scopeRecent (Builder $builder) : Builder {
-        return $builder->orderBy('created_at', 'desc');
+    public static function isAvailable (Article $article) : bool {
+        return $article->available === self::IS_AVAILABLE;
+    }
+
+    public static function markAsAvailable (Article $article) :void {
+        $article->update(['avalable' => self::IS_AVAILABLE]);
+    }
+
+    public static function isLoaned (Article $article) : bool {
+        return $article->available === self::IS_LOANED;
+    }
+
+    public static function markAsLoaned (Article $article) :void {
+        $article->update(['loaned' => self::IS_LOANED]);
+    }
+
+    public static function isPhysical (Article $article) : bool {
+        return $article->available === self::IS_LOANED;
+    }
+
+    public static function markAsPhysic (Article $article) :void {
+        $article->update(['is_physical' => self::IS_PHYSICAL]);
     }
 
 }

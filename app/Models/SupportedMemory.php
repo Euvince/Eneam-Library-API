@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,9 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 class SupportedMemory extends Model
 {
     use HasFactory, SoftDeletes;
+
+    const VALID_STATUS = "Validé";
+    const INVALID_STATUS = "Invalidé";
 
     protected $fillable = [
         'theme', 'slug', 'start_at', 'ends_at',
@@ -49,4 +53,31 @@ class SupportedMemory extends Model
         return $this->hasMany(related : \App\Models\FilingReport::class, foreignKey : 'supported_memory_id');
     }
 
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
+    }
+
+    public function scopeValide (Builder $builder, string $valid = self::VALID_STATUS) : Builder {
+        return $builder->where('status', $valid);
+    }
+
+    public function scopeInvalide (Builder $builder, string $invalid = self::INVALID_STATUS) : Builder {
+        return $builder->where('status', $invalid);
+    }
+
+    public static function isValide (SupportedMemory $memory) : bool {
+        return $memory->status === self::VALID_STATUS;
+    }
+
+    public static function markAsValid (SupportedMemory $memory) :void {
+        $memory->update(['status' => self::VALID_STATUS]);
+    }
+
+    public static function isInvalide (SupportedMemory $memory) : bool {
+        return $memory->status === self::INVALID_STATUS;
+    }
+
+    public static function markAsInvalid (SupportedMemory $memory) :void {
+        $memory->update(['status' => self::INVALID_STATUS]);
+    }
 }

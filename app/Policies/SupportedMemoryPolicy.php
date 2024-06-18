@@ -71,4 +71,29 @@ class SupportedMemoryPolicy
     {
         return $user->can("Gérer les Mémoires Soutenus");
     }
+
+    /**
+     * Determine whether the user can view any models without pagination.
+     */
+    public function printFilingReport(User $user, SupportedMemory $supportedMemory): bool
+    {
+        return $user->can("Gérer les Mémoires Soutenus");
+    }
+
+    /**
+     * Determine whether the user can view any models without pagination.
+     */
+    public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
+    {
+        return $user->can("Gérer les Mémoires Soutenus");
+    }
+
+    /**
+     * Determine whether the user can view any models without pagination.
+     */
+    public function rejectMemory(User $user, SupportedMemory $supportedMemory): bool
+    {
+        return $user->can("Gérer les Mémoires Soutenus");
+    }
+
 }

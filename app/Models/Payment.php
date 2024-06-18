@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,10 @@ class Payment extends Model
 
     public function user () : BelongsTo {
         return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
+    }
+
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
     }
 
 }

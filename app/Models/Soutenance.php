@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,6 +42,10 @@ class Soutenance extends Model
 
     public function supportedMemories () : HasMany {
         return $this->hasMany(related : \App\Models\SupportedMemory::class, foreignKey : 'soutenance_id');
+    }
+
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
     }
 
 }

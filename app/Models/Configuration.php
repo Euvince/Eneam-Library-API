@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,10 @@ class Configuration extends Model
 
     public function schoolYear () : BelongsTo {
         return $this->belongsTo(related : \App\Models\SchoolYear::class, foreignKey : 'school_year_id');
+    }
+
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
     }
 
 }

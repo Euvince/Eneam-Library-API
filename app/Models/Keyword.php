@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -34,6 +35,10 @@ class Keyword extends Model
             foreignPivotKey : 'keyword_id',
             relatedPivotKey : 'article_id'
         )->withPivot(columns : ['deleted_at']);
+    }
+
+    public function scopeRecent (Builder $builder) : Builder {
+        return $builder->orderBy('created_at', 'desc');
     }
 
 }

@@ -76,6 +76,7 @@ class SupportedMemoryController extends Controller
      */
     public function printFilingReport (SupportedMemory $supportedMemory)
     {
+        /* $this->authorize('printFilingReport', $supportedMemory); */
         $pdf = FacadePdf::loadView(view : 'fiche', data : [
             'memory' => $supportedMemory,
             'config' => \App\Models\Configuration::appConfig(),
@@ -112,6 +113,8 @@ class SupportedMemoryController extends Controller
      */
     public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
     {
+        /* $this->authorize('validateMemory', $supportedMemory); */
+
         /* $validMemoriesInCurrentYearNumber = \App\Models\SchoolYear::query()
             ->find($supportedMemory->soutenance->school_year_id)
             ->whereHas('soutenances', function (Builder $query) {
@@ -181,6 +184,7 @@ class SupportedMemoryController extends Controller
      */
     public function rejectMemory(SupportedMemoryRequest $request, SupportedMemory $supportedMemory) : JsonResponse
     {
+        /* $this->authorize('rejectMemory', $supportedMemory); */
         $supportedMemory->update(['status' => "Rejeté"]);
         $supportedMemory->delete();
         RejectSupportedMemoryJob::dispatch($request->validated('reason'), $supportedMemory);
