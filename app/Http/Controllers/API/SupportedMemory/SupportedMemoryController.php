@@ -48,7 +48,7 @@ class SupportedMemoryController extends Controller
      */
     public function indexWithoutPagination() : SupportedMemoryCollectionResponse | LengthAwarePaginator
     {
-        $this->authorize('viewAnyWithoutPagination', SupportedMemory::class);
+        /* $this->authorize('viewAnyWithoutPagination', SupportedMemory::class); */
         return new SupportedMemoryCollectionResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
