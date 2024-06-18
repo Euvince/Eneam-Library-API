@@ -103,7 +103,7 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
     ->where(['supportedMemory' => $idRegex]);
 
 Route::get(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport'])
-    ->name(name : 'print-report');
+    ->name(name : 'print-filing-report');
 
 Route::post(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');
