@@ -82,7 +82,7 @@ class SupportedMemoryController extends Controller
         ])
         ->setOptions(['defaultFont' => 'sans-serif'])
         ->setPaper('A4', 'portrait');
-        return $pdf->download(filename : 'fiche.pdf');
+        return $pdf->stream(filename : 'fiche.pdf');
     }
 
 
