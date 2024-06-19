@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 /**
  * @mixin IdeHelperSubscription
  */
+
+#[ObservedBy([\App\Observers\SubscriptionObserver::class])]
+
 class Subscription extends Model
 {
     use HasFactory, SoftDeletes;

@@ -170,7 +170,36 @@ class UserController extends Controller
     }
 
 
-    // Tests sur le package maatwebsite excel
+    /**
+     * Method giveAccessToUser
+     * @param User $user [explicite description]
+     * @return JsonResponse
+     */
+    public function giveAccessToUser (User $user) : JsonResponse
+    {
+        if ($user->hasAnyRole(
+            roles : [
+                'Etudiant-Externe', 'Etudiant-Eneamien'
+            ]
+        )) {
+            $user->update([
+                'has_aid' => true,'has_access' => true,
+            ]);
+            \App\Models\Subscription::create([
+                'user_id' => $user->id
+            ]);
+            return response()->json(
+                status : 200,
+                data : ["message" => "L'opération a été éffectuée avec succès."],
+            );
+        }
+        else {
+            return response()->json(
+                status : 200,
+                data : ["message" => "Cette opération n'est possible que sur les étudiants."],
+            );
+        }
+    }
 
     /**
     * @return \Illuminate\Support\Collection
@@ -194,8 +223,7 @@ class UserController extends Controller
     */
     public function import(ImportRequest $request)
     {
-        Excel::import(new UsersImport,$request->file);
-        /* Excel::import(new UsersImport,request()->file('file')); */
+        Excel::import(new UsersImport($request), $request->file);
         return back()->with(['success' => "Données importées avec succès"]);
     }
 

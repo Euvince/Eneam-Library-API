@@ -29,8 +29,8 @@ class ArticleResource extends JsonResource
             'editing_year' => $this->resource->editing_year,
             'cote' => $this->resource->cote,
             'number_pages' => $this->resource->number_pages,
-            'IBSN' => $this->resource->IBSN,
-            'available_stock' => $this->resource->available_atock,
+            'ISBN' => $this->resource->ISBN,
+            'available_stock' => $this->resource->available_stock,
             'available' => $this->resource->available,
             'loaned' => $this->resource->loaned,
             /* 'reserved' => $this->resource->reserved, */

@@ -19,14 +19,15 @@ Route::get('/', function () {
 });
 
 Route::controller(UserController::class)->group(function(){
-    Route::get('users', 'getUsers')->name('users.getUsers');
-    Route::get('users-export', 'export')->name('users.export');
-    Route::post('users-import', 'import')->name('users.import');
+    Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');
+    Route::get(uri : 'users-export', action : 'export')->name('users.export');
+    Route::post(uri : 'teachers-import', action : 'import')->name('teachers.import');
+    Route::post(uri : 'eneamiens-import', action : 'import')->name('eneamiens.import');
 });
 
-Route::get('generate-img-by-pdf', function () {
+/* Route::get('generate-img-by-pdf', function () {
     $imagick = new Imagick();
     $imagick->readImage(public_path() . "\pdfs\\file.pdf");
     $imagick->writeImage('converted.jpg', true);
     dd("done");
-});
+}); */
