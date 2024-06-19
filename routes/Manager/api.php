@@ -141,5 +141,8 @@ Route::get(uri : 'keyword', action : [ KeywordController::class, 'index'])
 // Commentaires
 Route::apiResource(name : 'article.comment', controller : CommentController::class);
 
+Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'destroyComments'])
+    ->name('destroy-comments');
+
 // Emprunts
 Route::apiResource(name : 'loan', controller : LoanController::class);

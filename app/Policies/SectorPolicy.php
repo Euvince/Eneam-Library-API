@@ -41,6 +41,14 @@ class SectorPolicy
     }
 
     /**
+     * Determine whether the user can check if the model has any children.
+     */
+    public function checkChildrens(User $user, Sector $sector): bool
+    {
+        return $user->can("Gérer les Secteurs et Spécialités");
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Sector $sector): bool

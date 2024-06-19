@@ -93,6 +93,7 @@ class SectorController extends Controller
     */
     public function checkChildrens (Sector $sector) : JsonResponse
     {
+        $this->authorize('checkChildrens', $sector);
         $specialitiesCount = $sector->specialities()->count();
         $supportedMemoriesCount = $sector->supportedMemories()->count();
         $hasChildrens = ($supportedMemoriesCount > 0 || $specialitiesCount > 0) ? true : false;

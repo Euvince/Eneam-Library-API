@@ -41,6 +41,14 @@ class SoutenancePolicy
     }
 
     /**
+     * Determine whether the user can check if the model has any children.
+     */
+    public function checkChildrens(User $user, Soutenance $soutenance): bool
+    {
+        return $user->can("Gérer les Soutenances");
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Soutenance $soutenance): bool

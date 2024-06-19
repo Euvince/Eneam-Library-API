@@ -11,6 +11,9 @@ $slugRegex = '[0-9a-z\-]+';
 Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
 
+Route::delete(uri : '/give-access-to-user', action : [App\Http\Controllers\API\UserController::class, 'giveAccessToUser'])
+    ->name('give-access-to-user');
+
 Route::get(uri : '/check-user-childrens/{user}', action : [App\Http\Controllers\API\UserController::class, 'checkChildrens'])
     ->name('check-user-childrens')
     ->where(['user' => $idRegex]);

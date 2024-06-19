@@ -13,7 +13,15 @@ class ArticlePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Consulter un Livre") || $user->can("Gérer les Articles");
+    }
+
+    /**
+     * Determine whether the user can view any models without pagination.
+     */
+    public function viewAnyWithoutPagination(User $user): bool
+    {
+        return $user->can("Consulter un Livre") || $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -21,7 +29,7 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article): bool
     {
-        //
+        return $user->can("Consulter un Livre") || $user->can("Gérer les Articles");
     }
 
     /**
@@ -29,7 +37,7 @@ class ArticlePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Articles");
     }
 
     /**
@@ -37,7 +45,15 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        //
+        return $user->can("Gérer les Articles");
+    }
+
+    /**
+     * Determine whether the user can check if the model has any children.
+     */
+    public function checkChildrens(User $user, Article $article): bool
+    {
+        return $user->can("Gérer les Articles");
     }
 
     /**
@@ -45,7 +61,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        //
+        return $user->can("Gérer les Articles");
     }
 
     /**
@@ -53,7 +69,7 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article): bool
     {
-        //
+        return $user->can("Gérer les Articles");
     }
 
     /**
@@ -61,6 +77,6 @@ class ArticlePolicy
      */
     public function forceDelete(User $user, Article $article): bool
     {
-        //
+        return $user->can("Gérer les Articles");
     }
 }

@@ -21,6 +21,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ArticleController extends Controller
 {
+
+    /* public function __construct()
+    {
+        $this->authorizeResource(Article::class, 'article');
+    } */
+
     /**
      * Display a listing of the resource.
      */
@@ -151,6 +157,7 @@ class ArticleController extends Controller
     */
     public function checkChildrens (Article $article) : JsonResponse
     {
+        $this->authorize('checkChildrens', $article);
         $loansCount = $article->loans()->count();
         $commentsCount = $article->comments()->count();
         $hasChildrens = ($loansCount > 0 || $commentsCount > 0) ? true : false;

@@ -41,6 +41,14 @@ class CyclePolicy
     }
 
     /**
+     * Determine whether the user can check if the model has any children.
+     */
+    public function checkChildrens(User $user, Cycle $cycle): bool
+    {
+        return $user->can("Gérer les Cycles");
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Cycle $cycle): bool

@@ -75,6 +75,7 @@ class SoutenanceController extends Controller
     */
     public function checkChildrens (Soutenance $soutenance) : JsonResponse
     {
+        $this->authorize('checkChildrens', $soutenance);
         $supportedMemoriesCount = $soutenance->supportedMemories()->count();
         $hasChildrens = $supportedMemoriesCount > 0 ? true : false;
         $message = $hasChildrens === true

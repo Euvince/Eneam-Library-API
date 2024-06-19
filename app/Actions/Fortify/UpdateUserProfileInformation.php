@@ -44,7 +44,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                     values : ['Masculin', 'Féminin', 'Autre']
                 )
             ], */
-            'sex' => ['in:Masculin,Féminin,Autre']
+            'sex' => ['nullable', 'in:Masculin,Féminin,Autre']
         ])->validateWithBag('updateProfileInformation');
 
         $sex = $this->request->has('sex')

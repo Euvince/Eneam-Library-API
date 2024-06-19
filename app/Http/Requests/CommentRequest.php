@@ -23,9 +23,23 @@ class CommentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'content' => ['required']
-        ];
+        $routeName = request()->route()->getName();
+
+        if (
+            $routeName === "article.comment.store" ||
+            $routeName === "article.comment.update"
+        ) {
+            $rules = [
+                'content' => ['required']
+            ];
+        }
+        else if ($routeName === "destroy-comments") {
+            $rules = [
+                'ids' => ['required', 'array'],
+            ];
+        }
+
+        return $rules;
     }
 
     public function failedValidations (Validator $validator) : HttpResponseException {
@@ -39,7 +53,13 @@ class CommentRequest extends FormRequest
     }
 
     public function messages() : array {
-        return [];
+        $messages = [];
+        $routeName = request()->route()->getName();
+        if ($routeName === "destroy-comments") {
+            $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs commentaire(s)";
+            $messages['ids.array'] = "L'ensemble de commentaire(s) envoyé doit être un tableau";
+        }
+        return $messages;
     }
 
 }

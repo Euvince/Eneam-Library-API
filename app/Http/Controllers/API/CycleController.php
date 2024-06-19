@@ -82,6 +82,7 @@ class CycleController extends Controller
     */
     public function checkChildrens (Cycle $cycle) : JsonResponse
     {
+        $this->authorize('checkChildrens', $cycle);
         $soutenancesCount = $cycle->soutenances->count();
         $hasChildrens = $soutenancesCount > 0 ? true : false;
         $message = $hasChildrens === true

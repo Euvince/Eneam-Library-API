@@ -13,7 +13,9 @@ class SupportedMemoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Consulter un Mémoire") ||
+            $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -21,7 +23,9 @@ class SupportedMemoryPolicy
      */
     public function viewAnyWithoutPagination(User $user): bool
     {
-        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Consulter un Mémoire") ||
+            $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -29,7 +33,9 @@ class SupportedMemoryPolicy
      */
     public function view(User $user, SupportedMemory $supportedMemory): bool
     {
-        return $user->can("Consulter un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Consulter un Mémoire") ||
+            $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -37,7 +43,9 @@ class SupportedMemoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can("Déposer un Mémoire") || $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Déposer un Mémoire") ||
+            $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
@@ -73,15 +81,15 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can download any models.
+     * Determine whether the user can download any model.
      */
-    public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
+    public function downloadMemory(User $user, SupportedMemory $supportedMemory): bool
     {
         return $user->can("Gérer les Mémoires Soutenus");
     }
 
     /**
-     * Determine whether the user can view any models without pagination.
+     * Determine whether the user can print any memory sheet.
      */
     public function printFilingReport(User $user, SupportedMemory $supportedMemory): bool
     {
@@ -89,7 +97,7 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can view any models without pagination.
+     * Determine whether the user can validate any model.
      */
     public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
     {
@@ -97,7 +105,7 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can view any models without pagination.
+     * Determine whether the user can reject any model.
      */
     public function rejectMemory(User $user, SupportedMemory $supportedMemory): bool
     {

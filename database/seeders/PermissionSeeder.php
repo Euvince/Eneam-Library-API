@@ -36,6 +36,7 @@ class PermissionSeeder extends Seeder
             'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
+            'Commenter un Livre',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
         ];
@@ -44,6 +45,7 @@ class PermissionSeeder extends Seeder
             'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
+            'Commenter un Livre',
             'Déposer un Mémoire',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
@@ -51,6 +53,7 @@ class PermissionSeeder extends Seeder
         $externSutudentPermissions = [
             'Demander un Accès',
             'Consulter un Livre',
+            'Commenter un Livre',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
         ];

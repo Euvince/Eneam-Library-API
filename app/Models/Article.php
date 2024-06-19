@@ -25,9 +25,9 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia;
 
-    const IS_LOANED = true;
-    const IS_PHYSICAL = true;
-    const IS_AVAILABLE = true;
+    const IS_LOANED = 1;
+    const IS_PHYSICAL = 1;
+    const IS_AVAILABLE = 1;
 
     protected $fillable = [
         'title', 'slug', 'type', 'summary', 'author', 'cote', 'ISBN',
@@ -44,11 +44,11 @@ class Article extends Model implements HasMedia
         'updated_at' => 'datetime',
         'files_paths' => 'json',
 
-        'loaned' => 'bool',
+        /* 'loaned' => 'bool',
         'available' => 'bool',
         'is_physical' => 'bool',
         'has_ebooks' => 'bool',
-        'has_audios' => 'bool',
+        'has_audios' => 'bool', */
     ];
 
 
@@ -108,7 +108,7 @@ class Article extends Model implements HasMedia
     }
 
     public static function markAsAvailable (Article $article) :void {
-        $article->update(['avalable' => self::IS_AVAILABLE]);
+        $article->update(['available' => self::IS_AVAILABLE]);
     }
 
     public static function isLoaned (Article $article) : bool {

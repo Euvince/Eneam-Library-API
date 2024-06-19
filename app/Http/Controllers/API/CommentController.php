@@ -19,6 +19,7 @@ class CommentController extends Controller
         private readonly AuthManager $auth
     )
     {
+        $this->authorizeResource(Comment::class);
     }
 
     /**
@@ -89,6 +90,29 @@ class CommentController extends Controller
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
             data : ['message' => "Votre commentaire a bien été supprimé",],
+        );
+    }
+
+    /**
+     * Remove many specified resources from storage
+     *
+     * @param CommentRequest $request
+     * @return JsonResponse
+     */
+    public function destroyComments (CommentRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+            Comment::find($id)->delete();
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les commentaires ont été supprimés avec succès"
+                    : "Le commentaire a été supprimé avec succès"
+            ],
         );
     }
 }

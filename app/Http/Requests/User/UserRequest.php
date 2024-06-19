@@ -42,14 +42,15 @@ class UserRequest extends FormRequest
                 'password' => $this->passwordRules(),
                 'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
                 'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-                'sex' => [
+                /* 'sex' => [
                     'nullable', 'before_or_equal:today',
                     new ValueInValuesRequestRules(
                         request : request(),
                         message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",
                         values : ['Masculin', 'Féminin', 'Autre']
                     )
-                ],
+                ], */
+                'sex' => ['nullable', 'in:Masculin,Féminin,Autre'],
                 'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'],
             ];
         }
