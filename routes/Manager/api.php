@@ -91,6 +91,13 @@ Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryCont
 Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)
     ->except(methods : ['store']);
 
+Route::patch('download-memory/{supportedMemory}', [SupportedMemoryController::class, 'downloadMemory'])
+    ->name(name : 'download-memory')
+    ->where(['supportedMemory' => $idRegex]);
+
+Route::patch(uri : '/download-memories', action : [SupportedMemoryController::class, 'downloadMemories'])
+    ->name('download-memories');
+
 Route::patch('validate-memory/{supportedMemory}', [SupportedMemoryController::class, 'validateMemory'])
     ->name(name : 'validate-memory')
     ->where(['supportedMemory' => $idRegex]);

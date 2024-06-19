@@ -72,18 +72,73 @@ class SupportedMemoryController extends Controller
     }
 
     /**
+     * Download the specified resource.
+     */
+    public function downloadMemory(SupportedMemory $supportedMemory)
+    {
+        $supportedMemory->update([
+            'download_number' => ++$supportedMemory->download_number,
+        ]);
+        $firstAuthorName = $supportedMemory->first_author_firstname;
+        $secondAuthorName = $supportedMemory->second_author_firstname;
+        $filename = $secondAuthorName !== NULL
+            ? $firstAuthorName."-".$secondAuthorName."pdf"
+            : $firstAuthorName;
+
+        return Storage::download(
+            path : 'public/' . $supportedMemory->file_path,
+            name : $filename
+        );
+    }
+
+     /**
+     * Download many supported memories
+     *
+     * @param SupportedMemoryRequest $request
+     * @return JsonResponse
+     */
+    public function downloadMemories (SupportedMemoryRequest $request) : JsonResponse
+    {
+        $ids = $request->validated('ids');
+        array_map(function (int $id) {
+
+        }, $ids);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => count($ids) > 1
+                    ? "Les mémoires soutenus ont été téléchargés avec succès"
+                    : "Le mémoire soutenu a été téléchargé avec succès"
+            ],
+        );
+    }
+
+    /**
      * Print supported memory filing report.
      */
     public function printFilingReport (SupportedMemory $supportedMemory)
     {
         /* $this->authorize('printFilingReport', $supportedMemory); */
+        $supportedMemory->update([
+            'printed_number' => ++$supportedMemory->printed_number,
+        ]);
         $pdf = FacadePdf::loadView(view : 'fiche', data : [
             'memory' => $supportedMemory,
             'config' => \App\Models\Configuration::appConfig(),
         ])
         ->setOptions(['defaultFont' => 'sans-serif'])
         ->setPaper('A4', 'portrait');
-        return $pdf->stream(filename : 'fiche.pdf');
+
+        $firstAuthorName = $supportedMemory->first_author_firstname;
+        $secondAuthorName = $supportedMemory->second_author_firstname;
+        $filename = $secondAuthorName !== NULL
+            ? $firstAuthorName."-".$secondAuthorName."pdf"
+            : $firstAuthorName;
+
+        return $pdf->stream(
+            filename : $filename
+        );
     }
 
 
@@ -98,13 +153,26 @@ class SupportedMemoryController extends Controller
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             $supportedMemory = SupportedMemory::find($id);
+            $supportedMemory->update([
+                'printed_number' => ++$supportedMemory->printed_number,
+            ]);
             $pdf = FacadePdf::loadView(view : 'fiche', data : [
                 'memory' => $supportedMemory,
                 'config' => \App\Models\Configuration::appConfig(),
             ])
             ->setOptions(['defaultFont' => 'sans-serif'])
             ->setPaper('A4', 'portrait');
-            return $pdf->download(filename : 'fiche.pdf');
+
+            $firstAuthorName = $supportedMemory->first_author_firstname;
+            $secondAuthorName = $supportedMemory->second_author_firstname;
+
+            $filename = $secondAuthorName !== NULL
+                ? $firstAuthorName."-".$secondAuthorName."pdf"
+                : $firstAuthorName;
+
+            return $pdf->download(
+                filename : $filename
+            );
         }, $ids);
     }
 

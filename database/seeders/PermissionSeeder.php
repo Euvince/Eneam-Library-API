@@ -37,6 +37,7 @@ class PermissionSeeder extends Seeder
             'Demander un Accès',
             'Consulter un Livre',
             'Consulter un Mémoire',
+            'Télécharger un Mémoire',
         ];
         $eneamienSutudentPermissions = [
             'Prêter un Livre',
@@ -45,11 +46,13 @@ class PermissionSeeder extends Seeder
             'Consulter un Livre',
             'Déposer un Mémoire',
             'Consulter un Mémoire',
+            'Télécharger un Mémoire',
         ];
         $externSutudentPermissions = [
             'Demander un Accès',
             'Consulter un Livre',
             'Consulter un Mémoire',
+            'Télécharger un Mémoire',
         ];
 
         $managerRole = \App\Models\Role::where('name', 'Gestionnaire')->first();
