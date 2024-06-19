@@ -196,7 +196,7 @@ class SupportedMemoryController extends Controller
                     ? $firstAuthorName."-".$secondAuthorName.".pdf"
                     : $firstAuthorName.".pdf";
 
-                Storage::put(path : 'public/fiches/' . $filename, content : $pdf->output());
+                Storage::put(path : 'public/fiches/' . $filename, contents : $pdf->output());
                 $zip->addFile(public_path(path : 'storage/fiches/'). $filename, $filename);
                 $supportedMemory->update([
                     'printed_number' => ++$supportedMemory->printed_number

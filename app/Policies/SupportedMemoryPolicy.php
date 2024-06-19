@@ -73,6 +73,14 @@ class SupportedMemoryPolicy
     }
 
     /**
+     * Determine whether the user can download any models.
+     */
+    public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
+    {
+        return $user->can("Gérer les Mémoires Soutenus");
+    }
+
+    /**
      * Determine whether the user can view any models without pagination.
      */
     public function printFilingReport(User $user, SupportedMemory $supportedMemory): bool

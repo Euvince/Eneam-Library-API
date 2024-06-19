@@ -135,7 +135,7 @@ Route::delete(uri : '/destroy-articles', action : [App\Http\Controllers\API\Arti
 
 // Mots clés
 Route::get(uri : 'keyword', action : [ KeywordController::class, 'index'])
-    ->name(name : 'keywords.index');
+    ->name(name : 'keyword.index');
 
 
 // Commentaires
