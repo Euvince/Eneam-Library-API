@@ -181,9 +181,9 @@ class UserController extends Controller
             roles : [
                 'Etudiant-Externe', 'Etudiant-Eneamien'
             ]
-        )) {
+        ) && (!User::hasPaid($user) && !User::hasAccess($user))) {
             $user->update([
-                'has_aid' => true,'has_access' => true,
+                'has_paid' => true, 'has_access' => true,
             ]);
             \App\Models\Subscription::create([
                 'user_id' => $user->id
@@ -195,8 +195,8 @@ class UserController extends Controller
         }
         else {
             return response()->json(
-                status : 200,
-                data : ["message" => "Cette opération n'est possible que sur les étudiants."],
+                status : 403,
+                data : ["message" => "Cette opération n'est possible que sur les étudiants n'ayant pas encore validé leur abonnement."],
             );
         }
     }

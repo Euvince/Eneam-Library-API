@@ -21,7 +21,7 @@ class RoleObserver
 
     public function creating(Role $role): void
     {
-        $role->name = \App\Helpers::mb_ucfirst($role->name);
+        if (!app()->runningInConsole()) $role->name = \App\Helpers::mb_ucfirst($role->name);
         $role->slug = \Illuminate\Support\Str::slug($role->name);
         $this->canDoEvent()
             ? $role->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
@@ -39,7 +39,7 @@ class RoleObserver
 
     public function updating(Role $role): void
     {
-        $role->name = \App\Helpers::mb_ucfirst($role->name);
+        if (!app()->runningInConsole()) $role->name = \App\Helpers::mb_ucfirst($role->name);
         $role->slug = \Illuminate\Support\Str::slug($role->name);
         $this->canDoEvent()
             ? $role->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
