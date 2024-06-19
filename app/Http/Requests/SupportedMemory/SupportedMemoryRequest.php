@@ -30,9 +30,8 @@ class SupportedMemoryRequest extends FormRequest
             ];
         }
         else if (
-            $routeName === "destroy-memories" ||
-            $routeName === "validate-memories" ||
-            $routeName === "print-reports"
+            $routeName === "destroy-memories" || $routeName === "validate-memories" ||
+            $routeName === "download-memories" || $routeName === "print-reports"
         ) {
             $rules = [
                 'ids' => ['required', 'array']

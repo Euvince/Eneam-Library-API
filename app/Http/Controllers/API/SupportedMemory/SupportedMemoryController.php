@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API\SupportedMemory;
 
+use ZipArchive;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use App\Actions\SupportedMemory\SMHelper;
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
@@ -82,8 +85,8 @@ class SupportedMemoryController extends Controller
         $firstAuthorName = $supportedMemory->first_author_firstname;
         $secondAuthorName = $supportedMemory->second_author_firstname;
         $filename = $secondAuthorName !== NULL
-            ? $firstAuthorName."-".$secondAuthorName."pdf"
-            : $firstAuthorName;
+            ? $firstAuthorName."-".$secondAuthorName.".pdf"
+            : $firstAuthorName.".pdf";
 
         return Storage::download(
             path : 'public/' . $supportedMemory->file_path,
@@ -95,23 +98,36 @@ class SupportedMemoryController extends Controller
      * Download many supported memories
      *
      * @param SupportedMemoryRequest $request
-     * @return JsonResponse
      */
-    public function downloadMemories (SupportedMemoryRequest $request) : JsonResponse
+    public function downloadMemories (SupportedMemoryRequest $request)
     {
         $ids = $request->validated('ids');
-        array_map(function (int $id) {
 
-        }, $ids);
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : [
-                'message' => count($ids) > 1
-                    ? "Les mémoires soutenus ont été téléchargés avec succès"
-                    : "Le mémoire soutenu a été téléchargé avec succès"
-            ],
-        );
+        $sourcePath = storage_path('app/public/SupportedMemories');
+        $zipFileName = 'mémoires.zip';
+        $tempPath = storage_path('app/temp');
+        if (!File::exists($tempPath)) {
+            File::makeDirectory($tempPath, 0755, true);
+        }
+        $zipFilePath = $tempPath.'/'.$zipFileName;
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+            foreach ($ids as $id) {
+                $supportedMemory = SupportedMemory::find($id);
+                $firstAuthorName = $supportedMemory->first_author_firstname;
+                $secondAuthorName = $supportedMemory->second_author_firstname;
+                $filename = $secondAuthorName !== NULL
+                    ? $firstAuthorName."-".$secondAuthorName."pdf"
+                    : $firstAuthorName.".pdf";
+                $zip->addFile(public_path(path : 'storage/'). $supportedMemory->file_path, $filename);
+                $supportedMemory->update([
+                    'download_number' => ++$supportedMemory->download_number
+                ]);
+            }
+            $zip->close();
+        }
+        return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
     }
 
     /**
@@ -133,10 +149,10 @@ class SupportedMemoryController extends Controller
         $firstAuthorName = $supportedMemory->first_author_firstname;
         $secondAuthorName = $supportedMemory->second_author_firstname;
         $filename = $secondAuthorName !== NULL
-            ? $firstAuthorName."-".$secondAuthorName."pdf"
-            : $firstAuthorName;
+            ? $firstAuthorName."-".$secondAuthorName.".pdf"
+            : $firstAuthorName.".pdf";
 
-        return $pdf->stream(
+        return $pdf->download(
             filename : $filename
         );
     }
@@ -151,29 +167,46 @@ class SupportedMemoryController extends Controller
     public function printReports (SupportedMemoryRequest $request)
     {
         $ids = $request->validated('ids');
-        array_map(function (int $id) {
-            $supportedMemory = SupportedMemory::find($id);
-            $supportedMemory->update([
-                'printed_number' => ++$supportedMemory->printed_number,
-            ]);
-            $pdf = FacadePdf::loadView(view : 'fiche', data : [
-                'memory' => $supportedMemory,
-                'config' => \App\Models\Configuration::appConfig(),
-            ])
-            ->setOptions(['defaultFont' => 'sans-serif'])
-            ->setPaper('A4', 'portrait');
 
-            $firstAuthorName = $supportedMemory->first_author_firstname;
-            $secondAuthorName = $supportedMemory->second_author_firstname;
+        $sourcePath = storage_path('app/public/SupportedMemories');
+        $zipFileName = 'fiches.zip';
+        $tempPath = storage_path('app/temp');
+        if (!File::exists($tempPath)) {
+            File::makeDirectory($tempPath, 0755, true);
+        }
+        $zipFilePath = $tempPath.'/'.$zipFileName;
+        $zip = new ZipArchive();
 
-            $filename = $secondAuthorName !== NULL
-                ? $firstAuthorName."-".$secondAuthorName."pdf"
-                : $firstAuthorName;
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+            array_map(function (int $id) use ($zip) {
+                $supportedMemory = SupportedMemory::find($id);
+                $supportedMemory->update([
+                    'printed_number' => ++$supportedMemory->printed_number,
+                ]);
+                $pdf = FacadePdf::loadView(view : 'fiche', data : [
+                    'memory' => $supportedMemory,
+                    'config' => \App\Models\Configuration::appConfig(),
+                ])
+                ->setOptions(['defaultFont' => 'sans-serif'])
+                ->setPaper('A4', 'portrait');
 
-            return $pdf->download(
-                filename : $filename
-            );
-        }, $ids);
+                $firstAuthorName = $supportedMemory->first_author_firstname;
+                $secondAuthorName = $supportedMemory->second_author_firstname;
+                $filename = $secondAuthorName !== NULL
+                    ? $firstAuthorName."-".$secondAuthorName.".pdf"
+                    : $firstAuthorName.".pdf";
+
+                Storage::put(path : 'public/fiches/' . $filename, content : $pdf->output());
+                $zip->addFile(public_path(path : 'storage/fiches/'). $filename, $filename);
+                $supportedMemory->update([
+                    'printed_number' => ++$supportedMemory->printed_number
+                ]);
+                Storage::delete(paths : ['public/fiches/' . $filename]);
+            }, $ids);
+
+            $zip->close();
+        }
+        return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
     }
 
     /**
