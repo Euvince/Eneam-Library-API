@@ -201,10 +201,11 @@ class SupportedMemoryController extends Controller
                 $supportedMemory->update([
                     'printed_number' => ++$supportedMemory->printed_number
                 ]);
-                Storage::delete(paths : ['public/fiches/' . $filename]);
             }, $ids);
 
             $zip->close();
+            Storage::delete(paths : ['public/fiches/']);
+
         }
         return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
     }
