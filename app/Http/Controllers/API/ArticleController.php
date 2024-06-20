@@ -111,7 +111,7 @@ class ArticleController extends Controller
         $articleWithRelations = Article::query()->with([
             'comments.user',
             'keywords' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL),
-            /* 'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL) */
+            'loans' => fn (BelongsToMany $query) => $query->wherePivot('deleted_at', NULL)
         ])->where('id', $article->id)->first();
 
         return new SingleArticleResponse(

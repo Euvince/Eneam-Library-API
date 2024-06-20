@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:create-school-year')->everyTwentySeconds();
         $schedule->command('app:create-configuration')->everyTwentySeconds();
+        $schedule->command('app:delete-subscription-after-expiration-date')->everyTwentySeconds();
     }
 
     /**

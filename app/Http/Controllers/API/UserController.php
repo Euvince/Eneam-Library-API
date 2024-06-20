@@ -16,6 +16,8 @@ use App\Http\Responses\User\{
     UserCollectionResponse
 };
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
@@ -171,7 +173,7 @@ class UserController extends Controller
 
 
     /**
-     * Method giveAccessToUser
+     * Give Access to Students
      * @param User $user [explicite description]
      * @return JsonResponse
      */
@@ -182,9 +184,8 @@ class UserController extends Controller
                 'Etudiant-Externe', 'Etudiant-Eneamien'
             ]
         ) && (!User::hasPaid($user) && !User::hasAccess($user))) {
-            $user->update([
-                'has_paid' => true, 'has_access' => true,
-            ]);
+            User::markAsHasPaid($user);
+            User::markAsHasAccess($user);
             \App\Models\Subscription::create([
                 'user_id' => $user->id
             ]);
@@ -204,7 +205,7 @@ class UserController extends Controller
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function getUsers()
+    public function getUsers() : View
     {
         $users = User::get();
         return view('users', compact('users'));
@@ -221,7 +222,7 @@ class UserController extends Controller
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function import(ImportRequest $request)
+    public function import(ImportRequest $request) : RedirectResponse
     {
         Excel::import(new UsersImport($request), $request->file);
         return back()->with(['success' => "Données importées avec succès"]);

@@ -27,6 +27,7 @@ class SoutenanceObserver
             /* $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name."".\Carbon\Carbon::parse($soutenance->start_date)->year; */
             $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name." ".\App\Models\SchoolYear::find($this->request->school_year_id)->school_year;
             $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);
+            $soutenance->number_memories_remaining = $soutenance->number_memories_expected;
         }
         $this->canDoEvent()
             ? $soutenance->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname

@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use App\Models\Subscription;
 use App\Models\Configuration;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 
 class SubscriptionObserver
 {
 
     public function __construct(
+        private readonly Request $request,
         private readonly AuthManager $auth
     )
     {
@@ -22,11 +24,16 @@ class SubscriptionObserver
 
     public function creating(Subscription $subscription): void
     {
-        $subscriptonDate = Carbon::parse(Carbon::now()->format("Y-m-d"));
-        $subscription->status = "Actif";
-        $subscription->subscription_date = $subscriptonDate;
-        $subscription->expiration_date = $subscriptonDate->addYears(value : 1);
-        $subscription->amount = Configuration::appConfig()->eneamien_subscribe_amount;
+        if (!app()->runningInConsole()) {
+            $subscriptonDate = Carbon::parse(Carbon::now()->format("Y-m-d"));
+            $subscription->status = "Actif";
+            $subscription->subscription_date = $subscriptonDate;
+            $subscription->expiration_date = $subscriptonDate->addYears(value : 1);
+            $amount = $this->request->route()->parameter('user')->hasRole(roles : ['Etudiant-Eneamien'])
+                ? Configuration::appConfig()->eneamien_subscribe_amount
+                : Configuration::appConfig()->extern_subscribe_amount;
+            $subscription->amount = $amount;
+        }
         $this->canDoEvent()
             ? $subscription->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $subscription->created_by = NULL;

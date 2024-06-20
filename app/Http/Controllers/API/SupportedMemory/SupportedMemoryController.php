@@ -267,6 +267,11 @@ class SupportedMemoryController extends Controller
                 'status' => "Validé",
                 'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
             ]);
+            \App\Models\Soutenance::find(
+                $supportedMemory->soutenance->id
+            )->update([
+                'number_memories_remaining' => --$supportedMemory->soutenance->number_memories_remaining
+            ]);
             /* GenerateFilingReportJob::dispatch($supportedMemory); */
             ValidateSupportedMemoryJob::dispatch($supportedMemory);
             return response()->json(
@@ -312,6 +317,12 @@ class SupportedMemoryController extends Controller
                     'status' => "Validé",
                     'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
                 ]);
+                \App\Models\Soutenance::find(
+                    $supportedMemory->soutenance->id
+                )->update([
+                    'number_memories_remaining' => --$supportedMemory->soutenance->number_memories_remaining
+                ]);
+
                 ValidateSupportedMemoryJob::dispatch($supportedMemory);
 
             }, $ids);

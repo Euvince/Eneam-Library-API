@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date(column : 'start_date');
             $table->date(column : 'end_date');
             $table->integer(column : 'number_memories_expected');
+            $table->integer(column : 'number_memories_remaining');
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
