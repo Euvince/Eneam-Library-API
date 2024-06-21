@@ -52,7 +52,7 @@ return new class extends Migration
             });
         }
 
-        foreach (['payments', 'subscriptions', 'comments', 'loans', 'reservations'] as $tableName) {
+        foreach (['payments', 'subscriptions', 'comments', 'loans', 'reservations', 'reminders'] as $tableName) {
             Schema::table($tableName, callback : function (Blueprint $table) {
                 $table->foreignIdFor(model : App\Models\User::class, column : 'user_id')
                     ->nullable()

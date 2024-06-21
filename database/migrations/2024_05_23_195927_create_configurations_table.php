@@ -24,6 +24,8 @@ return new class extends Migration
             $table->float(column : 'teacher_debt_amount');
             $table->integer(column : 'student_loan_delay');
             $table->integer(column : 'teacher_loan_delay');
+            $table->integer(column : 'student_recovered_delay');
+            $table->integer(column : 'teacher_recovered_delay');
             $table->integer(column : 'student_renewals_number');
             $table->integer(column : 'teacher_renewals_number');
             $table->integer(column : 'max_books_per_student');
