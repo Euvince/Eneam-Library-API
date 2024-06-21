@@ -63,7 +63,56 @@ class ManagerLoanController extends Controller
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été annulé",],
+            data : ['message' => "La demande d'emprunt a bien été supprimée",],
         );
     }
+
+    /**
+    * Valide LoanRequest of users.
+     */
+    public function valideLoanRequest () : JsonResponse
+    {
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "La demande d'emprunt a bien été validée et l'utilisateur sera averti"],
+        );
+    }
+
+    /**
+    * Reject LoanRequest of users.
+     */
+    public function rejectLoanRequest () : JsonResponse
+    {
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "La demande d'emprunt a bien été rejetée et l'utilisateur sera averti"],
+        );
+    }
+
+    /**
+    * Mark loan article as recovered.
+     */
+    public function markArticleAsRecovered () : JsonResponse
+    {
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "Le document a bien été marqué comme récupéré"],
+        );
+    }
+
+    /**
+    * Mark loan article as returned.
+     */
+    public function markArticleAsReturned () : JsonResponse
+    {
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "Le document a bien été marqué comme retourné"],
+        );
+    }
+
 }

@@ -4,11 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\Configuration\ConfigurationController;
 use App\Http\Controllers\API\KeywordController;
 use App\Http\Controllers\API\SoutenanceController;
 use App\Http\Controllers\API\Loan\ManagerLoanController;
-use App\Http\Resources\Configuration\ConfigurationResource;
-use App\Http\Responses\Configuration\SingleConfigurationResponse;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
 use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
 
@@ -18,15 +17,7 @@ $slugRegex = '[0-9a-z\-]+';
 // Configurations
 
 Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
-    Route::get(
-        uri : 'last',
-        action : function () : SingleConfigurationResponse {
-           /*  dd(\App\Models\Configuration::first()->getAttributes()); */
-            return new SingleConfigurationResponse(
-                statusCode : 200, allowedMethods : 'PATCH', message : "Configuration de l'année en cours",
-                resource : new ConfigurationResource(resource : \App\Models\Configuration::appConfig())
-            );
-        }
+    Route::get(uri : 'last', action : ConfigurationController::class
     )->name(name : 'last');
 
     Route::group(['prefix' => 'update', 'as' => 'update.'], function () {

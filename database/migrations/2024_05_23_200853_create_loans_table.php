@@ -17,7 +17,9 @@ return new class extends Migration
             $table->date(column : 'processing_date')->nullable()->default(value : NULL);
             $table->integer(column : 'duration');
             $table->string(column : 'status')->default(value : "En cours");
-            $table->integer(column : 'renewals');
+            $table->boolean(column : 'book_recovered')->default(value : false);
+            $table->boolean(column : 'book_returned')->default(value : false);
+            $table->unsignedInteger(column : 'renewals')->default(value : 0);
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
