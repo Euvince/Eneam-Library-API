@@ -69,9 +69,15 @@ class ArticleObserver
             }
 
             if ($article->loans()->count() > 0) {
-                $article->loans()->each(function (\App\Models\Loan $loan) use ($article, $userFullName) {
-                    /* $article->loans()->detach(ids : [$loan->id]); */
-                    $article->loans()->updateExistingPivot($loan->id, [
+                $article->loans()->each(function (\App\Models\Loan $loan) {
+                    $loan->delete();
+                });
+            }
+
+            if ($article->loanss()->count() > 0) {
+                $article->loanss()->each(function (\App\Models\Loan $loan) use ($article, $userFullName) {
+                    /* $article->loanss()->detach(ids : [$loan->id]); */
+                    $article->loanss()->updateExistingPivot($loan->id, [
                         'deleted_at' => now(),
                         /* 'deleted_by' => $userFullName */
                     ]);

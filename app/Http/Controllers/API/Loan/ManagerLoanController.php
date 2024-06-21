@@ -23,7 +23,7 @@ class ManagerLoanController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Loan::count(),
             message : "Liste de toutes les demandes d'emprunts",
-            collection : Loan::query()->with(['articles', 'user'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Loan::query()->with([/* 'articles',  */'article','user'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -43,7 +43,7 @@ class ManagerLoanController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Informations sur la demande d'emprunt $loan->name",
-            resource : new LoanResource(resource : Loan::query()->with(['articles', 'user'])->where('id', $loan->id)->first())
+            resource : new LoanResource(resource : Loan::query()->with([/* 'articles', */'article', 'user'])->where('id', $loan->id)->first())
         );
     }
 

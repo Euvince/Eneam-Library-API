@@ -32,7 +32,11 @@ class Loan extends Model
         return $this->belongsTo(related : \App\Models\User::class, foreignKey : 'user_id');
     }
 
-    public function articles () : BelongsToMany {
+    public function article () : BelongsTo {
+        return $this->belongsTo(related : \App\Models\Article::class, foreignKey : 'article_id');
+    }
+
+    public function articless () : BelongsToMany {
         return $this->belongsToMany(
             related : \App\Models\Article::class,
             table : 'article_loan',

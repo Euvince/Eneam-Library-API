@@ -44,11 +44,13 @@ return new class extends Migration
             $table->primary(columns : ['permission_id', 'role_type_id']);
         });
 
-        Schema::table(table : 'comments', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Article::class, column : 'article_id')
-                ->nullable()
-                ->default(value : NULL);
-        });
+        foreach (['comments', 'loans'] as $tableName) {
+            Schema::table(table : $tableName, callback : function (Blueprint $table) {
+                $table->foreignIdFor(model : App\Models\Article::class, column : 'article_id')
+                    ->nullable()
+                    ->default(value : NULL);
+            });
+        }
 
         foreach (['payments', 'subscriptions', 'comments', 'loans', 'reservations'] as $tableName) {
             Schema::table($tableName, callback : function (Blueprint $table) {

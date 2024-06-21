@@ -28,9 +28,13 @@ class LoanResource extends JsonResource
             'updated_at' => $this->resource->updated_at->format("Y-m-d"),
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
-            'articles' => $this->when(
+            /* 'articles' => $this->when(
                 $this->relationLoaded('articles'),
                 $this->resource->articles
+            ), */
+            'article' => $this->when(
+                $this->relationLoaded('article'),
+                $this->resource->article
             ),
             'user' => $this->when(
                 $this->relationLoaded('user'),

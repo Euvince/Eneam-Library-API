@@ -18,7 +18,7 @@ class UserLoanController extends Controller
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             message : "Votre demande d'emprunt a été soumise avec succès.",
-            resource : new LoanResource(resource : Loan::query()->with(['articles', 'user'])->where('id', $loan->id)->first())
+            resource : new LoanResource(resource : Loan::query()->with([/* 'articles', */'article', 'user'])->where('id', $loan->id)->first())
         );
     }
 

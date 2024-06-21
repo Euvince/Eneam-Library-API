@@ -77,7 +77,11 @@ class Article extends Model implements HasMedia
         )->withPivot(columns : ['deleted_at']);
     }
 
-    public function loans () : BelongsToMany {
+    public function loans () : HasMany {
+        return $this->hasMany(related : \App\Models\Loan::class, foreignKey : 'article_id');
+    }
+
+    public function loanss () : BelongsToMany {
         return $this->belongsToMany(
             related : \App\Models\Loan::class,
             table : 'article_loan',

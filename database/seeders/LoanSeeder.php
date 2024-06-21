@@ -17,9 +17,12 @@ class LoanSeeder extends Seeder
             ->each(callback : function (\App\Models\Loan $loan) {
                 $user = \App\Models\User::all()->random(rand(min : 1, max : 1))->first();
                 /* $loan->user_id = $user; */
-                $loan->update(['user_id' => $user->id]);
+                $loan->update([
+                    'user_id' => $user->id,
+                    'article_id' => array_rand(\App\Models\Article::pluck('cote', 'id')->toArray(), 1),
+                ]);
                 $articles = \App\Models\Article::all()->random(rand(1, 2));
-                foreach ($articles as $article) {
+                /* foreach ($articles as $article) {
                     $loan->articles()->sync(
                         ids : [
                             $article->id => [
@@ -27,7 +30,7 @@ class LoanSeeder extends Seeder
                             ]
                         ]
                     );
-                }
+                } */
             })
         ;
     }
