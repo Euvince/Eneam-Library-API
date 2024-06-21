@@ -146,4 +146,4 @@ Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'de
 
 // Emprunts
 Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
-    ->except(methods : ['store']);
+    ->except(methods : ['store', 'update']);

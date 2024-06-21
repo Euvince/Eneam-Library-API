@@ -50,15 +50,8 @@ class ManagerLoanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(LoanRequest $request, Loan $loan) : SingleLoanResponse
+    public function update(LoanRequest $request, Loan $loan) : void
     {
-        $loan->update($request->validated());
-        return new SingleLoanResponse(
-            statusCode : 200,
-            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Votre demande d'emprunt a bien été a été édité",
-            resource : new LoanResource(resource : Loan::query()->with(['articles', 'user'])->where('id', $loan->id)->first())
-        );
     }
 
     /**
