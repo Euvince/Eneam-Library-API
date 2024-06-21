@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\LoanController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\KeywordController;
 use App\Http\Controllers\API\SoutenanceController;
+use App\Http\Controllers\API\Loan\ManagerLoanController;
 use App\Http\Resources\Configuration\ConfigurationResource;
 use App\Http\Responses\Configuration\SingleConfigurationResponse;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
@@ -145,4 +145,5 @@ Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'de
     ->name('destroy-comments');
 
 // Emprunts
-Route::apiResource(name : 'loan', controller : LoanController::class);
+Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
+    ->except(methods : ['store']);

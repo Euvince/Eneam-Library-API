@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Loan;
 
 use App\Models\Loan;
 use App\Http\Requests\LoanRequest;
@@ -10,7 +10,7 @@ use App\Http\Responses\Loan\LoanCollectionResponse;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class LoanController extends Controller
+class ManagerLoanController extends Controller
 {
     /**
      * Display a listing of the resource.

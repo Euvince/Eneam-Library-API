@@ -11,4 +11,9 @@ class StatistiquesController extends Controller
     {
 
     }
+
+    private function example () {
+
+    }
+
 }

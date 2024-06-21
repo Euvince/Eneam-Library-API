@@ -25,6 +25,11 @@ Route::controller(UserController::class)->group(function(){
     Route::post(uri : 'eneamiens-import', action : 'import')->name('eneamiens.import');
 });
 
+/* Route::get('/test', function () {
+    $soutenance = \App\Models\Soutenance::find(73);
+    $soutenance->update(['number_memories_expected' => $soutenance->number_memories_expected - 1]);
+}); */
+
 /* Route::get('generate-img-by-pdf', function () {
     $imagick = new Imagick();
     $imagick->readImage(public_path() . "\pdfs\\file.pdf");

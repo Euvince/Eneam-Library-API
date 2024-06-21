@@ -36,7 +36,7 @@ class PermissionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Permission $permission)
+    public function show(Permission $permission) : SinglePermissionResponse
     {
         return new SinglePermissionResponse(
             statusCode : 200,
