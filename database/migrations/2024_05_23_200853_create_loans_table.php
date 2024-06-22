@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('loans', function (Blueprint $table) {
+        $title = "Nouvelle demande pour emprunt";
+
+        Schema::create('loans', function (Blueprint $table) use($title) {
             $table->id();
+            $table->string(column : 'title')->default(value : $title);
+            $table->string(column : 'slug')->default(value : \Illuminate\Support\Str::slug($title));
             $table->date(column : 'loan_date');
             $table->date(column : 'processing_date')->nullable()->default(value : NULL);
             $table->integer(column : 'duration');

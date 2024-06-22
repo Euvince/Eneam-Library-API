@@ -9,16 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AcceptLoanRequestMail extends Mailable
+class NotifyLoanRequestToManagerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -27,7 +28,8 @@ class AcceptLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Accept Loan Mail',
+            to : ['eneam@gmail.com'],
+            subject: "Nouvelle demande d'emprunt reçue.",
         );
     }
 
@@ -37,7 +39,8 @@ class AcceptLoanRequestMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.accept-loan-request-mail',
+            markdown: 'mail.notify-loan-request-to-manager-mail',
+            with : ['loan' => $this->loan]
         );
     }
 

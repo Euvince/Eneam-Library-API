@@ -4,12 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CommentController;
-use App\Http\Controllers\API\Configuration\ConfigurationController;
+use App\Http\Controllers\API\Configuration\{
+    ConfigurationController,
+    UpdateConfigurationController
+};
 use App\Http\Controllers\API\KeywordController;
 use App\Http\Controllers\API\SoutenanceController;
-use App\Http\Controllers\API\Loan\ManagerLoanController;
+use App\Http\Controllers\API\Loan\{
+    UserLoanController,
+    ManagerLoanController
+};
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
-use App\Http\Controllers\API\Configuration\UpdateConfigurationController;
 
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
@@ -135,6 +140,29 @@ Route::apiResource(name : 'article.comment', controller : CommentController::cla
 Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'destroyComments'])
     ->name('destroy-comments');
 
-// Emprunts
+// Emprunts Lender
+
+Route::post(uri : '/do-loan-request/{article}', action : [UserLoanController::class, 'doLoanRequest'])
+    ->name(name : 'do-loan-request')
+    ->where(['article' => $idRegex]);
+
+Route::post(uri : '/reniew-loan-request/{loan}', action : [UserLoanController::class, 'reniewLoanRequest'])
+    ->name(name : 'reniew-loan-request')
+    ->where(['article' => $idRegex]);
+
+Route::delete(uri : '/cancel-loan-request/{loan}', action : [UserLoanController::class, 'cancelLoanRequest'])
+    ->name(name : 'cancel-loan-request')
+    ->where(['loan' => $idRegex]);
+
+// Emprunts Manager
+
 Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
     ->except(methods : ['store', 'update']);
+
+Route::post(uri : '/accept-loan-request/{loan}', action : [ManagerLoanController::class, 'acceptLoanRequest'])
+    ->name(name : 'accept-loan-request')
+    ->where(['loan' => $idRegex]);
+
+Route::post(uri : '/reject-loan-request/{loan}', action : [ManagerLoanController::class, 'rejectLoanRequest'])
+    ->name(name : 'reject-loan-request')
+    ->where(['loan' => $idRegex]);

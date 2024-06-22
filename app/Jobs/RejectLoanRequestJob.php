@@ -3,10 +3,12 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use App\Mail\AcceptLoanRequestMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
 class RejectLoanRequestJob implements ShouldQueue
 {
@@ -15,9 +17,10 @@ class RejectLoanRequestJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -25,6 +28,6 @@ class RejectLoanRequestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        Mail::send(new AcceptLoanRequestMail($this->loan));
     }
 }

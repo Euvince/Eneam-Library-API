@@ -3,23 +3,29 @@
 namespace App\Http\Controllers\API\Loan;
 
 use App\Models\Loan;
+use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Observers\LoanObserver;
 use App\Http\Controllers\Controller;
+use App\Jobs\NotifyLoanRequestJob;
 use App\Http\Resources\Loan\LoanResource;
+use App\Jobs\NotifyLoanRequestReniwedJob;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserLoanController extends Controller
 {
 
-    public function canDoLoanRequest(Request $request) : JsonResponse
+    public function canDoLoanRequest() : JsonResponse
     {
         return response()->json();
     }
 
-    public function doLoanRequest(Request $request) : SingleLoanResponse
+    public function doLoanRequest(Article $article) : SingleLoanResponse
     {
-        $loan = Loan::create($request->validated());
+        // Vérifier s'il peut soumettre une nouvelle demande
+        $loan = $article->loans()->create();
+        NotifyLoanRequestJob::dispatch($loan);
         return new SingleLoanResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
@@ -28,9 +34,16 @@ class UserLoanController extends Controller
         );
     }
 
-    public function reniewLoanRequest() : JsonResponse
+    public function reniewLoanRequest(Loan $loan) : JsonResponse
     {
-        return response()->json();
+        // Vérifier s'il peut renouveller une demande
+        LoanObserver::renewed($loan);
+        NotifyLoanRequestReniwedJob::dispatch($loan);
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "La demande d'emprunt a été renouvellé avec succès.",],
+        );
     }
 
     public function cancelLoanRequest(Loan $loan) : JsonResponse

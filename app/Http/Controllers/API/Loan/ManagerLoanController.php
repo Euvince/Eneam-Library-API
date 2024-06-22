@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Loan\LoanResource;
 use App\Http\Responses\Loan\LoanCollectionResponse;
 use App\Http\Responses\Loan\SingleLoanResponse;
+use App\Jobs\AcceptLoanRequestJob;
+use App\Observers\LoanObserver;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -68,14 +70,17 @@ class ManagerLoanController extends Controller
     }
 
     /**
-    * Valide LoanRequest of users.
+    * Accept LoanRequest of users.
      */
-    public function valideLoanRequest () : JsonResponse
+    public function acceptLoanRequest (Loan $loan) : JsonResponse
     {
+        // Vérifier que la demande n'a pas encore été acceptée
+        LoanObserver::accepted($loan);
+        AcceptLoanRequestJob::dispatch($loan);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été validée et l'utilisateur sera averti"],
+            data : ['message' => "La demande d'emprunt a bien été acceptée et l'utilisateur est averti"],
         );
     }
 
@@ -87,7 +92,7 @@ class ManagerLoanController extends Controller
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été rejetée et l'utilisateur sera averti"],
+            data : ['message' => "La demande d'emprunt a bien été rejetée et l'utilisateur est averti"],
         );
     }
 

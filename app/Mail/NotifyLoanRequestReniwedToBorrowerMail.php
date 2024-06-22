@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AcceptLoanRequestMail extends Mailable
+class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -27,7 +27,7 @@ class AcceptLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Accept Loan Mail',
+            subject: 'Notifify Loan Request Reniwed To Borrower Mail',
         );
     }
 
@@ -37,7 +37,7 @@ class AcceptLoanRequestMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.accept-loan-request-mail',
+            markdown: 'mail.notifify-loan-request-reniwed-to-borrower-mail',
         );
     }
 

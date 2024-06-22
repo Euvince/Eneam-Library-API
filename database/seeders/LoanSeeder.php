@@ -12,7 +12,7 @@ class LoanSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Loan::factory(35)
+        \App\Models\Loan::factory(40)
             ->create()
             ->each(callback : function (\App\Models\Loan $loan) {
                 $user = \App\Models\User::all()->random(rand(min : 1, max : 1))->first();

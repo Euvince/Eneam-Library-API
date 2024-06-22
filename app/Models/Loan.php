@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @mixin IdeHelperLoan
  */
+
+#[ObservedBy([\App\Observers\LoanObserver::class])]
+
 class Loan extends Model
 {
     use HasFactory, SoftDeletes;
@@ -48,5 +52,17 @@ class Loan extends Model
     public function scopeRecent (Builder $builder) : Builder {
         return $builder->orderBy('created_at', 'desc');
     }
+
+    /* public function scopeAvailable (Builder $builder, bool $available = self::IS_AVAILABLE) : Builder {
+        return $builder->where('available', $available);
+    }
+
+    public static function isAvailable (Article $article) : bool {
+        return $article->available === self::IS_AVAILABLE;
+    }
+
+    public static function markAsAvailable (Article $article) :void {
+        $article->update(['available' => self::IS_AVAILABLE]);
+    } */
 
 }

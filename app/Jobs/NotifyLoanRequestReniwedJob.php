@@ -3,12 +3,13 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
-class NotififyLoanRequestToManagerJob implements ShouldQueue
+class NotifyLoanRequestReniwedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -17,7 +18,6 @@ class NotififyLoanRequestToManagerJob implements ShouldQueue
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -25,6 +25,5 @@ class NotififyLoanRequestToManagerJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
     }
 }

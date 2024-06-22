@@ -32,7 +32,7 @@ class DeleteSubscriptionAfterExpirationDate extends Command
         $expiredSubscriptions = \App\Models\Subscription::where('expiration_date', '<=', Carbon::parse(Carbon::now()->format("Y-m-d")))->get();
 
         foreach ($expiredSubscriptions as $subscription) {
-            \App\Models\User::find($subscription->user->id)->update([
+            \App\Models\User::find($subscription->user_id)->update([
                 'has_paid' => false,
                 'has_access' => false,
             ]);

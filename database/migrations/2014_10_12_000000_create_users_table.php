@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string(column : 'profile_picture_path')->nullable()->default(value : NULL);
             $table->boolean(column : 'has_paid')->default(value : false);
             $table->boolean(column : 'has_access')->default(value : false);
+            $table->boolean(column : 'can_do_loan_request')->default(value : false);
+            $table->boolean(column : 'can_reniew_loan_request')->default(value : false);
             $table->float(column : 'debt_amount')->default(value : 0);
             $table->rememberToken();
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
