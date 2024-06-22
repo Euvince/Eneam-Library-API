@@ -11,6 +11,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserLoanController extends Controller
 {
+
+    public function canDoLoanRequest(Request $request) : JsonResponse
+    {
+        return response()->json();
+    }
+
     public function doLoanRequest(Request $request) : SingleLoanResponse
     {
         $loan = Loan::create($request->validated());

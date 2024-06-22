@@ -20,13 +20,12 @@ return new class extends Migration
             $table->unsignedInteger(column : 'renewals')->default(value : 0);
             $table->dateTime(column : 'reniew_at')->nullable()->default(value : NULL);
             $table->date(column : 'book_must_returned_on')->nullable()->default(value : NULL);
-            $table->boolean(column : 'book_recovered')->default(value : false);
             $table->dateTime(column : 'book_recovered_at')->nullable()->default(value : NULL);
-            $table->boolean(column : 'book_returned')->default(value : false);
             $table->dateTime(column : 'book_returned_at')->nullable()->default(value : NULL);
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
+            $table->dateTime(column : 'withdraw_at')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();
         });

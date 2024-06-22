@@ -115,4 +115,16 @@ class ManagerLoanController extends Controller
         );
     }
 
+    /**
+    * Mark loan article as returned.
+     */
+    public function markArticleAsWithdraw () : JsonResponse
+    {
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : ['message' => "Le document a bien été marqué comme retourné"],
+        );
+    }
+
 }

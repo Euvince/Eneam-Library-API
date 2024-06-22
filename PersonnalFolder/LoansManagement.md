@@ -1,9 +1,12 @@
+***Relation One to Many***
+
 **Côté Utilisateur**
 +Une fois sur le Listing ou sur le show d'un Livre et que toutes les conditions pour prêter un Livre sont réunis (Livre qui doit être physique) cliquer sur demander un prêt
-    -Mettre de statut de cette à **En cours**,
-    -Remplir l'attribut loan_date avec la **date actuelle**,
-    -Remplir l'attribut duration avec **14jours** pour un étudiant quelconque et **30jours** pour un enseignant,
-    -Envoyer un email ou une notification au manager pour lui notifier la nouvelle demande de prêt (avec des boutons pour accepter ou rejeter la demande : OPTIONNEL),
+    Si l'utilisateur peut prêter un Livre alors :
+        -Mettre de statut de cette demande à **En cours**,
+        -Remplir l'attribut loan_date avec la **date actuelle**,
+        -Remplir l'attribut duration avec **14jours** pour un étudiant quelconque et **30jours** pour un enseignant,
+        -Envoyer un email ou une notification au manager pour lui notifier la nouvelle demande de prêt (avec des boutons pour accepter ou rejeter la demande : OPTIONNEL),
 
 
 +Ne peut prêter plus de deux documents à la fois suivant les conditions suivantes
@@ -49,16 +52,21 @@
             .Rappeler au user peut-être 24h après que sa demande est toujours en attente qu'il vienne chercher le document
 
     -Un bouton pour REJETER une demande de prêt tout en précisant la raison du rejet
-        .Une notification ou un email sera envoyé au propriétaire de la demande pour lui notifier le rejet et sa raison,
-        .Changer le statut de la demande de prêt à l'état Rejetée,
-        .Supprimer la demande de prêt de la base de données,
+        Si la demande n'est pas encore rejetée alors :
+            .Une notification ou un email sera envoyé au propriétaire de la demande pour lui notifier le rejet et sa raison,
+            .Changer le statut de la demande de prêt à l'état Rejetée,
+            .Supprimer la demande de prêt de la base de données,
 
     -Un bouton pour confirmer que le prêteur est venu récupérer le document
         Si le prêteur n'est pas encore vunu récupérer le Livre et que la demande est acceptée alors :
-            .Passer l'attribut book_recovered à true,
             .Remplir l'attribut book_recovered_at avec la date actuelle
 
     -Un bouton pour confirmer que le prêteur a retourné le document
         Si le Livre a été récupéré et n'est pas encore de retour alors :
-            .Passer l'attribut book_returned à true,
             .Remplir l'attribut book_returned_at avec la date actuelle
+
+
+
+***Relation Many to Many***
+
+...
