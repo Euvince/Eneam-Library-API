@@ -42,7 +42,7 @@ class UserLoanController extends Controller
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a été renouvellé avec succès.",],
+            data : ['message' => "La demande d'emprunt a été renouvellée avec succès.",],
         );
     }
 

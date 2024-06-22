@@ -159,10 +159,22 @@ Route::delete(uri : '/cancel-loan-request/{loan}', action : [UserLoanController:
 Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
     ->except(methods : ['store', 'update']);
 
-Route::post(uri : '/accept-loan-request/{loan}', action : [ManagerLoanController::class, 'acceptLoanRequest'])
+Route::patch(uri : '/accept-loan-request/{loan}', action : [ManagerLoanController::class, 'acceptLoanRequest'])
     ->name(name : 'accept-loan-request')
     ->where(['loan' => $idRegex]);
 
-Route::post(uri : '/reject-loan-request/{loan}', action : [ManagerLoanController::class, 'rejectLoanRequest'])
+Route::delete(uri : '/reject-loan-request/{loan}', action : [ManagerLoanController::class, 'rejectLoanRequest'])
     ->name(name : 'reject-loan-request')
+    ->where(['loan' => $idRegex]);
+
+Route::patch(uri : '/mark-article-as-recovered/{loan}', action : [ManagerLoanController::class, 'markArticleAsRecovered'])
+    ->name(name : 'mark-article-as-recovered')
+    ->where(['loan' => $idRegex]);
+
+Route::patch(uri : '/mark-article-as-returned/{loan}', action : [ManagerLoanController::class, 'markArticleAsReturned'])
+    ->name(name : 'mark-article-as-returned')
+    ->where(['loan' => $idRegex]);
+
+Route::patch(uri : '/mark-as-withdrawed/{loan}', action : [ManagerLoanController::class, 'markAsWithdrawed'])
+    ->name(name : 'mark-as-withdrawed')
     ->where(['loan' => $idRegex]);

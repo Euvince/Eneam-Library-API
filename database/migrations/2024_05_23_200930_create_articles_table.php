@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string(column : 'cote')->nullable()->default(value : NULL);
             $table->integer(column : 'number_pages')->nullable()->default(value : NULL);
             $table->string(column : 'ISBN')->nullable()->default(value : NULL);
-            $table->integer(column : 'available_stock')->nullable()->default(value : NULL);
+            $table->unsignedBigInteger(column : 'available_stock')->nullable()->default(value : NULL);
             $table->boolean(column : 'available')->default(value : true);
             $table->boolean(column : 'loaned')->default(value : false);
             $table->boolean(column : 'reserved')->default(value : false);
@@ -35,9 +35,9 @@ return new class extends Migration
             /* $table->json('keywords')->nullable()->default(value : NULL);
             $table->json('formats')->nullable()->default(value : NULL); */
             $table->json('files_paths')->nullable()->default(value : NULL);
-            $table->integer(column : 'likes_number')->default(value : 0);
-            $table->integer(column : 'views_number')->default(value : 0);
-            $table->integer(column : 'stars_number')->default(value : 0);
+            $table->unsignedBigInteger(column : 'likes_number')->default(value : 0);
+            $table->unsignedBigInteger(column : 'views_number')->default(value : 0);
+            $table->unsignedInteger(column : 'stars_number')->default(value : 0);
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);

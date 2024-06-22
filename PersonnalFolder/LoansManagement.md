@@ -33,6 +33,7 @@
 
 
 +Renouveller une demande d'emprunt
+    ??? Doit-on faire une nouvelle demande ???
     -Vérifier si la demande a été acceptée, le Livre a été recupéré et s'il n'a pas déjà renouveller une fois la demande,
     -Incrémenter renewals de 1 pour la demande,
     -Remplir l'attribut reniew_at avec la date actuelle
@@ -61,8 +62,8 @@
     -Un bouton pour REJETER une demande de prêt tout en précisant la raison du rejet
         Si la demande n'est pas encore rejetée alors :
             .Remplir l'attribut processing_date avec la date actuelle,
-            .Une notification ou un email sera envoyé au propriétaire de la demande pour lui notifier le rejet et sa raison,
             .Changer le statut de la demande de prêt à l'état Rejetée,
+            .Une notification ou un email sera envoyé au propriétaire de la demande pour lui notifier le rejet et sa raison,
             .Supprimer la demande de prêt de la base de données,
 
     -Un bouton pour confirmer que le prêteur est venu récupérer le document

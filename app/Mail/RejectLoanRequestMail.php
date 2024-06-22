@@ -16,9 +16,11 @@ class RejectLoanRequestMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly string $reason,
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -27,7 +29,8 @@ class RejectLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reject Loan Request Mail',
+            to : $this->loan->user->email,
+            subject: "Rejet de votre demande d'emprunt",
         );
     }
 
@@ -38,6 +41,7 @@ class RejectLoanRequestMail extends Mailable
     {
         return new Content(
             markdown: 'mail.reject-loan-request-mail',
+            with : ['loan' => $this->loan, 'reason' => $this->reason]
         );
     }
 

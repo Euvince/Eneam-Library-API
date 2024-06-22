@@ -27,7 +27,7 @@ class DeleteSubscriptionAfterExpirationDate extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle() : void
     {
         $expiredSubscriptions = \App\Models\Subscription::where('expiration_date', '<=', Carbon::parse(Carbon::now()->format("Y-m-d")))->get();
 

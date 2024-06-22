@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\API\Loan;
 
 use App\Models\Loan;
+use App\Observers\LoanObserver;
 use App\Http\Requests\LoanRequest;
+use App\Jobs\AcceptLoanRequestJob;
+use App\Jobs\RejectLoanRequestJob;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Loan\LoanResource;
-use App\Http\Responses\Loan\LoanCollectionResponse;
 use App\Http\Responses\Loan\SingleLoanResponse;
-use App\Jobs\AcceptLoanRequestJob;
-use App\Observers\LoanObserver;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Http\Responses\Loan\LoanCollectionResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ManagerLoanController extends Controller
 {
@@ -80,27 +81,32 @@ class ManagerLoanController extends Controller
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été acceptée et l'utilisateur est averti"],
+            data : ['message' => "La demande d'emprunt a bien été acceptée et l'emprunteur est informé"],
         );
     }
 
     /**
     * Reject LoanRequest of users.
      */
-    public function rejectLoanRequest () : JsonResponse
+    public function rejectLoanRequest (Loan $loan, LoanRequest $request) : JsonResponse
     {
+        // Vérifier que la demande n'a pas encore été rejeté ainsi que d'autres conditions
+        LoanObserver::rejected($loan);
+        RejectLoanRequestJob::dispatch($loan, $request->validated('reason'));
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été rejetée et l'utilisateur est averti"],
+            data : ['message' => "La demande d'emprunt a bien été rejetée et l'emprunteur est informé"],
         );
     }
 
     /**
     * Mark loan article as recovered.
      */
-    public function markArticleAsRecovered () : JsonResponse
+    public function markArticleAsRecovered (Loan $loan) : JsonResponse
     {
+        // Vérifier que le Livre peut-être récupérer
+        Loan::markAsStarted($loan);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
@@ -111,8 +117,10 @@ class ManagerLoanController extends Controller
     /**
     * Mark loan article as returned.
      */
-    public function markArticleAsReturned () : JsonResponse
+    public function markArticleAsReturned (Loan $loan) : JsonResponse
     {
+        // Vérifier que le Livre peut-être retourner
+        Loan::markAsFinished($loan);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
@@ -123,8 +131,10 @@ class ManagerLoanController extends Controller
     /**
     * Mark loan article as returned.
      */
-    public function markArticleAsWithdraw () : JsonResponse
+    public function markAsWithdrawed (Loan $loan) : JsonResponse
     {
+        // Vérifier que le Livre peut-être retirer du Listing
+        Loan::markAsWithdrawed($loan);
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],

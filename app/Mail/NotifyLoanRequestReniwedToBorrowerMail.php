@@ -16,9 +16,10 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -27,7 +28,8 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Notifify Loan Request Reniwed To Borrower Mail',
+            to : $this->loan->user->email,
+            subject: "Renouvellement d'emprunt éffectué.",
         );
     }
 
@@ -38,6 +40,7 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
     {
         return new Content(
             markdown: 'mail.notifify-loan-request-reniwed-to-borrower-mail',
+            with : ['loan' => $this->loan]
         );
     }
 

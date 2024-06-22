@@ -16,9 +16,10 @@ class NotifyLoanRequestReniwedToManagerMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -27,7 +28,8 @@ class NotifyLoanRequestReniwedToManagerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Notifify Loan Request Reniwed Mail',
+            to : ['eneam@gmail.com'],
+            subject: "Renouvellement d'emprunt.",
         );
     }
 
@@ -38,6 +40,7 @@ class NotifyLoanRequestReniwedToManagerMail extends Mailable
     {
         return new Content(
             markdown: 'mail.notifify-loan-request-reniwed-to-manager-mail',
+            with : ['loan' => $this->loan]
         );
     }
 

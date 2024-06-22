@@ -5,6 +5,7 @@ namespace App\Models;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -105,6 +105,14 @@ class Article extends Model implements HasMedia
 
     public function scopeAvailable (Builder $builder, bool $available = self::IS_AVAILABLE) : Builder {
         return $builder->where('available', $available);
+    }
+
+    public function scopeLoaned (Builder $builder, bool $loaned = self::IS_LOANED) : Builder {
+        return $builder->where('loaned', $loaned);
+    }
+
+    public function scopePhysical (Builder $builder, bool $isPhysical = self::IS_PHYSICAL) : Builder {
+        return $builder->where('is_physical', $isPhysical);
     }
 
     public static function isAvailable (Article $article) : bool {

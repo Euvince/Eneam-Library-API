@@ -128,6 +128,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $builder->where('has_paid', $hasPaid);
     }
 
+    public function scopeAccess (Builder $builder, bool $hasAccess = self::HAS_ACCESS) : Builder {
+        return $builder->where('has_access', $hasAccess);
+    }
+
     public static function hasPaid (User $user) : bool {
         return $user->has_paid === self::HAS_PAID;
     }

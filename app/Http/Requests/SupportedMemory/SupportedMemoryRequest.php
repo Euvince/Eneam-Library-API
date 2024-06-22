@@ -55,12 +55,14 @@ class SupportedMemoryRequest extends FormRequest
         $messages = [];
         $routeName = request()->route()->getName();
         if (
-            $routeName === "destroy-memories" ||
-            $routeName === "validate-memories" ||
-            $routeName === "print-reports"
+            $routeName === "destroy-memories" || $routeName === "validate-memories" ||
+            $routeName === "download-memories" || $routeName === "print-reports"
         ) {
             $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs mémoire(s)";
             $messages['ids.array'] = "L'ensemble de mémoire(s) envoyé doit être un tableau";
+        }
+        else if ($routeName === "reject-memory") {
+            $messages['reason.required'] = "La raison du rejet est obligatoire.";
         }
         return $messages;
     }

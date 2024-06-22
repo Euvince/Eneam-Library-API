@@ -16,9 +16,10 @@ class AcceptLoanRequestMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
-        //
     }
 
     /**
@@ -27,7 +28,8 @@ class AcceptLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Accept Loan Mail',
+            to : $this->loan->user->email,
+            subject: "Acceptation de votre demande d'emprunt",
         );
     }
 
@@ -38,6 +40,7 @@ class AcceptLoanRequestMail extends Mailable
     {
         return new Content(
             markdown: 'mail.accept-loan-request-mail',
+            with : ['loan' => $this->loan]
         );
     }
 

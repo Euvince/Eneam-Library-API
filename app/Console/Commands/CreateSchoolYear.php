@@ -22,13 +22,13 @@ class CreateSchoolYear extends Command
     protected $description = "
         Cette tâche se chargera de créer
         dynamiquement une année scolaire chaque fois
-        qu'une année scolaire se terminera"
-    ;
+        qu'une année scolaire se terminera
+    ";
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle() : void
     {
         $startDate = Carbon::parse(Carbon::now()->format(format : "Y-m-d"))->year."-09-".rand(1, 30);
         $endDate = Carbon::parse($startDate)->addMonths(value : 10);

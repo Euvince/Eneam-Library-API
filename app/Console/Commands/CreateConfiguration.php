@@ -23,7 +23,7 @@ class CreateConfiguration extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle() : void
     {
         $lastSchoolYear = \App\Models\SchoolYear::latest()->first();
         $lastConfiguration = \App\Models\Configuration::latest()->first();

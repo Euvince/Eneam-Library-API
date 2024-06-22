@@ -8,6 +8,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Mail\NotifyLoanRequestReniwedToManagerMail;
+use App\Mail\NotifyLoanRequestReniwedToBorrowerMail;
 
 class NotifyLoanRequestReniwedJob implements ShouldQueue
 {
@@ -16,7 +18,9 @@ class NotifyLoanRequestReniwedJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly \App\Models\Loan $loan
+    )
     {
     }
 
@@ -25,5 +29,7 @@ class NotifyLoanRequestReniwedJob implements ShouldQueue
      */
     public function handle(): void
     {
+        Mail::send(new NotifyLoanRequestReniwedToManagerMail($this->loan));
+        Mail::send(new NotifyLoanRequestReniwedToBorrowerMail($this->loan));
     }
 }

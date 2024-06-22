@@ -84,8 +84,16 @@ class LoanObserver
         $loan->update([
             'reniew_at' => Carbon::now(),
             'renewals' => ++ $loan->renewals,
-            'book_must_returned_on' => $loan->book_must_returned_on->addDays($durationValue)->format(format : "Y-m-d")
+            'book_must_returned_on' => Carbon::parse($loan->book_must_returned_on)->addDays($durationValue)->format(format : "Y-m-d")
         ]);
+    }
+
+    /**
+     * Handle the Loan "created" event.
+     */
+    public function created(Loan $loan): void
+    {
+        //
     }
 
     /**
@@ -103,6 +111,9 @@ class LoanObserver
          */
         $config = Configuration::appConfig();
 
+        $article = Article::find($loan->article_id);
+        $articleData = ['available_stock' => -- $loan->article->available_stock];
+
         $durationValue = $user->hasAnyRole(roles : [
                 'Etudiant-Eneamien', 'Etudiant-Externe'
             ])
@@ -112,19 +123,22 @@ class LoanObserver
         $loan->update([
             'status' => "Validée",
             'processing_date' => Carbon::now(),
-            'book_must_returned_on' => $loan->book_must_returned_on = Carbon::now()->addDays($durationValue)->format(format : "Y-m-d")
+            'book_must_returned_on' => Carbon::now()->addDays($durationValue)->format(format : "Y-m-d")
         ]);
-        Article::find($loan->article_id)::update([
-            'available_stock' => -- $loan->article->available_stock
-        ]);
+        if ($article->available_stock === 0) $articleData['available'] = false;
+        $article->update($articleData);
     }
 
     /**
-     * Handle the Loan "created" event.
+     * Handle the Loan "rejected" event.
      */
-    public function created(Loan $loan): void
+    public static function rejected(Loan $loan): void
     {
-        //
+        $loan->update([
+            'status' => "Rejetée",
+            'processing_date' => Carbon::now(),
+        ]);
+        $loan->delete();
     }
 
     public function updating(Loan $loan): void
