@@ -12,6 +12,10 @@ use App\Http\Resources\Loan\LoanResource;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Http\Responses\Loan\LoanCollectionResponse;
+use App\Jobs\CancelLoanRequestJob;
+use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
+use App\Models\Configuration;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ManagerLoanController extends Controller
@@ -75,14 +79,29 @@ class ManagerLoanController extends Controller
      */
     public function acceptLoanRequest (Loan $loan) : JsonResponse
     {
-        // Vérifier que la demande n'a pas encore été acceptée
-        LoanObserver::accepted($loan);
-        AcceptLoanRequestJob::dispatch($loan);
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été acceptée et l'emprunteur est informé"],
-        );
+        /**
+         * @var User $user
+         */
+        $user = $loan->user;
+        $config =  Configuration::appConfig();
+        $delayValue = $user->hasAnyRole(roles : [
+            'Etudiant-Eneamien', 'Etudiant-Externe'
+            ])
+            ? $config->student_recovered_delay
+            : $config->teacher_recovered_delay;
+        // if (!Loan::isAccepted($loan)) {
+            LoanObserver::accepted($loan);
+            AcceptLoanRequestJob::dispatch($loan);
+            CancelLoanRequestJob::dispatch($loan)
+                ->delay(delay : Carbon::now()->addDays(value : $delayValue));
+            RemindTheUserAboutLoanRequestSomeTimesAfterJob::dispatch($loan)
+                ->delay(delay : Carbon::now()->addDays(value : ($delayValue / 2)));
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "La demande d'emprunt a bien été acceptée et l'emprunteur est informé"],
+            );
+        // }
     }
 
     /**
@@ -90,14 +109,15 @@ class ManagerLoanController extends Controller
      */
     public function rejectLoanRequest (Loan $loan, LoanRequest $request) : JsonResponse
     {
-        // Vérifier que la demande n'a pas encore été rejeté ainsi que d'autres conditions
-        LoanObserver::rejected($loan);
-        RejectLoanRequestJob::dispatch($loan, $request->validated('reason'));
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été rejetée et l'emprunteur est informé"],
-        );
+        // if (!Loan::isRejected($loan)) {
+            LoanObserver::rejected($loan);
+            RejectLoanRequestJob::dispatch($loan, $request->validated('reason'));
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "La demande d'emprunt a bien été rejetée et l'emprunteur est informé"],
+            );
+        // }
     }
 
     /**

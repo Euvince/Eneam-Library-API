@@ -24,14 +24,16 @@ class SubscriptionObserver
 
     public function creating(Subscription $subscription): void
     {
+        $config = Configuration::appConfig();
+
         if (!app()->runningInConsole()) {
             $subscriptonDate = Carbon::parse(Carbon::now()->format("Y-m-d"));
             $subscription->status = "Actif";
             $subscription->subscription_date = $subscriptonDate;
-            $subscription->expiration_date = $subscriptonDate->addYears(value : 1);
+            $subscription->expiration_date = $subscriptonDate->addYears(value : $config->subscription_expiration_delay);
             $amount = $this->request->route()->parameter('user')->hasRole(roles : ['Etudiant-Eneamien'])
-                ? Configuration::appConfig()->eneamien_subscribe_amount
-                : Configuration::appConfig()->extern_subscribe_amount;
+                ? $config->eneamien_subscribe_amount
+                : $config->extern_subscribe_amount;
             $subscription->amount = $amount;
         }
         $this->canDoEvent()

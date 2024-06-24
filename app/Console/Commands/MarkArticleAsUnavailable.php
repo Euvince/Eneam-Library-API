@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\Models\Article;
 use Illuminate\Console\Command;
 
-class MarkArticleAsUnvailable extends Command
+class MarkArticleAsUnavailable extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:mark-article-as-unvailable';
+    protected $signature = 'app:mark-article-as-unavailable';
 
     /**
      * The console command description.

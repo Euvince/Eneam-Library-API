@@ -121,12 +121,13 @@ class LoanObserver
             : $config->teacher_loan_delay;
 
         $loan->update([
-            'status' => "Validée",
+            'status' => "Acceptée",
+            'accepted_at' => Carbon::now(),
             'processing_date' => Carbon::now(),
             'book_must_returned_on' => Carbon::now()->addDays($durationValue)->format(format : "Y-m-d")
         ]);
-        if ($article->available_stock === 0) $articleData['available'] = false;
         $article->update($articleData);
+        /* if ($article->available_stock === 0) $articleData['available'] = false; */
     }
 
     /**
@@ -136,6 +137,7 @@ class LoanObserver
     {
         $loan->update([
             'status' => "Rejetée",
+            'rejected_at' => Carbon::now(),
             'processing_date' => Carbon::now(),
         ]);
         $loan->delete();

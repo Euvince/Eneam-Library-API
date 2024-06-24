@@ -29,6 +29,8 @@ return new class extends Migration
             $table->string(column : 'created_by')->nullable()->default(value : NULL);
             $table->string(column : 'updated_by')->nullable()->default(value : NULL);
             $table->string(column : 'deleted_by')->nullable()->default(value : NULL);
+            $table->dateTime(column : 'accepted_at')->nullable()->default(value : NULL);
+            $table->dateTime(column : 'rejected_at')->nullable()->default(value : NULL);
             $table->dateTime(column : 'withdraw_at')->nullable()->default(value : NULL);
             $table->timestamps();
             $table->softDeletes();

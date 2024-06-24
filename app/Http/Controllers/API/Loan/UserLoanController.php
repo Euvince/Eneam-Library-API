@@ -11,27 +11,42 @@ use App\Jobs\NotifyLoanRequestJob;
 use App\Http\Resources\Loan\LoanResource;
 use App\Jobs\NotifyLoanRequestReniwedJob;
 use App\Http\Responses\Loan\SingleLoanResponse;
+use App\Services\LoansOperationsService;
+use Illuminate\Auth\AuthManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserLoanController extends Controller
 {
 
-    public function canDoLoanRequest() : JsonResponse
+    public function __construct(
+        private readonly Request $request,
+        private readonly AuthManager $auth
+    )
     {
-        return response()->json();
+    }
+
+    public function canDoLoanRequest(Article $article) : bool
+    {
+        return LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article);
     }
 
     public function doLoanRequest(Article $article) : SingleLoanResponse
     {
-        // Vérifier s'il peut soumettre une nouvelle demande
-        $loan = $article->loans()->create();
-        NotifyLoanRequestJob::dispatch($loan);
-        return new SingleLoanResponse(
-            statusCode : 201,
-            allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-            message : "Votre demande d'emprunt a été soumise avec succès.",
-            resource : new LoanResource(resource : Loan::query()->with([/* 'articles', */'article', 'user'])->where('id', $loan->id)->first())
-        );
+        //if (LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article)) {
+            $loan = $article->loans()->create();
+            NotifyLoanRequestJob::dispatch($loan);
+            return new SingleLoanResponse(
+                statusCode : 201,
+                allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+                message : "Votre demande d'emprunt a été soumise avec succès.",
+                resource : new LoanResource(resource : Loan::query()->with([/* 'articles', */'article', 'user'])->where('id', $loan->id)->first())
+            );
+        //}
+    }
+
+    public function canReniewLoanRequest(Loan $loan) : bool
+    {
+        return LoansOperationsService::userCanReniewLoanRequest($loan);
     }
 
     public function reniewLoanRequest(Loan $loan) : JsonResponse
@@ -48,6 +63,7 @@ class UserLoanController extends Controller
 
     public function cancelLoanRequest(Loan $loan) : JsonResponse
     {
+        // Remettre tout en ordre d'abord
         $loan->delete();
         return response()->json(
             status : 200,

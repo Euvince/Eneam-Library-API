@@ -21,6 +21,9 @@ class Loan extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const ACCEPT_STATUS = "Acceptée";
+    const REJECT_STATUS = "Rejetée";
+
     protected $fillable = [
         'title', 'loan_date', 'processing_date', 'book_must_returned_on',
         'duration', 'status', 'renewals', 'book_recovered_at', 'book_returned_at',
@@ -54,6 +57,14 @@ class Loan extends Model
         return $builder->orderBy('created_at', 'desc');
     }
 
+    public function scopeAccepted (Builder $builder, string $accepted = self::ACCEPT_STATUS) : Builder {
+        return $builder->where('status', $accepted);
+    }
+
+    public function scopeRejected (Builder $builder, string $rejected = self::REJECT_STATUS) : Builder {
+        return $builder->where('status', $rejected);
+    }
+
     public function scopeRenewed (Builder $builder) : Builder {
         return $builder->whereNull('renewed_at');
     }
@@ -68,6 +79,22 @@ class Loan extends Model
 
     public function scopeWithdrawed (Builder $builder) : Builder {
         return $builder->whereNull('renewed_at');
+    }
+
+    public static function isAccepted (Loan $loan) : bool {
+        return $loan->status === self::ACCEPT_STATUS;
+    }
+
+    public static function markAsAccepted (Loan $loan) :void {
+        $loan->update(['status' => self::ACCEPT_STATUS]);
+    }
+
+    public static function isRejected (Loan $loan) : bool {
+        return $loan->status === self::REJECT_STATUS;
+    }
+
+    public static function markAsRejected (Loan $loan) :void {
+        $loan->update(['status' => self::REJECT_STATUS]);
     }
 
     public static function hasStarted (Loan $loan) : bool {
