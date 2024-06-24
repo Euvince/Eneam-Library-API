@@ -62,19 +62,6 @@ class ManagerLoanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Loan $loan) : JsonResponse
-    {
-        $loan->delete();
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a bien été supprimée",],
-        );
-    }
-
-    /**
     * Accept LoanRequest of users.
      */
     public function acceptLoanRequest (Loan $loan) : JsonResponse
@@ -89,19 +76,27 @@ class ManagerLoanController extends Controller
             ])
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
-        // if (!Loan::isAccepted($loan)) {
+        if (!Loan::isAccepted($loan)) {
             LoanObserver::accepted($loan);
             AcceptLoanRequestJob::dispatch($loan);
             CancelLoanRequestJob::dispatch($loan)
                 ->delay(delay : Carbon::now()->addDays(value : $delayValue));
             RemindTheUserAboutLoanRequestSomeTimesAfterJob::dispatch($loan)
                 ->delay(delay : Carbon::now()->addDays(value : ($delayValue / 2)));
+
             return response()->json(
                 status : 200,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
                 data : ['message' => "La demande d'emprunt a bien été acceptée et l'emprunteur est informé"],
             );
-        // }
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à une acceptation d'emprunt ne sont pas remplies.",],
+            );
+        }
     }
 
     /**
@@ -109,7 +104,7 @@ class ManagerLoanController extends Controller
      */
     public function rejectLoanRequest (Loan $loan, LoanRequest $request) : JsonResponse
     {
-        // if (!Loan::isRejected($loan)) {
+        if (!Loan::isAccepted($loan) && !Loan::isRejected($loan)) {
             LoanObserver::rejected($loan);
             RejectLoanRequestJob::dispatch($loan, $request->validated('reason'));
             return response()->json(
@@ -117,7 +112,14 @@ class ManagerLoanController extends Controller
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
                 data : ['message' => "La demande d'emprunt a bien été rejetée et l'emprunteur est informé"],
             );
-        // }
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à un rejet d'emprunt ne sont pas remplies.",],
+            );
+        }
     }
 
     /**
@@ -125,13 +127,21 @@ class ManagerLoanController extends Controller
      */
     public function markArticleAsRecovered (Loan $loan) : JsonResponse
     {
-        // Vérifier que le Livre peut-être récupérer
-        Loan::markAsStarted($loan);
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "Le document a bien été marqué comme récupéré"],
-        );
+        if (Loan::isAccepted($loan) && !Loan::hasStarted($loan)) {
+            Loan::markAsStarted($loan);
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Le document a bien été marqué comme récupéré"],
+            );
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à une récupération de Livre ne sont pas remplies.",],
+            );
+        }
     }
 
     /**
@@ -139,13 +149,21 @@ class ManagerLoanController extends Controller
      */
     public function markArticleAsReturned (Loan $loan) : JsonResponse
     {
-        // Vérifier que le Livre peut-être retourner
-        Loan::markAsFinished($loan);
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "Le document a bien été marqué comme retourné"],
-        );
+        if (Loan::hasStarted($loan) && !Loan::isFinished($loan)) {
+            Loan::markAsFinished($loan);
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Le document a bien été marqué comme retourné"],
+            );
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à un retour de Livre ne sont pas remplies.",],
+            );
+        }
     }
 
     /**
@@ -153,12 +171,33 @@ class ManagerLoanController extends Controller
      */
     public function markAsWithdrawed (Loan $loan) : JsonResponse
     {
-        // Vérifier que le Livre peut-être retirer du Listing
-        Loan::markAsWithdrawed($loan);
+        if (Loan::isFinished($loan)) {
+            Loan::markAsWithdrawed($loan);
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Le document a bien été marqué comme retourné"],
+            );
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à un retrait d'emprunt du listing ne sont pas remplies.",],
+            );
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Loan $loan) : JsonResponse
+    {
+        $loan->delete();
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "Le document a bien été marqué comme retourné"],
+            data : ['message' => "La demande d'emprunt a bien été supprimée",],
         );
     }
 

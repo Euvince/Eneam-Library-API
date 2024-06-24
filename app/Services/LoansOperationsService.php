@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Article;
 use App\Models\Loan;
 use App\Models\User;
+use App\Models\Article;
 
 class LoansOperationsService
 {
@@ -21,13 +21,16 @@ class LoansOperationsService
     }
 
     public static function userCanReniewLoanRequest (Loan $loan) : bool {
-        // Vérifier si la demande a été acceptée, le Livre a été recupéré et s'il n'a pas déjà renouveller une fois la demande
         return
-            self::theLenderHasAlreadyReniewedRequestOnce($loan);
+            Loan::hasStarted($loan) &&
+            !self::theLenderHasAlreadyReniewedRequestOnce($loan);
     }
 
     private static function articleIsAvailable_articleIsPhysical(Article $article) : bool {
-        return (Article::isAvailable($article) && Article::isPhysical($article));
+        return
+            $article->available_stock > 0 &&
+            Article::isAvailable($article) &&
+            Article::isPhysical($article);
     }
 
     private static function twoBooksAlreadyWithTheBorrower(User $user) : bool {

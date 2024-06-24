@@ -27,7 +27,7 @@ class Loan extends Model
     protected $fillable = [
         'title', 'loan_date', 'processing_date', 'book_must_returned_on',
         'duration', 'status', 'renewals', 'book_recovered_at', 'book_returned_at',
-        'created_by', 'updated_by', 'deleted_by',
+        'created_by', 'updated_by', 'deleted_by', 'accepted_at', 'rejected_at',
         'created_at', 'updated_at', 'deleted_at', 'reniew_at', 'withdraw_at'
     ];
 

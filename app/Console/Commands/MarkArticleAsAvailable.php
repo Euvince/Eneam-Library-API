@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\Models\Article;
 use Illuminate\Console\Command;
 
-class MarkArticleAsUnavailable extends Command
+class MarkArticleAsAvailable extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:mark-article-as-unavailable';
+    protected $signature = 'app:mark-article-as-available';
 
     /**
      * The console command description.
@@ -21,7 +21,7 @@ class MarkArticleAsUnavailable extends Command
      */
     protected $description = "
         Cette tâche se chargera de marquer tous les articles
-        dont le stock disponible est de 0 comme indisponible
+        dont le stock disponible est supérieur à 0 comme disponible
     ";
 
     /**
@@ -29,12 +29,12 @@ class MarkArticleAsUnavailable extends Command
      */
     public function handle() : void
     {
-        $unavailablesArticles = Article::where('available_stock', '0')->get();
+        $availablesArticles = Article::where('available_stock', '>', '0')->get();
 
-        foreach ($unavailablesArticles as $article) {
-            if (Article::isAvailable($article)) {
+        foreach ($availablesArticles as $article) {
+            if (!Article::isAvailable($article)) {
                 $article->update([
-                    'available' => false
+                    'available' => true
                 ]);
             }
         }

@@ -27,13 +27,19 @@ class CancelLoanRequestJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
         if ($this->loan->book_recovered_at === NULL) {
-            Article::find($this->loan->article_id)->update([
+            /**
+             * @var Article $article
+             */
+            $article = Article::find($this->loan->article_id);
+            $article->update([
                 'available_stock' => ++ $this->loan->article->available_stock
             ]);
+            Article::markAsAvailable($article);
             Mail::send(new CancelLoanRequestMail($this->loan));
+            $this->loan->delete();
         }else return;
     }
 }

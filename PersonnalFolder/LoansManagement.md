@@ -21,7 +21,7 @@
     -Si une demande est validée et qu'un livre est avec lui ou
     -Si une demande est en cours et qu'une autre demande est validée ou
     -Si le stock disponible du Livre est de 0 ou
-    -Prise en compte des cas de **renouvellements**
+    ???-Prise en compte des cas de **renouvellements**
 
 +Renouveller une demande d'emprunt
     ??? Doit-on faire une nouvelle demande ???
@@ -45,7 +45,7 @@
                 ~Envoyer une notification ou un email à l'utilisateur pour lui notifier que sa demande de prêt est annulée,
                 ~Incrémenter de nouveau le stock disponible pour cet article de 1,
                 ~Supprimer la demande de prêt de la base de données,
-            .Dès que l'attribut book_recovered n'est plus nulle :
+            .Dès que l'attribut book_recovered_at n'est plus nulle :
                 ~Si la date à laquelle le prêteur doit retourner le Livre est passée :
                     ¬Incrémenter sa dette de 500FCFA pour un étudiant quelconque et de 1000FCFA pour un enseignant
             .Lui notifier après **acceptation** qu'il dispose de 48h de max pour venir chercher le Livre (Ne doit plus pouvoir redemander ce document)
@@ -61,7 +61,7 @@
             .Supprimer la demande de prêt de la base de données,
 
     -Un bouton pour confirmer que le prêteur est venu récupérer le document
-        Si la demande est acceptée, le prêteur n'est pas encore venu récupérer et que le livre n'est pas encore de retour alors :
+        Si la demande est acceptée, le prêteur n'est pas encore venu récupérer alors :
             .Remplir l'attribut book_recovered_at avec la date actuelle
 
     -Un bouton pour confirmer que le prêteur a retourné le document
@@ -73,3 +73,34 @@
 ***Relation Many to Many***
 
 ...
+
+
+**Affichage des boutons d'actions**
+    +Bouton Accepter
+        -Si Accepter :
+            .Accepter disparait
+            .Rejeter disparaît
+            .Récupéré apparaît
+
+    +Bouton Rejeter
+        +Si Rejeter
+            -La demande est supprimée
+
+    +Bouton Récupéré
+        -Si Récupéré :
+            .Accepter n'est pas là
+            .Rejeter n'est pas là
+            .Récupéré disparait
+            .Rendu apparaît
+
+    +Bouton Rendu
+        -Si Rendu :
+            .Accepter n'est pas là
+            .Rejeter n'est pas là
+            .Récupéré n'est pas là
+            .Rendu disparait
+            .Retirer apparaît
+
+    +Bouton Retirer
+        +Si Retirer
+            -La demande disparait du Listing

@@ -32,7 +32,7 @@ class UserLoanController extends Controller
 
     public function doLoanRequest(Article $article) : SingleLoanResponse
     {
-        //if (LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article)) {
+        if (LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article)) {
             $loan = $article->loans()->create();
             NotifyLoanRequestJob::dispatch($loan);
             return new SingleLoanResponse(
@@ -41,7 +41,14 @@ class UserLoanController extends Controller
                 message : "Votre demande d'emprunt a été soumise avec succès.",
                 resource : new LoanResource(resource : Loan::query()->with([/* 'articles', */'article', 'user'])->where('id', $loan->id)->first())
             );
-        //}
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à une demande d'emprunt ne sont pas remplies.",],
+            );
+        }
     }
 
     public function canReniewLoanRequest(Loan $loan) : bool
@@ -51,25 +58,49 @@ class UserLoanController extends Controller
 
     public function reniewLoanRequest(Loan $loan) : JsonResponse
     {
-        // Vérifier s'il peut renouveller une demande
-        LoanObserver::renewed($loan);
-        NotifyLoanRequestReniwedJob::dispatch($loan);
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a été renouvellée avec succès.",],
-        );
+        if (LoansOperationsService::userCanReniewLoanRequest($loan)) {
+            LoanObserver::renewed($loan);
+            NotifyLoanRequestReniwedJob::dispatch($loan);
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "La demande d'emprunt a été renouvellée avec succès.",],
+            );
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Les conditions nécéssaires à un renouvellement d'emprunt ne sont pas remplies.",],
+            );
+        }
     }
 
     public function cancelLoanRequest(Loan $loan) : JsonResponse
     {
-        // Remettre tout en ordre d'abord
-        $loan->delete();
-        return response()->json(
-            status : 200,
-            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-            data : ['message' => "La demande d'emprunt a été annulée avec succès.",],
-        );
+        if ($loan->book_recovered_at === NULL) {
+            /**
+             * @var Article $article
+             */
+            $article = Article::find($loan->article_id);
+            $article->update([
+                'available_stock' => ++ $loan->article->available_stock
+            ]);
+            Article::markAsAvailable($article);
+            $loan->delete();
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "La demande d'emprunt a été annulée avec succès.",],
+            );
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Impossible d'annuler un emprunt après récupération du Livre.",],
+            );
+        }
     }
 
 }
