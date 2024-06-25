@@ -46,7 +46,7 @@ class UserLoanController extends Controller
         );
     }
 
-    public function doLoanRequest(Article $article) : SingleLoanResponse
+    public function doLoanRequest(Article $article) : SingleLoanResponse | JsonResponse
     {
         if (LoansOperationsService::userCanDoLoanRequest(
                 $this->auth->user() ??
@@ -72,9 +72,8 @@ class UserLoanController extends Controller
         }
     }
 
-    public function canReniewLoanRequest(Loan $loan) : bool
+    public function canReniewLoanRequest(Loan $loan) : JsonResponse
     {
-        return LoansOperationsService::userCanReniewLoanRequest($loan);
         $response = LoansOperationsService::userCanReniewLoanRequest($loan);
         $message = $response
             ? "L'emprunteur peut renouveller la demande d'emprunt"
