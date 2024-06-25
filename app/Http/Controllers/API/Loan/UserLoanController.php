@@ -48,7 +48,12 @@ class UserLoanController extends Controller
 
     public function doLoanRequest(Article $article) : SingleLoanResponse
     {
-        if (LoansOperationsService::userCanDoLoanRequest($this->auth->user() ?? 2, $article)) {
+        if (LoansOperationsService::userCanDoLoanRequest(
+                $this->auth->user() ??
+                \App\Models\User::find(2),
+                $article
+            )
+        ) {
             $loan = $article->loans()->create();
             NotifyLoanRequestJob::dispatch($loan);
             return new SingleLoanResponse(

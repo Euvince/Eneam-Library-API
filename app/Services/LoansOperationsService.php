@@ -18,7 +18,8 @@ class LoansOperationsService
     }
 
     public static function userCanDoLoanRequest (User $user, Article $article) : bool {
-        dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
+
+        /* dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
         dump("Livre disponible : " . (Article::isAvailable($article) ? "Oui" : "Non"));
         dump("Deux livres avec l'emprunteur : " . (self::twoBooksAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Deux demandes en cours : " . (self::twoRequestsAlreadyInProgress($user) ? "Oui" : "Non"));
@@ -26,49 +27,43 @@ class LoansOperationsService
         dump("Une demande en cours et Une demande validée : " . (self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated($user) ? "Oui" : "Non"));
         dump("Une demande en cours et Un Livre avec l'emprunteur : " . (self::OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Une demande validée et Un Livre avec l'emprunteur : " . (self::OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
-        die();
+        die(); */
 
         return
-            !Article::isPhysical($article) ||
-            !Article::isAvailable($article) ||
-            !self::twoBooksAlreadyWithTheBorrower($user) ||
-            !self::twoRequestsAlreadyInProgress($user) ||
-            !self::twoRequestsAlreadyValidated($user) ||
-            !self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated($user) ||
-            !self::OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower($user) ||
-            !self::OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower($user)
+            Article::isPhysical(article : $article) &&
+            Article::isAvailable(article : $article) &&
+            !self::twoBooksAlreadyWithTheBorrower(user : $user) &&
+            !self::twoRequestsAlreadyInProgress(user : $user) &&
+            !self::twoRequestsAlreadyValidated(user : $user) &&
+            !self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated(user : $user) &&
+            !self::OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower(user : $user) &&
+            !self::OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower(user : $user) &&
+            !self::theBorrowerHasAlreadyLoanRequestForThisArticle(user : $user, article : $article)
         ;
     }
 
     public static function userCanReniewLoanRequest (Loan $loan) : bool {
         return
             Loan::hasStarted($loan) &&
-            !self::theLenderHasAlreadyReniewedRequestOnce($loan);
-    }
-
-    private static function articleIsAvailable_articleIsPhysical(Article $article) : bool {
-        return
-            $article->available_stock > 0 &&
-            Article::isAvailable($article) &&
-            Article::isPhysical($article);
+            !self::theBorrowerHasAlreadyReniewedRequestOnce($loan);
     }
 
     private static function twoBooksAlreadyWithTheBorrower(User $user) : bool {
-        return $user->loans()->whereNotNull('book_recovered_at')->count() >= self::getMaxBooksPerUser($user);
+        return $user->loans()->whereNotNull('book_recovered_at')->count() >= self::getMaxBooksPerBorrower($user);
     }
 
     private static function twoRequestsAlreadyInProgress(User $user) : bool {
-        return $user->loans()->where('status', 'En cours')->count() >= self::getMaxBooksPerUser($user);
+        return $user->loans()->where('status', 'En cours')->count() >= self::getMaxBooksPerBorrower($user);
     }
 
     private static function twoRequestsAlreadyValidated(User $user) : bool {
-        return $user->loans()->where('status', 'Validée')->count() >= self::getMaxBooksPerUser($user);
+        return $user->loans()->where('status', 'Acceptée')->count() >= self::getMaxBooksPerBorrower($user);
     }
 
     private static function OneRequestAlreadyInProgress__OneRequestAlreadyValidated(User $user) : bool {
         return
             $user->loans()->where('status', 'En cours')->count() > 0 &&
-            $user->loans()->where('status', 'Validée')->count() > 0;
+            $user->loans()->where('status', 'Acceptée')->count() > 0;
     }
 
     private static function OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower(User $user) : bool {
@@ -79,16 +74,25 @@ class LoansOperationsService
 
     private static function OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower(User $user) : bool {
         return
-            $user->loans()->where('status', 'Validée')->count() > 0 &&
+            $user->loans()->where('status', 'Acceptée')->count() > 0 &&
             $user->loans()->whereNotNull('book_recovered_at')->count() > 0;
     }
 
-    private static function theLenderHasAlreadyReniewedRequestOnce(Loan $loan) : bool {
+    private static function theBorrowerHasAlreadyReniewedRequestOnce(Loan $loan) : bool {
         return $loan->renewals > 0;
     }
 
+    private static function theBorrowerHasAlreadyLoanRequestForThisArticle(User $user, Article $article) : bool {
 
-    private static function getMaxBooksPerUser (User $user) : int {
+        $builder = $user->loans()->where('article_id', $article->id);
+        return
+            $builder->where('status', 'En cours')->count() > 0 ||
+            $builder->where('status', 'Acceptée')->count() > 0 ||
+            $builder->whereNotNull('book_recovered_at')->count() > 0;
+    }
+
+
+    private static function getMaxBooksPerBorrower (User $user) : int {
         return $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe'
             ])
@@ -96,7 +100,7 @@ class LoansOperationsService
             : self::initConfig()->max_books_per_teacher;
     }
 
-    private static function setMaxBooksPerUser (User $user) : void {
+    private static function setMaxBooksPerBorrower (User $user) : void {
         self::$maxBooksPerUser = $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe'
             ])

@@ -2,8 +2,10 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -29,7 +31,7 @@ class NotifyLoanRequestToBorrowerMail extends Mailable
     {
         return new Envelope(
             to : $this->loan->user->email,
-            subject: "Nouvelle demande d'emprunt éffectuée.",
+            subject: "Confirmation de réception de votre demande d'emprunt.",
         );
     }
 
@@ -38,9 +40,18 @@ class NotifyLoanRequestToBorrowerMail extends Mailable
      */
     public function content(): Content
     {
+        $phoneNumber = User::query()
+            ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                $query->where('name', "Gestionnaire");
+            })
+            ->where('firstname', 'AKOMIA')
+            ->first()->phone_number;
         return new Content(
-            markdown: 'mail.notifify-loan-request-to-borrower-mail',
-            with : ['loan' => $this->loan]
+            markdown: 'mail.notify-loan-request-to-borrower-mail',
+            with : [
+                'loan' => $this->loan,
+                'phoneNumber' => $phoneNumber,
+            ]
         );
     }
 

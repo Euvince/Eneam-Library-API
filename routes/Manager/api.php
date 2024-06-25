@@ -143,7 +143,7 @@ Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'de
 
 // Emprunts Borrower
 
-Route::post(uri : '/can-do-loan-request/{article}', action : [UserLoanController::class, 'canDoLoanRequest'])
+Route::get(uri : '/can-do-loan-request/{article}', action : [UserLoanController::class, 'canDoLoanRequest'])
     ->name(name : 'can-do-loan-request')
     ->where(['article' => $idRegex]);
 
@@ -151,7 +151,7 @@ Route::post(uri : '/do-loan-request/{article}', action : [UserLoanController::cl
     ->name(name : 'do-loan-request')
     ->where(['article' => $idRegex]);
 
-Route::post(uri : '/can-reniew-loan-request/{loan}', action : [UserLoanController::class, 'canReniewLoanRequest'])
+Route::get(uri : '/can-reniew-loan-request/{loan}', action : [UserLoanController::class, 'canReniewLoanRequest'])
     ->name(name : 'can-reniew-loan-request')
     ->where(['loan' => $idRegex]);
 

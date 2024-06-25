@@ -3,11 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NotifyLoanRequestToManagerMail extends Mailable
 {
@@ -29,7 +31,7 @@ class NotifyLoanRequestToManagerMail extends Mailable
     {
         return new Envelope(
             to : ['eneam@gmail.com'],
-            subject: "Nouvelle demande d'emprunt reçue.",
+            subject: "Nouvelle demande d'emprunt de livre reçue.",
         );
     }
 
@@ -38,9 +40,19 @@ class NotifyLoanRequestToManagerMail extends Mailable
      */
     public function content(): Content
     {
+        $manager = User::query()
+            ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                $query->where('name', "Gestionnaire");
+            })
+            ->where('firstname', 'AKOMIA')
+            ->first();
+
         return new Content(
             markdown: 'mail.notify-loan-request-to-manager-mail',
-            with : ['loan' => $this->loan]
+            with : [
+                'loan' => $this->loan,
+                'manager' => $manager,
+            ]
         );
     }
 
