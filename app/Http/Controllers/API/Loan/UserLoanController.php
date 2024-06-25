@@ -25,14 +25,30 @@ class UserLoanController extends Controller
     {
     }
 
-    public function canDoLoanRequest(Article $article) : bool
+    public function canDoLoanRequest(Article $article) : JsonResponse
     {
-        return LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article);
+        $response = LoansOperationsService::userCanDoLoanRequest(
+            $this->auth->user() ??
+            \App\Models\User::find(2),
+            $article
+        );
+        $message = $response
+            ? "L'emprunteur peut éffectuer une demande d'emprunt"
+            : "L'emprunteur ne peut éffectuer de demande d'emprunt";
+
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => $message,
+                'response' => $response
+            ],
+        );
     }
 
     public function doLoanRequest(Article $article) : SingleLoanResponse
     {
-        if (LoansOperationsService::userCanDoLoanRequest($this->auth->user(), $article)) {
+        if (LoansOperationsService::userCanDoLoanRequest($this->auth->user() ?? 2, $article)) {
             $loan = $article->loans()->create();
             NotifyLoanRequestJob::dispatch($loan);
             return new SingleLoanResponse(
@@ -54,6 +70,19 @@ class UserLoanController extends Controller
     public function canReniewLoanRequest(Loan $loan) : bool
     {
         return LoansOperationsService::userCanReniewLoanRequest($loan);
+        $response = LoansOperationsService::userCanReniewLoanRequest($loan);
+        $message = $response
+            ? "L'emprunteur peut renouveller la demande d'emprunt"
+            : "L'emprunteur ne peut renouveller la demande d'emprunt";
+
+        return response()->json(
+            status : 200,
+            headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+            data : [
+                'message' => $message,
+                'response' => $response
+            ],
+        );
     }
 
     public function reniewLoanRequest(Loan $loan) : JsonResponse

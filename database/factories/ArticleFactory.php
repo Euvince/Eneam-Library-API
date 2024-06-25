@@ -61,7 +61,7 @@ class ArticleFactory extends Factory
             "Jules Verne" =>  "Les Enfants du capitaine Grant",
             "Conan Doyle" =>  "Les Aventures de Sherlock Holmes",
             "Helen Fielding" =>  "Le Journal de Bridget Jones",
-            "Stieg Larsson" =>  "Millénium, tome 1  =>  Les Hommes qui n'aimaient pas les femmes",
+            "Stieg Larsson" =>  "Millénium, tome 1 : Les Hommes qui n'aimaient pas les femmes",
             "Umberto Eco" =>  "Le Nom de la rose",
             "J.D. Salinger" =>  "L'Attrape-cœurs",
             "René Barjavel" =>  "La Nuit des temps",
