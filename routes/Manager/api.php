@@ -140,13 +140,14 @@ Route::apiResource(name : 'article.comment', controller : CommentController::cla
 Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'destroyComments'])
     ->name('destroy-comments');
 
-// Emprunts Lender
+
+// Emprunts Borrower
 
 Route::post(uri : '/do-loan-request/{article}', action : [UserLoanController::class, 'doLoanRequest'])
     ->name(name : 'do-loan-request')
     ->where(['article' => $idRegex]);
 
-Route::post(uri : '/reniew-loan-request/{loan}', action : [UserLoanController::class, 'reniewLoanRequest'])
+Route::patch(uri : '/reniew-loan-request/{loan}', action : [UserLoanController::class, 'reniewLoanRequest'])
     ->name(name : 'reniew-loan-request')
     ->where(['article' => $idRegex]);
 

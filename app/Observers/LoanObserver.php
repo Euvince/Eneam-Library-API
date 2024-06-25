@@ -48,7 +48,7 @@ class LoanObserver
             : $config->teacher_loan_delay;
 
         if (!app()->runningInConsole()) {
-            $loan->title = "Demande d'emprunt pour le Livre". ' '.$loan->article->title;
+            $loan->title = "Nouvelle demande d'emprunt pour le Livre". ' '.$loan->article->title;
             $loan->slug = \Illuminate\Support\Str::slug($loan->title);
             $loan->status = "En cours";
             $loan->loan_date = Carbon::now();

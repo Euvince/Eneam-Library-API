@@ -6,14 +6,11 @@
 
 -Continuer les tâches multiples;
 
--Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
-
 -Permissions, Polices et Conditions à la fin du projet;
 
 -Les tests unitaires;
 
--Aider les contrôleurs pour les méthodes trop lourdes (Ex : imprimer plusiuers fiches) avec les observers et leurs méthodes personnalisées autre que celles du cycle de vie des modèles;
 
--Table notifications;
+-Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
 
 -Acesseurs et Mutateurs plus tard pour alléger les Observateurs;
