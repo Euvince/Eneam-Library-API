@@ -40,17 +40,18 @@ class NotifyLoanRequestToBorrowerMail extends Mailable
      */
     public function content(): Content
     {
-        $phoneNumber = User::query()
+        $manager = User::query()
             ->whereHas(relation : 'roles', callback : function (Builder $query) {
                 $query->where('name', "Gestionnaire");
             })
             ->where('firstname', 'AKOMIA')
-            ->first()->phone_number;
+            ->first();
+
         return new Content(
             markdown: 'mail.notify-loan-request-to-borrower-mail',
             with : [
                 'loan' => $this->loan,
-                'phoneNumber' => $phoneNumber,
+                'manager' => $manager,
             ]
         );
     }

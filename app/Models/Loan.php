@@ -32,8 +32,16 @@ class Loan extends Model
     ];
 
     protected $casts = [
+        'loan_date' => 'date',
+        'processing_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'accpeted_at' => 'datetime',
+        'rejected_at' => 'datetime',
+        'withdraw_at' => 'datetime',
+        'book_recovered_at' => 'datetime',
+        'book_returned_at' => 'datetime',
+        'book_must_returned_on' => 'date',
     ];
 
     public function user () : BelongsTo {

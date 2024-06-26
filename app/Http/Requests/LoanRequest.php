@@ -40,7 +40,7 @@ class LoanRequest extends FormRequest
 
     public function messages()  :array {
         return [
-            'reason.required' => "La raiso du rejet est obligatoire."
+            'reason.required' => "La raison du rejet est obligatoire."
         ];
     }
 

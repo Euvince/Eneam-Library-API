@@ -2,12 +2,15 @@
 
 namespace App\Mail;
 
+use App\Models\User;
+use App\Models\Configuration;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class AcceptLoanRequestMail extends Mailable
 {
@@ -17,7 +20,7 @@ class AcceptLoanRequestMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        private readonly \App\Models\Loan $loan
+        private readonly \App\Models\Loan $loan,
     )
     {
     }
@@ -29,7 +32,7 @@ class AcceptLoanRequestMail extends Mailable
     {
         return new Envelope(
             to : $this->loan->user->email,
-            subject: "Acceptation de votre demande d'emprunt",
+            subject: "Confirmation de l'acceptation de votre demande d'emprunt",
         );
     }
 
@@ -38,9 +41,40 @@ class AcceptLoanRequestMail extends Mailable
      */
     public function content(): Content
     {
+
+        $manager = User::query()
+            ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                $query->where('name', "Gestionnaire");
+            })
+            ->where('firstname', 'AKOMIA')
+            ->first();
+
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = $this->loan->user;
+
+        /**
+         * @var \App\Models\Configuration $config
+         */
+        $config = Configuration::appConfig();
+
+        /**
+         * @var int $delayValue
+         */
+        $delayValue = $user->hasAnyRole(roles : [
+            'Etudiant-Eneamien', 'Etudiant-Externe',
+            ])
+            ? $config->student_recovered_delay
+            : $config->teacher_recovered_delay;
+
         return new Content(
             markdown: 'mail.accept-loan-request-mail',
-            with : ['loan' => $this->loan]
+            with : [
+                'loan' => $this->loan,
+                'manager' => $manager,
+                'delayValue' => $delayValue,
+            ]
         );
     }
 

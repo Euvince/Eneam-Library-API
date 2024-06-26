@@ -21,6 +21,7 @@ class LoansOperationsService
 
         /* dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
         dump("Livre disponible : " . (Article::isAvailable($article) ? "Oui" : "Non"));
+        dump("Une demande soumis pour cet l'article : " . (self::theBorrowerHasAlreadyLoanRequestForThisArticle($user, $article) ? "Oui" : "Non"));
         dump("Deux livres avec l'emprunteur : " . (self::twoBooksAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Deux demandes en cours : " . (self::twoRequestsAlreadyInProgress($user) ? "Oui" : "Non"));
         dump("Deux demandes validées : " . (self::twoRequestsAlreadyValidated($user) ? "Oui" : "Non"));

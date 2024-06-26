@@ -86,7 +86,7 @@ class ArticleFactory extends Factory
 
         $formats = $this->faker->randomElements(array : ['pdf', 'mobi', 'epub'/* , 'azw', 'lit', 'fb2' */], count : rand(2, 3));
         $formats = json_encode(value : $formats);
-        $available = $this->faker->boolean(chanceOfGettingTrue : 90);
+        $available = $this->faker->boolean(chanceOfGettingTrue : 80);
 
         return [
             'title' => $title,
@@ -104,7 +104,7 @@ class ArticleFactory extends Factory
             'loaned' => !$available,
             'reserved' => !$available,
             'has_ebooks' => $this->faker->boolean(chanceOfGettingTrue : 50),
-            'is_physical' => $this->faker->boolean(chanceOfGettingTrue : 50),
+            'is_physical' => $this->faker->boolean(chanceOfGettingTrue : 85),
             'has_audios' => $this->faker->boolean(chanceOfGettingTrue : 50),
             /* 'keywords' => $keywords,
             'formats' => $formats, */

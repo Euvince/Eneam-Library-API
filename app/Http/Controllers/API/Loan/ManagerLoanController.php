@@ -80,9 +80,9 @@ class ManagerLoanController extends Controller
             LoanObserver::accepted($loan);
             AcceptLoanRequestJob::dispatch($loan);
             CancelLoanRequestJob::dispatch($loan)
-                ->delay(delay : Carbon::now()->addDays(value : $delayValue));
+                ->delay(delay : Carbon::now()->addHours(value : $delayValue));
             RemindTheUserAboutLoanRequestSomeTimesAfterJob::dispatch($loan)
-                ->delay(delay : Carbon::now()->addDays(value : ($delayValue / 2)));
+                ->delay(delay : Carbon::now()->addHours(value : ($delayValue / 2)));
 
             return response()->json(
                 status : 200,

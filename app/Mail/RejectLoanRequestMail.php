@@ -30,7 +30,7 @@ class RejectLoanRequestMail extends Mailable
     {
         return new Envelope(
             to : $this->loan->user->email,
-            subject: "Rejet de votre demande d'emprunt",
+            subject: "Notification du rejet de votre demande d'emprunt",
         );
     }
 
