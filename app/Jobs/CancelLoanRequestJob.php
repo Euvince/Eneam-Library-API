@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Illuminate\Bus\Queueable;
 use App\Mail\CancelLoanRequestMail;
 use App\Models\Article;
+use App\Models\Loan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -29,7 +30,7 @@ class CancelLoanRequestJob implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->loan->book_recovered_at === NULL) {
+        if (!Loan::hasStarted($this->loan)) {
             /**
              * @var Article $article
              */

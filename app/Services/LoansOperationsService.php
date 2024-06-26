@@ -24,10 +24,10 @@ class LoansOperationsService
         dump("Une demande soumis pour cet l'article : " . (self::theBorrowerHasAlreadyLoanRequestForThisArticle($user, $article) ? "Oui" : "Non"));
         dump("Deux livres avec l'emprunteur : " . (self::twoBooksAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Deux demandes en cours : " . (self::twoRequestsAlreadyInProgress($user) ? "Oui" : "Non"));
-        dump("Deux demandes validées : " . (self::twoRequestsAlreadyValidated($user) ? "Oui" : "Non"));
-        dump("Une demande en cours et Une demande validée : " . (self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated($user) ? "Oui" : "Non"));
-        dump("Une demande en cours et Un Livre avec l'emprunteur : " . (self::OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
-        dump("Une demande validée et Un Livre avec l'emprunteur : " . (self::OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
+        dump("Deux demandes acceptées : " . (self::twoRequestsAlreadyValidated($user) ? "Oui" : "Non"));
+        dump("Une demande en cours et une demande acceptée : " . (self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated($user) ? "Oui" : "Non"));
+        dump("Une demande en cours et n'ayant pas commencée et un livre avec l'emprunteur : " . (self::OneRequestAlreadyInProgressAndNotStarted__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
+        dump("Une demande acceptée mais n'ayant pas commencée et un livre avec l'emprunteur : " . (self::OneRequestAlreadyValidatedButNotStarted__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         die(); */
 
         return
@@ -37,8 +37,8 @@ class LoansOperationsService
             !self::twoRequestsAlreadyInProgress(user : $user) &&
             !self::twoRequestsAlreadyValidated(user : $user) &&
             !self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated(user : $user) &&
-            !self::OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower(user : $user) &&
-            !self::OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower(user : $user) &&
+            !self::OneRequestAlreadyInProgressAndNotStarted__OneBookAlreadyWithTheBorrower(user : $user) &&
+            !self::OneRequestAlreadyValidatedButNotStarted__OneBookAlreadyWithTheBorrower(user : $user) &&
             !self::theBorrowerHasAlreadyLoanRequestForThisArticle(user : $user, article : $article)
         ;
     }
@@ -67,16 +67,16 @@ class LoansOperationsService
             $user->loans()->where('status', 'Acceptée')->count() > 0;
     }
 
-    private static function OneRequestAlreadyInProgress__OneBookAlreadyWithTheBorrower(User $user) : bool {
+    private static function OneRequestAlreadyInProgressAndNotStarted__OneBookAlreadyWithTheBorrower(User $user) : bool {
         return
-            $user->loans()->where('status', 'En cours')->count() > 0 &&
-            $user->loans()->whereNotNull('book_recovered_at')->count() > 0;
+            $user->loans()->where('status', 'En cours')->whereNull('book_recovered_at')->count() > 0 &&
+            $user->loans()->where('status', 'En cours')->whereNotNull('book_recovered_at')->count() > 0;
     }
 
-    private static function OneRequestAlreadyValidated__OneBookAlreadyWithTheBorrower(User $user) : bool {
+    private static function OneRequestAlreadyValidatedButNotStarted__OneBookAlreadyWithTheBorrower(User $user) : bool {
         return
-            $user->loans()->where('status', 'Acceptée')->count() > 0 &&
-            $user->loans()->whereNotNull('book_recovered_at')->count() > 0;
+            $user->loans()->where('status', 'Acceptée')->whereNull('book_recovered_at')->count() > 0 &&
+            $user->loans()->where('status', 'Acceptée')->whereNotNull('book_recovered_at')->count() > 0;
     }
 
     private static function theBorrowerHasAlreadyReniewedRequestOnce(Loan $loan) : bool {

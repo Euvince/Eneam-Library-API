@@ -157,7 +157,7 @@ Route::get(uri : '/can-reniew-loan-request/{loan}', action : [UserLoanController
 
 Route::patch(uri : '/reniew-loan-request/{loan}', action : [UserLoanController::class, 'reniewLoanRequest'])
     ->name(name : 'reniew-loan-request')
-    ->where(['article' => $idRegex]);
+    ->where(['loan' => $idRegex]);
 
 Route::delete(uri : '/cancel-loan-request/{loan}', action : [UserLoanController::class, 'cancelLoanRequest'])
     ->name(name : 'cancel-loan-request')

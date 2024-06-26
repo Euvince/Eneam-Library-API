@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Mail\RemindTheUserAboutLoanRequestSomeTimesAfterMail;
+use App\Models\Loan;
 
 class RemindTheUserAboutLoanRequestSomeTimesAfterJob implements ShouldQueue
 {
@@ -28,6 +29,8 @@ class RemindTheUserAboutLoanRequestSomeTimesAfterJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::send(new RemindTheUserAboutLoanRequestSomeTimesAfterMail($this->loan));
+        if (!Loan::hasStarted($this->loan))
+            Mail::send(new RemindTheUserAboutLoanRequestSomeTimesAfterMail($this->loan));
+        else return;
     }
 }

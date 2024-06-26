@@ -2,12 +2,14 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RejectLoanRequestMail extends Mailable
 {
@@ -39,9 +41,20 @@ class RejectLoanRequestMail extends Mailable
      */
     public function content(): Content
     {
+        $manager = User::query()
+            ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                $query->where('name', "Gestionnaire");
+            })
+            ->where('firstname', 'AKOMIA')
+            ->first();
+
         return new Content(
             markdown: 'mail.reject-loan-request-mail',
-            with : ['loan' => $this->loan, 'reason' => $this->reason]
+            with : [
+                'loan' => $this->loan,
+                'manager' => $manager,
+                'reason' => $this->reason
+            ]
         );
     }
 

@@ -1,6 +1,6 @@
 <x-mail::message>
 
-Cher/Chère {{ $loan->user->lastname.' '.$loan->user->lastname }},
+Cher/Chère {{ $loan->user->lastname.' '.$loan->user->firstname }},
 
 Nous vous remercions d'avoir soumis votre demande d'emprunt de livre sur notre site. Cette demande est en cours de traitement par notre équipe.
 

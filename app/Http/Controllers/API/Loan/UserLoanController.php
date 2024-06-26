@@ -67,7 +67,7 @@ class UserLoanController extends Controller
             return response()->json(
                 status : 403,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Les conditions nécéssaires à une demande d'emprunt ne sont pas remplies.",],
+                data : ['message' => "Vous n'êtes pas éligible à une demande d'emprunt.",],
             );
         }
     }

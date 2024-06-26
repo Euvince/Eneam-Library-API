@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API\Loan;
 
+use Carbon\Carbon;
 use App\Models\Loan;
+use App\Models\Configuration;
 use App\Observers\LoanObserver;
+use App\Jobs\CancelLoanRequestJob;
 use App\Http\Requests\LoanRequest;
 use App\Jobs\AcceptLoanRequestJob;
 use App\Jobs\RejectLoanRequestJob;
@@ -12,10 +15,7 @@ use App\Http\Resources\Loan\LoanResource;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Http\Responses\Loan\LoanCollectionResponse;
-use App\Jobs\CancelLoanRequestJob;
 use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
-use App\Models\Configuration;
-use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ManagerLoanController extends Controller
@@ -105,8 +105,8 @@ class ManagerLoanController extends Controller
     public function rejectLoanRequest (Loan $loan, LoanRequest $request) : JsonResponse
     {
         if (!Loan::isAccepted($loan) && !Loan::isRejected($loan)) {
+            RejectLoanRequestJob::dispatch($request->validated('reason'), $loan);
             LoanObserver::rejected($loan);
-            RejectLoanRequestJob::dispatch($loan, $request->validated('reason'));
             return response()->json(
                 status : 200,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
@@ -167,16 +167,16 @@ class ManagerLoanController extends Controller
     }
 
     /**
-    * Mark loan article as returned.
+    * Mark loan article as withdrawed.
      */
     public function markAsWithdrawed (Loan $loan) : JsonResponse
     {
-        if (Loan::isFinished($loan)) {
+        if (Loan::isFinished($loan) & !Loan::isWithdrawed($loan)) {
             Loan::markAsWithdrawed($loan);
             return response()->json(
                 status : 200,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Le document a bien été marqué comme retourné"],
+                data : ['message' => "Le document a bien été marqué comme retiré"],
             );
         }
         else {

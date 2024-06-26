@@ -30,6 +30,6 @@ class RejectLoanRequestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::send(new RejectLoanRequestMail($this->loan, $this->reason));
+        Mail::send(new RejectLoanRequestMail($this->reason, $this->loan));
     }
 }
