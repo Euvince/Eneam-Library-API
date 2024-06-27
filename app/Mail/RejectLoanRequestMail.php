@@ -31,7 +31,8 @@ class RejectLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : $this->loan->user->email, */
             subject: "Notification du rejet de votre demande d'emprunt",
         );
     }

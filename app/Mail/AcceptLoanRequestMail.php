@@ -31,7 +31,8 @@ class AcceptLoanRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : $this->loan->user->email, */
             subject: "Confirmation de l'acceptation de votre demande d'emprunt",
         );
     }
@@ -67,6 +68,9 @@ class AcceptLoanRequestMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        /**
+         * @var float $debtAmount
+         */
         $debtAmount = $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe',
             ])

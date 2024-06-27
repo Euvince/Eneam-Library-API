@@ -50,7 +50,7 @@ class Configuration extends Model
     ];
 
     public static function appConfig () {
-        return self::latest()->with(['schoolYear'])->first();
+        return self::orderBy('id', 'desc')->with(['schoolYear'])->first();
     }
 
     public function schoolYear () : BelongsTo {

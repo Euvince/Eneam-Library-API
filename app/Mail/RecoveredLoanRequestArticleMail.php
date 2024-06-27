@@ -31,6 +31,8 @@ class RecoveredLoanRequestArticleMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : "eneam@gmail.com", */
             subject: 'Recovered Loan Request Article Mail',
         );
     }
@@ -63,6 +65,9 @@ class RecoveredLoanRequestArticleMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        /**
+         * @var float $debtAmount
+         */
         $debtAmount = $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe',
             ])

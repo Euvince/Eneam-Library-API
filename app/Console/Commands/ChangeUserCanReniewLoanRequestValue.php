@@ -32,12 +32,12 @@ class ChangeUserCanReniewLoanRequestValue extends Command
     public function handle(AuthManager $auth) : void
     {
         /**
-         * @var User $user
+         * @var \App\Models\User $user
          */
         $user = $auth->user();
 
         foreach (\App\Models\Loan::all() as $loan) {
-            if (LoansOperationsService::userCanReniewLoanRequest($loan)) {
+            if (LoansOperationsService::userCanReniewLoanRequest($loan, $user)) {
                 $user->update([
                     'can_reniew_loan_request' => true
                 ]);

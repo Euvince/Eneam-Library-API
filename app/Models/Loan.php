@@ -36,12 +36,13 @@ class Loan extends Model
         'processing_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'accpeted_at' => 'datetime',
+        'accepted_at' => 'datetime',
         'rejected_at' => 'datetime',
         'withdraw_at' => 'datetime',
         'book_recovered_at' => 'datetime',
         'book_returned_at' => 'datetime',
-        'book_must_returned_on' => 'date',
+        /* 'book_must_returned_on' => 'date', */
+        'book_must_returned_on' => 'datetime',
     ];
 
     public function user () : BelongsTo {

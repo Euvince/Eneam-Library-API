@@ -11,7 +11,7 @@ Vous disposez de **{{ $delayValue }} heures** dès maintenant pour venir récup�
 - **Livre :** {{ $loan->article->title }}
 - **Date de la demande :** {{ \Carbon\Carbon::parse($loan->loan_date)->translatedFormat('l d F Y') }}
 - **Date limite de récupération :** {{ \Carbon\Carbon::parse($loan->accepted_at)->addHours($delayValue)->translatedFormat('l d F Y à H') }} heures
-- **Date limite de retour du livre :** {{ \Carbon\Carbon::parse($loan->book_returned_on)->add($delayValue)->translatedFormat('l d F') }}
+- **Date limite de retour du livre :** {{ \Carbon\Carbon::parse($loan->book_must_returned_on)->translatedFormat('l d F') }}
 
 Nous vous attendons à notre adresse suivante : **ENEAM à Gbégamey**
 
@@ -20,7 +20,7 @@ Nous vous attendons à notre adresse suivante : **ENEAM à Gbégamey**
 - **Samedi** : 9h00 - 12h00
 
 En outre, nous tenons à vous notifier que le livre doit être retourné dans le délai accordé,
-le cas échéant, vous contracterez une dette de {{ $debtAmount }} FCFA pour chaque jour exédant
+le cas échéant, vous contracterez une dette de **{{ $debtAmount }} FCFA** pour chaque jour exédant
 le dit délai et votre accès à la bibliothèque sera restreinte jusqu'à remboursement de votre dette.
 
 Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter à **{{ $manager->email }}** ou par téléphone au **{{ $manager->phone_number }}**.

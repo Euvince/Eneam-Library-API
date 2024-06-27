@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env(key : 'APP_TIMEZONE', default : "Africa/Porto-Novo"),
 
     /*
     |--------------------------------------------------------------------------

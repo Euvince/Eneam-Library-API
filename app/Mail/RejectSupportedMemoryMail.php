@@ -32,7 +32,8 @@ class RejectSupportedMemoryMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : [$this->email],
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : [$this->email], */
             subject : 'Rejet de dépôt de mémoire soutenu.',
         );
     }

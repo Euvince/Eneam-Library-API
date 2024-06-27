@@ -55,9 +55,10 @@ class LoanObserver
             $loan->duration = $durationValue;
             $loan->user_id = $user->id;
         }
-        $this->canDoEvent()
-            ? $loan->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $loan->created_by = NULL;
+
+        $loan->created_by = auth()->check()
+            ? $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : "APPLICATION";
     }
 
     /**
@@ -84,7 +85,7 @@ class LoanObserver
         $loan->update([
             'reniew_at' => Carbon::now(),
             'renewals' => ++ $loan->renewals,
-            'book_must_returned_on' => Carbon::parse($loan->book_must_returned_on)->addDays($durationValue)->format(format : "Y-m-d")
+            'book_must_returned_on' => Carbon::parse($loan->book_must_returned_on)->addMinutes($durationValue)/* ->format(format : "Y-m-d") */
         ]);
     }
 
@@ -124,7 +125,7 @@ class LoanObserver
             'status' => "Acceptée",
             'accepted_at' => Carbon::now(),
             'processing_date' => Carbon::now(),
-            'book_must_returned_on' => Carbon::now()->addDays($durationValue)->format(format : "Y-m-d")
+            'book_must_returned_on' => Carbon::now()->addMinutes($durationValue)/* ->format(format : "Y-m-d") */
         ]);
         $article->update($articleData);
         /* if ($article->available_stock === 0) $articleData['available'] = false; */
@@ -147,9 +148,9 @@ class LoanObserver
     {
         if (!app()->runningInConsole()) $loan->title = \App\Helpers::mb_ucfirst($loan->title);
         $loan->slug = \Illuminate\Support\Str::slug($loan->title);
-        $this->canDoEvent()
-            ? $loan->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $loan->updated_by = NULL;
+        $loan->updated_by = auth()->check()
+            ? $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : "APPLICATION";
     }
 
     /**
@@ -162,9 +163,9 @@ class LoanObserver
 
     public function deleting(Loan $loan): void
     {
-        $this->canDoEvent()
-            ? $loan->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
-            : $loan->deleted_by = NULL;
+        $loan->deleted_by = auth()->check()
+            ? $this->auth->user()->firstname . " " . $this->auth->user()->lastname
+            : "APPLICATION";
         $loan->save();
     }
 

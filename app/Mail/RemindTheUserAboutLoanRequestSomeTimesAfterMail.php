@@ -31,7 +31,8 @@ class RemindTheUserAboutLoanRequestSomeTimesAfterMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : $this->loan->user->email, */
             subject: "Rappel de récupération de Livre suite à une demande d'emprut",
         );
     }
@@ -67,6 +68,9 @@ class RemindTheUserAboutLoanRequestSomeTimesAfterMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        /**
+         * @var float $debtAmount
+         */
         $debtAmount = $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe',
             ])

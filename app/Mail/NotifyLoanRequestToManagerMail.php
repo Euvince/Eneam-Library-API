@@ -30,7 +30,8 @@ class NotifyLoanRequestToManagerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : ['eneam@gmail.com'],
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : "eneam@gmail.com", */
             subject: "Nouvelle demande d'emprunt de livre reçue.",
         );
     }

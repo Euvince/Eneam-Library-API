@@ -74,7 +74,11 @@ class UserLoanController extends Controller
 
     public function canReniewLoanRequest(Loan $loan) : JsonResponse
     {
-        $response = LoansOperationsService::userCanReniewLoanRequest($loan);
+        $response = LoansOperationsService::userCanReniewLoanRequest(
+            $loan,
+            $this->auth->user() ??
+            \App\Models\User::find(2),
+        );
         $message = $response
             ? "L'emprunteur peut renouveller la demande d'emprunt"
             : "L'emprunteur ne peut renouveller la demande d'emprunt";
@@ -91,7 +95,11 @@ class UserLoanController extends Controller
 
     public function reniewLoanRequest(Loan $loan) : JsonResponse
     {
-        if (LoansOperationsService::userCanReniewLoanRequest($loan)) {
+        if (LoansOperationsService::userCanReniewLoanRequest(
+            $loan,
+            $this->auth->user() ??
+            \App\Models\User::find(2),
+        )) {
             LoanObserver::renewed($loan);
             NotifyLoanRequestReniwedJob::dispatch($loan);
             return response()->json(

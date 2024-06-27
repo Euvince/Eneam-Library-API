@@ -4,20 +4,21 @@ namespace App\Http\Controllers\API\Loan;
 
 use Carbon\Carbon;
 use App\Models\Loan;
+use App\Models\Article;
 use App\Models\Configuration;
 use App\Observers\LoanObserver;
-use App\Jobs\CancelLoanRequestJob;
 use App\Http\Requests\LoanRequest;
 use App\Jobs\AcceptLoanRequestJob;
+use App\Jobs\CancelLoanRequestJob;
 use App\Jobs\RejectLoanRequestJob;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Loan\LoanResource;
+use App\Jobs\RecoveredLoanRequestArticleJob;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Http\Responses\Loan\LoanCollectionResponse;
-use App\Jobs\RecoveredLoanRequestArticleJob;
-use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
 
 class ManagerLoanController extends Controller
 {
@@ -153,6 +154,12 @@ class ManagerLoanController extends Controller
     {
         if (Loan::hasStarted($loan) && !Loan::isFinished($loan)) {
             Loan::markAsFinished($loan);
+            /**
+             * @var Article $article
+             */
+            $article = $loan->article;
+            $article->update(['available_stock' => ++ $article->available_stock]);
+            if (!Article::isAvailable($article)) Article::markAsAvailable($article);
             return response()->json(
                 status : 200,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],

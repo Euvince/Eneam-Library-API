@@ -31,7 +31,8 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : $this->loan->user->email, */
             subject: "Confirmation de renouvellement de votre emprunt.",
         );
     }
@@ -64,6 +65,9 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        /**
+         * @var float $debtAmount
+         */
         $debtAmount = $user->hasAnyRole(roles : [
             'Etudiant-Eneamien', 'Etudiant-Externe',
             ])
@@ -71,7 +75,7 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
             : $config->teacher_debt_amount;
 
         return new Content(
-            markdown: 'mail.notifify-loan-request-reniwed-to-borrower-mail',
+            markdown: 'mail.notify-loan-request-reniwed-to-borrower-mail',
             with : [
                 'loan' => $this->loan,
                 'manager' => $manager,

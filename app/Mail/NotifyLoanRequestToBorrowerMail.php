@@ -30,7 +30,8 @@ class NotifyLoanRequestToBorrowerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
+            to : env('MAIL_TO_ADDRESS'),
+            /* to : $this->loan->user->email, */
             subject: "Confirmation de réception de votre demande d'emprunt.",
         );
     }

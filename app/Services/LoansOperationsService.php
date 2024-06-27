@@ -22,7 +22,7 @@ class LoansOperationsService
 
         /* dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
         dump("Livre disponible : " . (Article::isAvailable($article) ? "Oui" : "Non"));
-        dump("Une demande soumis pour cet l'article : " . (self::theBorrowerHasAlreadyLoanRequestForThisArticle($user, $article) ? "Oui" : "Non"));
+        dump("L'utilisateur a une demande soumis pour cet l'article : " . (self::theBorrowerHasAlreadyLoanRequestForThisArticle($user, $article) ? "Oui" : "Non"));
         dump("Deux livres avec l'emprunteur : " . (self::twoBooksAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Deux demandes en cours : " . (self::twoRequestsAlreadyInProgress($user) ? "Oui" : "Non"));
         dump("Deux demandes acceptées : " . (self::twoRequestsAlreadyValidated($user) ? "Oui" : "Non"));
@@ -32,6 +32,7 @@ class LoansOperationsService
         die(); */
 
         return
+            $article->available_stock > 0 &&
             Article::isPhysical(article : $article) &&
             Article::isAvailable(article : $article) &&
             !self::twoBooksAlreadyWithTheBorrower(user : $user) &&
@@ -44,11 +45,24 @@ class LoansOperationsService
         ;
     }
 
-    public static function userCanReniewLoanRequest (Loan $loan) : bool {
+    public static function userCanReniewLoanRequest (Loan $loan, User $user) : bool {
+
+        /* dump("Livre récupéré : " . (Loan::hasStarted($loan)  ? "Oui" : "Non"));
+        dump("Livre retourné : " . (Loan::isFinished($loan) ? "Oui" : "Non"));
+        dump("La demande appartient à l'utilisateur : " . ($loan->user_id === $user->id ? "Oui" : "Non"));
+        dump("La demande a déjà été renouvellée : " . (self::theBorrowerHasAlreadyReniewedRequestOnce($loan) ? "Oui" : "Non"));
+        dump("La date limite de retour du livre est passée : " . (Carbon::parse($loan->book_must_returned_on)->format("Y-m-d H:i:s") < Carbon::parse(Carbon::now())->format("Y-m-d H:i:s") ? "Oui" : "Non"));
+        die(); */
+
         return
             Loan::hasStarted($loan) &&
+            !Loan::isFinished($loan) &&
+            $loan->user_id === $user->id &&
             !self::theBorrowerHasAlreadyReniewedRequestOnce($loan) &&
-            !Carbon::parse($loan->book_must_returned_on)->isPast();
+            !(
+                Carbon::parse($loan->book_must_returned_on)->format("Y-m-d H:i:s") <
+                Carbon::parse(Carbon::now())->format("Y-m-d H:i:s")
+            );
     }
 
     private static function twoBooksAlreadyWithTheBorrower(User $user) : bool {
@@ -87,11 +101,22 @@ class LoansOperationsService
 
     private static function theBorrowerHasAlreadyLoanRequestForThisArticle(User $user, Article $article) : bool {
 
-        $builder = $user->loans()->where('article_id', $article->id);
+        /* $builder = clone $user->loans()->where('article_id', $article->id);
+        dump(
+            $builder->where('status', 'En cours')->whereNull('book_recovered_at')->count() > 0 ||
+            $builder->where('status', 'Acceptée')->whereNull('book_recovered_at')->count() > 0 ||
+            $builder->where('status', 'Acceptée')->whereNotNull('book_recovered_at')->count() > 0
+        );
+        dump(
+            $user->loans()->where('article_id', $article->id)->where('status', 'En cours')->whereNull('book_recovered_at')->count() > 0 ||
+            $user->loans()->where('article_id', $article->id)->where('status', 'Acceptée')->whereNull('book_recovered_at')->count() > 0 ||
+            $user->loans()->where('article_id', $article->id)->where('status', 'Acceptée')->whereNotNull('book_recovered_at')->count() > 0
+        );
+        die(); */
         return
-            $builder->where('status', 'En cours')->count() > 0 ||
-            $builder->where('status', 'Acceptée')->count() > 0 ||
-            $builder->whereNotNull('book_recovered_at')->count() > 0;
+            $user->loans()->where('article_id', $article->id)->where('status', 'En cours')->whereNull('book_recovered_at')->count() > 0 ||
+            $user->loans()->where('article_id', $article->id)->where('status', 'Acceptée')->whereNull('book_recovered_at')->count() > 0 ||
+            $user->loans()->where('article_id', $article->id)->where('status', 'Acceptée')->whereNotNull('book_recovered_at')->count() > 0;
     }
 
 

@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string(column : 'status')->default(value : "En cours");
             $table->unsignedInteger(column : 'renewals')->default(value : 0);
             $table->dateTime(column : 'reniew_at')->nullable()->default(value : NULL);
-            $table->date(column : 'book_must_returned_on')->nullable()->default(value : NULL);
+            /* $table->date(column : 'book_must_returned_on')->nullable()->default(value : NULL); */
+            $table->dateTime(column : 'book_must_returned_on')->nullable()->default(value : NULL);
             $table->dateTime(column : 'book_recovered_at')->nullable()->default(value : NULL);
             $table->dateTime(column : 'book_returned_at')->nullable()->default(value : NULL);
             $table->string(column : 'created_by')->nullable()->default(value : NULL);

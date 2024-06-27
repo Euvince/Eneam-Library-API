@@ -117,7 +117,7 @@ class Article extends Model implements HasMedia
 
     public static function isAvailable (Article $article) : bool {
         return
-            $article->available_stock > 0 &&
+            /* $article->available_stock > 0 && */
             $article->available === self::IS_AVAILABLE;
     }
 
