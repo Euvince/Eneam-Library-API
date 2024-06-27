@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\Loan;
 use App\Models\User;
 use App\Models\Article;
@@ -46,7 +47,8 @@ class LoansOperationsService
     public static function userCanReniewLoanRequest (Loan $loan) : bool {
         return
             Loan::hasStarted($loan) &&
-            !self::theBorrowerHasAlreadyReniewedRequestOnce($loan);
+            !self::theBorrowerHasAlreadyReniewedRequestOnce($loan) &&
+            !Carbon::parse($loan->book_must_returned_on)->isPast();
     }
 
     private static function twoBooksAlreadyWithTheBorrower(User $user) : bool {

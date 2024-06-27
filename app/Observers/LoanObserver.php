@@ -146,7 +146,7 @@ class LoanObserver
     public function updating(Loan $loan): void
     {
         if (!app()->runningInConsole()) $loan->title = \App\Helpers::mb_ucfirst($loan->title);
-        $loan->slug = \Illuminate\Support\Str::slug($loan->name);
+        $loan->slug = \Illuminate\Support\Str::slug($loan->title);
         $this->canDoEvent()
             ? $loan->updated_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $loan->updated_by = NULL;

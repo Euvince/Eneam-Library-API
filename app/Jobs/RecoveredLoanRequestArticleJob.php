@@ -2,16 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Mail\RecoveredLoanRequestArticleMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\NotifyLoanRequestReniwedToManagerMail;
-use App\Mail\NotifyLoanRequestReniwedToBorrowerMail;
 
-class NotifyLoanRequestReniwedJob implements ShouldQueue
+class RecoveredLoanRequestArticleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,7 +28,6 @@ class NotifyLoanRequestReniwedJob implements ShouldQueue
      */
     public function handle(): void
     {
-        /* Mail::send(new NotifyLoanRequestReniwedToManagerMail($this->loan)); */
-        Mail::send(new NotifyLoanRequestReniwedToBorrowerMail($this->loan));
+        Mail::send(new RecoveredLoanRequestArticleMail($this->loan));
     }
 }

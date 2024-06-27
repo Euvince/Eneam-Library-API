@@ -28,7 +28,10 @@ class PenalizeTheBorrowerWhenHeExceedsTheDurationOfLoan extends Command
      */
     public function handle() : void
     {
-        $loans =  \App\Models\Loan::where('book_returned_at', '<=', \Carbon\Carbon::now())->get();
+        $loans = \App\Models\Loan::whereNotNull('book_recovered_at')
+            ->where('book_must_returned_on', '<', \Carbon\Carbon::now())
+            ->whereNull('book_returned_at')
+            ->get();
 
         foreach ($loans as $loan) {
 

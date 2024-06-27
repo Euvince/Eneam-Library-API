@@ -21,7 +21,7 @@
     -Si une demande est validée et qu'un livre est avec lui ou
     -Si une demande est en cours et qu'une autre demande est validée ou
     -Si le stock disponible du Livre est de 0 ou
-    ???-Prise en compte des cas de **renouvellements**
+    ???-Prise en compte des cas de **renouvellements**???
 
 +Renouveller une demande d'emprunt
     ??? Doit-on faire une nouvelle demande ???

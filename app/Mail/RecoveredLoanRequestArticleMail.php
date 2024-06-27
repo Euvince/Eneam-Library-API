@@ -12,7 +12,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
+class RecoveredLoanRequestArticleMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,8 +31,7 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to : $this->loan->user->email,
-            subject: "Confirmation de renouvellement de votre emprunt.",
+            subject: 'Recovered Loan Request Article Mail',
         );
     }
 
@@ -71,7 +70,7 @@ class NotifyLoanRequestReniwedToBorrowerMail extends Mailable
             : $config->teacher_debt_amount;
 
         return new Content(
-            markdown: 'mail.notifify-loan-request-reniwed-to-borrower-mail',
+            markdown: 'mail.recovered-loan-request-article-mail',
             with : [
                 'loan' => $this->loan,
                 'manager' => $manager,

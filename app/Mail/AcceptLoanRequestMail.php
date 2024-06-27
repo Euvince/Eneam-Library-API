@@ -41,7 +41,6 @@ class AcceptLoanRequestMail extends Mailable
      */
     public function content(): Content
     {
-
         $manager = User::query()
             ->whereHas(relation : 'roles', callback : function (Builder $query) {
                 $query->where('name', "Gestionnaire");
@@ -68,12 +67,19 @@ class AcceptLoanRequestMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        $debtAmount = $user->hasAnyRole(roles : [
+            'Etudiant-Eneamien', 'Etudiant-Externe',
+            ])
+            ? $config->student_debt_amount
+            : $config->teacher_debt_amount;
+
         return new Content(
             markdown: 'mail.accept-loan-request-mail',
             with : [
                 'loan' => $this->loan,
                 'manager' => $manager,
                 'delayValue' => $delayValue,
+                'debtAmount' => $debtAmount,
             ]
         );
     }

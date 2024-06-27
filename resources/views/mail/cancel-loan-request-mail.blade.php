@@ -2,7 +2,7 @@
 
 Cher/Chère {{ $loan->user->lastname.' '.$loan->user->firstname }},
 
-Nous vous informons que votre demande d'emprunt pour le livre **{{ $loan->article->title }}** a été annulée. Vous n'avez pas récupéré le livre dans le délai imparti de 48 heures.
+Nous vous informons que votre demande d'emprunt pour le livre **{{ $loan->article->title }}** a été annulée. Vous n'avez pas récupéré le livre dans le délai imparti de {{ $delayValue }}.
 
 **Détails de la demande annulée :**
 

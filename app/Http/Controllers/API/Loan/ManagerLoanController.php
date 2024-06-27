@@ -15,6 +15,7 @@ use App\Http\Resources\Loan\LoanResource;
 use App\Http\Responses\Loan\SingleLoanResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Http\Responses\Loan\LoanCollectionResponse;
+use App\Jobs\RecoveredLoanRequestArticleJob;
 use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -80,9 +81,9 @@ class ManagerLoanController extends Controller
             LoanObserver::accepted($loan);
             AcceptLoanRequestJob::dispatch($loan);
             CancelLoanRequestJob::dispatch($loan)
-                ->delay(delay : Carbon::now()->addHours(value : $delayValue));
+                ->delay(delay : Carbon::now()->addSeconds(value : $delayValue));
             RemindTheUserAboutLoanRequestSomeTimesAfterJob::dispatch($loan)
-                ->delay(delay : Carbon::now()->addHours(value : ($delayValue / 2)));
+                ->delay(delay : Carbon::now()->addSeconds(value : ($delayValue / 2)));
 
             return response()->json(
                 status : 200,
@@ -129,6 +130,7 @@ class ManagerLoanController extends Controller
     {
         if (Loan::isAccepted($loan) && !Loan::hasStarted($loan)) {
             Loan::markAsStarted($loan);
+            /* RecoveredLoanRequestArticleJob::dispatch($loan); */
             return response()->json(
                 status : 200,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],

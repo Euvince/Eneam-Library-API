@@ -67,12 +67,19 @@ class RemindTheUserAboutLoanRequestSomeTimesAfterMail extends Mailable
             ? $config->student_recovered_delay
             : $config->teacher_recovered_delay;
 
+        $debtAmount = $user->hasAnyRole(roles : [
+            'Etudiant-Eneamien', 'Etudiant-Externe',
+            ])
+            ? $config->student_debt_amount
+            : $config->teacher_debt_amount;
+
         return new Content(
             markdown: 'mail.remind-the-user-about-loan-request-some-times-hours-after-mail',
             with : [
                 'loan' => $this->loan,
                 'manager' => $manager,
-                'delayValue' => $delayValue
+                'delayValue' => $delayValue,
+                'debtAmount' => $debtAmount,
             ]
         );
     }

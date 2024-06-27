@@ -67,7 +67,7 @@ class UserLoanController extends Controller
             return response()->json(
                 status : 403,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Vous n'êtes pas éligible à une demande d'emprunt.",],
+                data : ['message' => "Impossible d'éffectuer une demande d'emprunt sur cet article.",],
             );
         }
     }
@@ -104,7 +104,7 @@ class UserLoanController extends Controller
             return response()->json(
                 status : 403,
                 headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Les conditions nécéssaires à un renouvellement d'emprunt ne sont pas remplies.",],
+                data : ['message' => "Vous n'êtes pas éligible à ce renouvellement d'emprunt.",],
             );
         }
     }

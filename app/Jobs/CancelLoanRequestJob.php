@@ -2,10 +2,11 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
+use App\Models\Loan;
+use App\Models\Article;
 use Illuminate\Bus\Queueable;
 use App\Mail\CancelLoanRequestMail;
-use App\Models\Article;
-use App\Models\Loan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -39,6 +40,11 @@ class CancelLoanRequestJob implements ShouldQueue
                 'available_stock' => ++ $this->loan->article->available_stock
             ]);
             Article::markAsAvailable($article);
+            $this->loan->update([
+                'status' => "Rejetée",
+                'rejected_at' => Carbon::now(),
+                'processing_date' => Carbon::now(),
+            ]);
             Mail::send(new CancelLoanRequestMail($this->loan));
             $this->loan->delete();
         }else return;
