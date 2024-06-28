@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Response;
 class DownloadMemories
 {
 
-    public static function downloadMemory (SupportedMemory $supportedMemory) {
+    public static function downloadMemory (SupportedMemory $supportedMemory)
+    {
         $supportedMemory->update([
             'download_number' => ++$supportedMemory->download_number,
         ]);
@@ -28,8 +29,8 @@ class DownloadMemories
         );
     }
 
-    public static function downloadMemories (SupportedMemoryRequest $request) {
-
+    public static function downloadMemories (SupportedMemoryRequest $request)
+    {
         $ids = $request->validated('ids');
 
         $sourcePath = storage_path('app/public/SupportedMemories');

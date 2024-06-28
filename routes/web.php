@@ -25,6 +25,8 @@ Route::controller(UserController::class)->group(function(){
     Route::post(uri : 'eneamiens-import', action : 'import')->name('eneamiens.import');
 });
 
+Route::get('/php-word', action : [App\Actions\SupportedMemory\GenerateReports::class, 'printReportUsingWord']);
+
 /* Route::get('/test', function () {
     $soutenance = \App\Models\Soutenance::find(73);
     $soutenance->update(['number_memories_expected' => $soutenance->number_memories_expected - 1]);
@@ -35,4 +37,36 @@ Route::controller(UserController::class)->group(function(){
     $imagick->readImage(public_path() . "\pdfs\\file.pdf");
     $imagick->writeImage('converted.jpg', true);
     dd("done");
+}); */
+
+
+/* Route::get('/check-mbstring', function () {
+    if (extension_loaded('mbstring')) {
+        return 'Mbstring is installed and loaded.';
+    } else {
+        return 'Mbstring is not installed.';
+    }
+}); */
+
+/* Route::get('/check-imagick', function () {
+    if (extension_loaded('imagick')) {
+        return 'Imagick is installed and loaded.';
+    } else {
+        return 'Imagick is not installed.';
+    }
+}); */
+
+/* Route::get('/check-ghostscript', function () {
+    $output = null;
+    $retval = null;
+    exec('gswin64c --version', $output, $retval);
+    if ($retval == 0) {
+        return 'Ghostscript is installed: ' . implode(' ', $output);
+    } else {
+        return 'Ghostscript is not installed.';
+    }
+
+    // $output = shell_exec('gswin64c -version');
+    // return $output;
+
 }); */

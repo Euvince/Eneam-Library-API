@@ -3,25 +3,30 @@
 namespace App\Actions\SupportedMemory;
 
 use ZipArchive;
+use Carbon\Carbon;
+use App\Models\Configuration;
+use PhpOffice\PhpWord\PhpWord;
 use App\Models\SupportedMemory;
+use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpWord\SimpleType\JcTable;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 
 class GenerateReports
 {
 
-    public static function printReportUsingBladeView (SupportedMemory $supportedMemory) {
-
+    public static function printReportUsingBladeView (SupportedMemory $supportedMemory)
+    {
         if (SupportedMemory::isValide($supportedMemory)) {
             $supportedMemory->update([
                 'printed_number' => ++$supportedMemory->printed_number,
             ]);
             $pdf = FacadePdf::loadView(view : 'fiche', data : [
                 'memory' => $supportedMemory,
-                'config' => \App\Models\Configuration::appConfig(),
+                'config' => Configuration::appConfig(),
             ])
             ->setOptions(['defaultFont' => 'sans-serif'])
             ->setPaper('A4', 'portrait');
@@ -45,8 +50,9 @@ class GenerateReports
         }
     }
 
-    public static function printReportsUsingBladeView (SupportedMemoryRequest $request) {
 
+    public static function printReportsUsingBladeView (SupportedMemoryRequest $request)
+    {
         $ids = $request->validated('ids');
 
         $validMemories = SupportedMemory::whereIn('id', $ids)
@@ -78,7 +84,7 @@ class GenerateReports
                     ]);
                     $pdf = FacadePdf::loadView(view : 'fiche', data : [
                         'memory' => $supportedMemory,
-                        'config' => \App\Models\Configuration::appConfig(),
+                        'config' => Configuration::appConfig(),
                     ])
                     ->setOptions(['defaultFont' => 'sans-serif'])
                     ->setPaper('A4', 'portrait');
@@ -104,12 +110,44 @@ class GenerateReports
         }
     }
 
-    public static function printReportUsingWord () {
 
+    public static function printReportUsingWord (SupportedMemory $memory)
+    {
+        $config = Configuration::appConfig();
+        $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");;
+        $document = new PhpWord();
+        $section = $document->addSection();
+        $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
+        $section->addTitle(mb_strtoupper($config->school_name), 1);
+        $section->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceAfter' => 350, 'spaceBefore' => 350]);
+        $section->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 430]);
+        $tableStyle = [
+            'width' => 100 * 50, // 100% de la largeur
+            'unit' => \PhpOffice\PhpWord\SimpleType\TblWidth::PERCENT,
+            'alignment' => JcTable::CENTER,
+        ];
+
+        $table = $section->addTable($tableStyle);
+        $table->addRow();
+        $table->addCell(width : 100 * 50)->addText("NOM ET PRENOM DE L'ÉTUDIANT : ". $memory->first_author_firstname." ".$memory->first_author_lastname, ['size' => 12], ['spaceAfter' => 350]);
+        $table->addRow();
+        $table->addCell(width : 100 * 50)->addText("FILIÈRE &amp; CLASSE : Gestion des Banques, assurance, finances, comptabilité/Banques, finances, assurance, budget" /* $memory->sector->sector->name."/".$memory->sector->name */, ['size' => 12], ['spaceAfter' => 350]);
+        $table->addRow();
+        $table->addCell(width : 100 * 50)->addText("PROMOTION : ". $memory->soutenance->schoolYear->school_year, ['size' => 12], ['spaceAfter' => 350]);
+        $table->addRow();
+        $table->addCell(width : 100 * 50)->addText("THÈME : ". $memory->theme, ['size' => 12, 'spaceAfter' => 800]);
+        $table->addRow();
+        $table->addCell(width : 100 * 50)->addText("SIGNATURE DE L'ÉTUDIANT");
+        $table->addCell(width : 100 * 50)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES");
+        $section->addText($config->archivist_full_name, ['size' => 11], ['align' => 'end', 'spaceAfter' => 430]);
+
+        $writer = IOFactory::createWriter($document, 'Word2007');
+        $writer->save('fiche-depot.docx');
     }
 
-    public static function printReportsUsingWord () {
 
+    public static function printReportsUsingWord (SupportedMemoryRequest $request)
+    {
     }
 
 }

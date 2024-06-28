@@ -12,8 +12,8 @@ use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 class ValidateMemories
 {
 
-    public static function validateMemory (SupportedMemory $supportedMemory) : JsonResponse {
-
+    public static function validateMemory (SupportedMemory $supportedMemory) : JsonResponse
+    {
         if (SupportedMemory::isValide($supportedMemory)) {
             return response()->json(
                 status : 403,
@@ -47,8 +47,8 @@ class ValidateMemories
         }
     }
 
-    public static function validateMemories (SupportedMemoryRequest $request) : JsonResponse {
-
+    public static function validateMemories (SupportedMemoryRequest $request) : JsonResponse
+    {
         $ids = $request->validated('ids');
 
         $validMemories = SupportedMemory::whereIn('id', $ids)

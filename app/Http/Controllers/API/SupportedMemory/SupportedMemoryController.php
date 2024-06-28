@@ -138,7 +138,7 @@ class SupportedMemoryController extends Controller
     public function printFilingReport (SupportedMemory $supportedMemory)
     {
         /* $this->authorize('printFilingReport', $supportedMemory); */
-        return GenerateReports::printReportUsingBladeView($supportedMemory);
+        return GenerateReports::printReportUsingWord($supportedMemory);
     }
 
 
