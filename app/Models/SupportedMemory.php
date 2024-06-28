@@ -34,6 +34,7 @@ class SupportedMemory extends Model
         'cover_page_path', 'cote', 'status',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
+        'printed_number', 'download_number', 'views_number'
     ];
 
     protected $casts = [

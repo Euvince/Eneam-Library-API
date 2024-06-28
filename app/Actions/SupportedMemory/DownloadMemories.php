@@ -2,6 +2,7 @@
 
 namespace App\Actions\SupportedMemory;
 
+use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use ZipArchive;
 use Illuminate\Http\Request;
 use App\Models\SupportedMemory;
@@ -28,7 +29,7 @@ class DownloadMemories
         );
     }
 
-    public static function downloadMemories (Request $request) {
+    public static function downloadMemories (SupportedMemoryRequest $request) {
 
         $ids = $request->validated('ids');
 

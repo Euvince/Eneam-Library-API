@@ -2,27 +2,22 @@
 
 namespace App\Http\Controllers\API\SupportedMemory;
 
-use ZipArchive;
 use App\Models\SupportedMemory;
 use App\Http\Controllers\Controller;
 use App\Actions\SupportedMemory\DownloadMemories;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
+use App\Actions\SupportedMemory\GenerateReports;
 use App\Actions\SupportedMemory\SMHelper;
+use App\Actions\SupportedMemory\ValidateMemories;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
-use App\Jobs\GenerateFilingReportJob;
 use App\Jobs\RejectSupportedMemoryJob;
-use App\Jobs\ValidateSupportedMemoryJob;
 use App\Http\Responses\SupportedMemory\{
     SingleSupportedMemoryResponse,
     SupportedMemoryCollectionResponse
 };
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SupportedMemoryController extends Controller
@@ -88,7 +83,7 @@ class SupportedMemoryController extends Controller
     public function downloadMemory(SupportedMemory $supportedMemory)
     {
         /* $this->authorize('downloadMemory', $supportedMemory); */
-        DownloadMemories::downloadMemory($supportedMemory);
+        return DownloadMemories::downloadMemory($supportedMemory);
     }
 
      /**
@@ -98,214 +93,26 @@ class SupportedMemoryController extends Controller
      */
     public function downloadMemories (SupportedMemoryRequest $request)
     {
-        DownloadMemories::downloadMemories(request : $request);
-    }
-
-    /**
-     * Print supported memory filing report.
-     */
-    public function printFilingReport (SupportedMemory $supportedMemory)
-    {
-        /* $this->authorize('printFilingReport', $supportedMemory); */
-        if (SupportedMemory::isValide($supportedMemory)) {
-            $supportedMemory->update([
-                'printed_number' => ++$supportedMemory->printed_number,
-            ]);
-            $pdf = FacadePdf::loadView(view : 'fiche', data : [
-                'memory' => $supportedMemory,
-                'config' => \App\Models\Configuration::appConfig(),
-            ])
-            ->setOptions(['defaultFont' => 'sans-serif'])
-            ->setPaper('A4', 'portrait');
-
-            $firstAuthorName = $supportedMemory->first_author_firstname;
-            $secondAuthorName = $supportedMemory->second_author_firstname;
-            $filename = $secondAuthorName !== NULL
-                ? $firstAuthorName."-".$secondAuthorName.".pdf"
-                : $firstAuthorName.".pdf";
-
-            return $pdf->download(
-                filename : $filename
-            );
-        }
-        else {
-            return response()->json(
-                status : 403,
-                headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
-                data : ['message' => "Impossible d'imprimer la fiche de dépôt d'un mémoire soutenu invalidé"],
-            );
-        }
-    }
-
-
-    /**
-     * Print filings reports for many supported memories
-     *
-     * @param SupportedMemoryRequest $request
-     * @return JsonResponse
-     */
-    public function printReports (SupportedMemoryRequest $request)
-    {
-        $ids = $request->validated('ids');
-
-        $validMemories = SupportedMemory::whereIn('id', $ids)
-            ->where('status', "Invalidé")
-            ->count();
-
-        if ($validMemories > 0) {
-            return response()->json(
-                status : 200,
-                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Certains mémoires envoyés ne sont pas encore validés"],
-            );
-        }
-        else {
-            $sourcePath = storage_path('app/public/SupportedMemories');
-            $zipFileName = 'fiches.zip';
-            $tempPath = storage_path('app/temp');
-            if (!File::exists($tempPath)) {
-                File::makeDirectory($tempPath, 0755, true);
-            }
-            $zipFilePath = $tempPath.'/'.$zipFileName;
-            $zip = new ZipArchive();
-
-            if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
-                array_map(function (int $id) use ($zip) {
-                    $supportedMemory = SupportedMemory::find($id);
-                    $supportedMemory->update([
-                        'printed_number' => ++$supportedMemory->printed_number,
-                    ]);
-                    $pdf = FacadePdf::loadView(view : 'fiche', data : [
-                        'memory' => $supportedMemory,
-                        'config' => \App\Models\Configuration::appConfig(),
-                    ])
-                    ->setOptions(['defaultFont' => 'sans-serif'])
-                    ->setPaper('A4', 'portrait');
-
-                    $firstAuthorName = $supportedMemory->first_author_firstname;
-                    $secondAuthorName = $supportedMemory->second_author_firstname;
-                    $filename = $secondAuthorName !== NULL
-                        ? $firstAuthorName."-".$secondAuthorName.".pdf"
-                        : $firstAuthorName.".pdf";
-
-                    Storage::put(path : 'public/fiches/' . $filename, contents : $pdf->output());
-                    $zip->addFile(public_path(path : 'storage/fiches/'). $filename, $filename);
-                    $supportedMemory->update([
-                        'printed_number' => ++$supportedMemory->printed_number
-                    ]);
-                }, $ids);
-
-                $zip->close();
-                Storage::delete(paths : ['public/fiches/']);
-
-            }
-            return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
-        }
+        return DownloadMemories::downloadMemories(request : $request);
     }
 
     /**
      * Validate supported memory.
      */
-    public function validateMemory(SupportedMemory $supportedMemory) : JsonResponse
+    public function validateMemory(SupportedMemory $supportedMemory)
     {
         /* $this->authorize('validateMemory', $supportedMemory); */
-
-        if (SupportedMemory::isValide($supportedMemory)) {
-            return response()->json(
-                status : 403,
-                headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
-                data : ['message' => "Le mémoire soutenu a déjà été validé"],
-            );
-        }
-        else {
-
-            /* $validMemoriesInCurrentYearNumber = \App\Models\SchoolYear::query()
-                ->find($supportedMemory->soutenance->school_year_id)
-                ->whereHas('soutenances', function (Builder $query) {
-                    $query->whereHas('supportedMemories', function (Builder $query) {
-                        $query->where('status', 'Validé');
-                    });
-            })->count(); */
-
-            $validMemoriesInCurrentYearNumber = SupportedMemory::query()
-            ->where('status', 'Validé')
-            ->whereHas('soutenance', function (Builder $query) use ($supportedMemory) {
-                $query->where('school_year_id', $supportedMemory->soutenance->school_year_id);
-            })->count();
-
-            $supportedMemory->update([
-                'status' => "Validé",
-                'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
-            ]);
-            \App\Models\Soutenance::find(
-                $supportedMemory->soutenance->id
-            )->update([
-                'number_memories_remaining' => --$supportedMemory->soutenance->number_memories_remaining
-            ]);
-            /* GenerateFilingReportJob::dispatch($supportedMemory); */
-            ValidateSupportedMemoryJob::dispatch($supportedMemory);
-            return response()->json(
-                status : 200,
-                headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
-                data : ['message' => "Le mémoire soutenu a été validé avec succès"],
-            );
-        }
+        return ValidateMemories::validateMemory($supportedMemory);
     }
-
 
     /**
      * Validate many supported memories
      *
      * @param SupportedMemoryRequest $request
-     * @return JsonResponse
      */
-    public function validateMemories (SupportedMemoryRequest $request) : JsonResponse
+    public function validateMemories (SupportedMemoryRequest $request)
     {
-        $ids = $request->validated('ids');
-
-        $validMemories = SupportedMemory::whereIn('id', $ids)
-            ->where('status', "Validé")
-            ->count();
-
-        if ($validMemories > 0) {
-            return response()->json(
-                status : 200,
-                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : ['message' => "Certains mémoires envoyés sont déjà validés"],
-            );
-        }
-        else {
-            array_map(function (int $id) {
-                $supportedMemory = SupportedMemory::find($id);
-                $validMemoriesInCurrentYearNumber = SupportedMemory::query()
-                ->where('status', 'Validé')
-                ->whereHas('soutenance', function (Builder $query) use ($supportedMemory) {
-                    $query->where('school_year_id', $supportedMemory->soutenance->school_year_id);
-                })->count();
-
-                $supportedMemory->update([
-                    'status' => "Validé",
-                    'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
-                ]);
-                \App\Models\Soutenance::find(
-                    $supportedMemory->soutenance->id
-                )->update([
-                    'number_memories_remaining' => --$supportedMemory->soutenance->number_memories_remaining
-                ]);
-
-                ValidateSupportedMemoryJob::dispatch($supportedMemory);
-
-            }, $ids);
-            return response()->json(
-                status : 200,
-                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
-                data : [
-                    'message' => count($ids) > 1
-                        ? "Les mémoires soutenus ont été validés avec succès"
-                        : "Le mémoire soutenu a été validé avec succès"
-                ],
-            );
-        }
+        return DownloadMemories::downloadMemories($request);
     }
 
 
@@ -324,6 +131,28 @@ class SupportedMemoryController extends Controller
             data : ['message' => "Le mémoire soutenu a été rejeté avec succès",],
         );
     }
+
+    /**
+     * Print supported memory filing report.
+     */
+    public function printFilingReport (SupportedMemory $supportedMemory)
+    {
+        /* $this->authorize('printFilingReport', $supportedMemory); */
+        return GenerateReports::printReportUsingBladeView($supportedMemory);
+    }
+
+
+    /**
+     * Print filings reports for many supported memories
+     *
+     * @param SupportedMemoryRequest $request
+     */
+    public function printFilingReports (SupportedMemoryRequest $request)
+    {
+        return GenerateReports::printReportsUsingBladeView($request);
+    }
+
+
     /**
      * Update the specified resource in storage.
      */
