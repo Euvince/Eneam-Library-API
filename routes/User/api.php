@@ -12,9 +12,9 @@ use App\Http\Controllers\API\SupportedMemory\DepositSupportedMemoryController;
 Route::post(uri : 'deposit-memory', action : DepositSupportedMemoryController::class)
     ->name(name : 'deposit-memory');
 
-Route::get('download-memory/{supportedMemory}', [SupportedMemoryController::class, 'downloadMemory'])
+Route::post('download-memory/{supportedMemory}', [SupportedMemoryController::class, 'downloadMemory'])
     ->name(name : 'download-memory')
     ->where(['supportedMemory' => $idRegex]);
 
-Route::get(uri : '/download-memories', action : [SupportedMemoryController::class, 'downloadMemories'])
+Route::post(uri : '/download-memories', action : [SupportedMemoryController::class, 'downloadMemories'])
     ->name('download-memories');

@@ -112,7 +112,7 @@ class SupportedMemoryController extends Controller
      */
     public function validateMemories (SupportedMemoryRequest $request)
     {
-        return DownloadMemories::downloadMemories($request);
+        return ValidateMemories::validateMemories($request);
     }
 
 

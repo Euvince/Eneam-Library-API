@@ -2,14 +2,13 @@
 
 namespace App\Actions\SupportedMemory;
 
-use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use ZipArchive;
-use Illuminate\Http\Request;
 use App\Models\SupportedMemory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 
 class GenerateReports
 {
