@@ -26,12 +26,4 @@ class SMHelper
         return $data;
     }
 
-    public static function downloadMemories () {
-
-    }
-
-    public static function validateMemories () {
-
-    }
-
 }

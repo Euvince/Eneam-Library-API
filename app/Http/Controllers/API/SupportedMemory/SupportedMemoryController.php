@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API\SupportedMemory;
 
 use ZipArchive;
+use App\Models\SupportedMemory;
+use App\Http\Controllers\Controller;
+use App\Actions\SupportedMemory\DownloadMemories;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use App\Actions\SupportedMemory\SMHelper;
-use App\Models\SupportedMemory;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use Illuminate\Support\Facades\Storage;
@@ -42,7 +43,9 @@ class SupportedMemoryController extends Controller
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus paginés",
-            collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : SupportedMemory::query()->with([
+                'sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'
+            ])->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 
@@ -57,7 +60,9 @@ class SupportedMemoryController extends Controller
             allowedMethods : 'GET, POST, PATCH, DELETE',
             total : SupportedMemory::count(),
             message : "Liste des mémoires soutenus sans pagination",
-            collection : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->orderBy('created_at', 'desc')->get(),
+            collection : SupportedMemory::query()->with([
+                'sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'
+            ])->orderBy('created_at', 'desc')->get(),
         );
     }
 
@@ -70,7 +75,10 @@ class SupportedMemoryController extends Controller
             statusCode : 200,
             allowedMethods : 'GET, POST, PATCH, DELETE',
             message : "Informations sur le mémoire soutenu ayant pour thème $supportedMemory->theme",
-            resource : new SupportedMemoryResource(resource : SupportedMemory::query()->with(['sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'])->where('id', $supportedMemory->id)->first())
+            resource : new SupportedMemoryResource(
+                resource : SupportedMemory::query()->with([
+                    'sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'
+            ])->where('id', $supportedMemory->id)->first())
         );
     }
 
@@ -80,19 +88,7 @@ class SupportedMemoryController extends Controller
     public function downloadMemory(SupportedMemory $supportedMemory)
     {
         /* $this->authorize('downloadMemory', $supportedMemory); */
-        $supportedMemory->update([
-            'download_number' => ++$supportedMemory->download_number,
-        ]);
-        $firstAuthorName = $supportedMemory->first_author_firstname;
-        $secondAuthorName = $supportedMemory->second_author_firstname;
-        $filename = $secondAuthorName !== NULL
-            ? $firstAuthorName."-".$secondAuthorName.".pdf"
-            : $firstAuthorName.".pdf";
-
-        return Storage::download(
-            path : 'public/' . $supportedMemory->file_path,
-            name : $filename
-        );
+        DownloadMemories::downloadMemory($supportedMemory);
     }
 
      /**
@@ -102,33 +98,7 @@ class SupportedMemoryController extends Controller
      */
     public function downloadMemories (SupportedMemoryRequest $request)
     {
-        $ids = $request->validated('ids');
-
-        $sourcePath = storage_path('app/public/SupportedMemories');
-        $zipFileName = 'mémoires.zip';
-        $tempPath = storage_path('app/temp');
-        if (!File::exists($tempPath)) {
-            File::makeDirectory($tempPath, 0755, true);
-        }
-        $zipFilePath = $tempPath.'/'.$zipFileName;
-        $zip = new ZipArchive();
-
-        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
-            foreach ($ids as $id) {
-                $supportedMemory = SupportedMemory::find($id);
-                $firstAuthorName = $supportedMemory->first_author_firstname;
-                $secondAuthorName = $supportedMemory->second_author_firstname;
-                $filename = $secondAuthorName !== NULL
-                    ? $firstAuthorName."-".$secondAuthorName."pdf"
-                    : $firstAuthorName.".pdf";
-                $zip->addFile(public_path(path : 'storage/'). $supportedMemory->file_path, $filename);
-                $supportedMemory->update([
-                    'download_number' => ++$supportedMemory->download_number
-                ]);
-            }
-            $zip->close();
-        }
-        return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
+        DownloadMemories::downloadMemories(request : $request);
     }
 
     /**
