@@ -14,6 +14,9 @@ use App\Http\Controllers\API\UserController;
 |
 */
 
+$idRegex = '[0-9]+';
+$slugRegex = '[0-9a-z\-]+';
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,7 +28,9 @@ Route::controller(UserController::class)->group(function(){
     Route::post(uri : 'eneamiens-import', action : 'import')->name('eneamiens.import');
 });
 
-Route::get('/php-word', action : [App\Actions\SupportedMemory\GenerateReports::class, 'printReportUsingWord']);
+/* Route::get('/php-word/{memory}', action : [
+    App\Actions\SupportedMemory\GenerateReports::class, 'printReportUsingWord'
+])->where(['memory' => $idRegex]); */
 
 /* Route::get('/test', function () {
     $soutenance = \App\Models\Soutenance::find(73);

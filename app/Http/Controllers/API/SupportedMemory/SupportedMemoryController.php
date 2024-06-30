@@ -147,9 +147,9 @@ class SupportedMemoryController extends Controller
      *
      * @param SupportedMemoryRequest $request
      */
-    public function printFilingReports (SupportedMemoryRequest $request)
+    public function printReports (/* SupportedMemoryRequest $request */)
     {
-        return GenerateReports::printReportsUsingBladeView($request);
+        return GenerateReports::printReportsUsingWord(/* $request */);
     }
 
 

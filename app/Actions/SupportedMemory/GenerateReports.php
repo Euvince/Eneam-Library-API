@@ -11,7 +11,6 @@ use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
-use PhpOffice\PhpWord\SimpleType\JcTable;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 
@@ -97,15 +96,11 @@ class GenerateReports
 
                     Storage::put(path : 'public/fiches/' . $filename, contents : $pdf->output());
                     $zip->addFile(public_path(path : 'storage/fiches/'). $filename, $filename);
-                    $supportedMemory->update([
-                        'printed_number' => ++$supportedMemory->printed_number
-                    ]);
                 }, $ids);
 
                 $zip->close();
-                Storage::delete(paths : ['public/fiches/']);
-
             }
+            Storage::deleteDirectory(directory : 'public/fiches/');
             return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
         }
     }
@@ -113,41 +108,197 @@ class GenerateReports
 
     public static function printReportUsingWord (SupportedMemory $memory)
     {
-        $config = Configuration::appConfig();
-        $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");;
-        $document = new PhpWord();
-        $section = $document->addSection();
-        $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
-        $section->addTitle(mb_strtoupper($config->school_name), 1);
-        $section->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceAfter' => 350, 'spaceBefore' => 350]);
-        $section->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 430]);
-        $tableStyle = [
-            'width' => 100 * 50, // 100% de la largeur
-            'unit' => \PhpOffice\PhpWord\SimpleType\TblWidth::PERCENT,
-            'alignment' => JcTable::CENTER,
-        ];
+        if (SupportedMemory::isValide($memory)) {
+            $memory->update([
+                'printed_number' => ++$memory->printed_number,
+            ]);
+            $config = Configuration::appConfig();
+            $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
+            \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
+            $document = new PhpWord();
+            $sectionStyles = [
+                'marginTop' => 700,
+                'marginBottom' => 400,
+            ];
+            $section1 = $document->addSection($sectionStyles);
+            $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
+            $section1->addTitle(mb_strtoupper($config->school_name), 1);
+            $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceBefore' => 250, 'spaceAfter' => 250]);
+            $section1->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 250]);
 
-        $table = $section->addTable($tableStyle);
-        $table->addRow();
-        $table->addCell(width : 100 * 50)->addText("NOM ET PRENOM DE L'ÉTUDIANT : ". $memory->first_author_firstname." ".$memory->first_author_lastname, ['size' => 12], ['spaceAfter' => 350]);
-        $table->addRow();
-        $table->addCell(width : 100 * 50)->addText("FILIÈRE &amp; CLASSE : Gestion des Banques, assurance, finances, comptabilité/Banques, finances, assurance, budget" /* $memory->sector->sector->name."/".$memory->sector->name */, ['size' => 12], ['spaceAfter' => 350]);
-        $table->addRow();
-        $table->addCell(width : 100 * 50)->addText("PROMOTION : ". $memory->soutenance->schoolYear->school_year, ['size' => 12], ['spaceAfter' => 350]);
-        $table->addRow();
-        $table->addCell(width : 100 * 50)->addText("THÈME : ". $memory->theme, ['size' => 12, 'spaceAfter' => 800]);
-        $table->addRow();
-        $table->addCell(width : 100 * 50)->addText("SIGNATURE DE L'ÉTUDIANT");
-        $table->addCell(width : 100 * 50)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES");
-        $section->addText($config->archivist_full_name, ['size' => 11], ['align' => 'end', 'spaceAfter' => 430]);
+            $table1 = $section1->addTable();
+            $table1->addRow();
+            $table1->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$memory->first_author_firstname." ".$memory->first_author_lastname, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addRow();
+            $table1->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$memory->sector->sector->name."/".$memory->sector->name, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addRow();
+            $table1->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addRow();
+            $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+            $bottomTable1 = $section1->addTable();
+            $bottomTable1->addRow();
+            $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
+            $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
+            $bottomTable1->addRow();
+            $bottomTable1->addCell();
+            $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600, 'spaceAfter' => 300]);
 
-        $writer = IOFactory::createWriter($document, 'Word2007');
-        $writer->save('fiche-depot.docx');
+            $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 420]);
+
+            $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
+            $section1->addTitle(mb_strtoupper($config->school_name), 1);
+            $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceAfter' => 250, 'spaceBefore' => 250]);
+            $section1->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 250]);
+
+            $table2 = $section1->addTable();
+            $table2->addRow();
+            $table2->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$memory->second_author_firstname." ".$memory->second_author_lastname, ['size' => 11], ['spaceAfter' => 280]);
+            $table2->addRow();
+            $table2->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$memory->sector->sector->name."/".$memory->sector->name, ['size' => 11], ['spaceAfter' => 280]);
+            $table2->addRow();
+            $table2->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
+            $table2->addRow();
+            $table2->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+            $bottomTable2 = $section1->addTable();
+            $bottomTable2->addRow();
+            $bottomTable2->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
+            $bottomTable2->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
+            $bottomTable2->addRow();
+            $bottomTable2->addCell();
+            $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600]);
+
+            $firstAuthorName = $memory->first_author_firstname;
+            $secondAuthorName = $memory->second_author_firstname;
+            $filename = $secondAuthorName !== NULL
+                ? $firstAuthorName."-".$secondAuthorName.".docx"
+                : $firstAuthorName.".docx";
+
+            $writer = IOFactory::createWriter($document, 'Word2007');
+            $writer->save($filename);
+            return Response::download(public_path($filename))->deleteFileAfterSend();
+        }
+        else {
+            return response()->json(
+                status : 403,
+                headers : ["Allow" => 'GET, POST, PATCH, DELETE'],
+                data : ['message' => "Impossible d'imprimer la fiche de dépôt d'un mémoire soutenu invalidé"],
+            );
+        }
     }
 
 
-    public static function printReportsUsingWord (SupportedMemoryRequest $request)
+    public static function printReportsUsingWord (/* SupportedMemoryRequest $request */)
     {
+       /*  $ids = $request->validated('ids'); */
+       $ids = [148, 149, 150, 151];
+
+        $validMemories = SupportedMemory::whereIn('id', $ids)
+            ->where('status', "Invalidé")
+            ->count();
+
+        if ($validMemories > 0) {
+            return response()->json(
+                status : 200,
+                headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
+                data : ['message' => "Certains mémoires envoyés ne sont pas encore validés"],
+            );
+        }
+        else {
+            $sourcePath = storage_path('app/public/SupportedMemories');
+            $zipFileName = 'fiches.zip';
+            $tempPath = storage_path('app/temp');
+            if (!File::exists($tempPath)) {
+                File::makeDirectory($tempPath, 0755, true);
+            }
+            $zipFilePath = $tempPath.'/'.$zipFileName;
+            $zip = new ZipArchive();
+
+            if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+                array_map(function (int $id) use ($zip) {
+                    $memory = SupportedMemory::find($id);
+                    $memory->update([
+                        'printed_number' => ++$memory->printed_number,
+                    ]);
+
+                    $config = Configuration::appConfig();
+                    $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
+                    \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
+                    $document = new PhpWord();
+                    $sectionStyles = [
+                        'marginTop' => 700,
+                        'marginBottom' => 400,
+                    ];
+                    $section1 = $document->addSection($sectionStyles);
+                    $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
+                    $section1->addTitle(mb_strtoupper($config->school_name), 1);
+                    $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceBefore' => 250, 'spaceAfter' => 250]);
+                    $section1->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 250]);
+
+                    $table1 = $section1->addTable();
+                    $table1->addRow();
+                    $table1->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$memory->first_author_firstname." ".$memory->first_author_lastname, ['size' => 11], ['spaceAfter' => 280]);
+                    $table1->addRow();
+                    $table1->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$memory->sector->sector->name."/".$memory->sector->name, ['size' => 11], ['spaceAfter' => 280]);
+                    $table1->addRow();
+                    $table1->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
+                    $table1->addRow();
+                    $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+                    $bottomTable1 = $section1->addTable();
+                    $bottomTable1->addRow();
+                    $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
+                    $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
+                    $bottomTable1->addRow();
+                    $bottomTable1->addCell();
+                    $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600, 'spaceAfter' => 300]);
+
+                    $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 420]);
+
+                    $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
+                    $section1->addTitle(mb_strtoupper($config->school_name), 1);
+                    $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE', ['size' => 11], ['align' => 'center', 'spaceAfter' => 250, 'spaceBefore' => 250]);
+                    $section1->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 250]);
+
+                    $table2 = $section1->addTable();
+                    $table2->addRow();
+                    $table2->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$memory->second_author_firstname." ".$memory->second_author_lastname, ['size' => 11], ['spaceAfter' => 280]);
+                    $table2->addRow();
+                    $table2->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$memory->sector->sector->name."/".$memory->sector->name, ['size' => 11], ['spaceAfter' => 280]);
+                    $table2->addRow();
+                    $table2->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
+                    $table2->addRow();
+                    $table2->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+                    $bottomTable2 = $section1->addTable();
+                    $bottomTable2->addRow();
+                    $bottomTable2->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
+                    $bottomTable2->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
+                    $bottomTable2->addRow();
+                    $bottomTable2->addCell();
+                    $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600]);
+
+                    $firstAuthorName = $memory->first_author_firstname;
+                    $secondAuthorName = $memory->second_author_firstname;
+                    $filename = $secondAuthorName !== NULL
+                        ? $firstAuthorName."-".$secondAuthorName.".docx"
+                        : $firstAuthorName.".docx";
+
+                    $writer = IOFactory::createWriter($document, 'Word2007');
+                    $writer->save($filename);
+
+                    $zip->addFile(public_path(path : $filename), $filename);
+                    unlink(filename : $filename);
+                    /* $directory = public_path("fiches/");
+                    if (!File::exists($directory)) {
+                        File::makeDirectory($directory, 0755, true);
+                    }
+                    move_uploaded_file(public_path($filename), public_path($directory.$filename));
+                    rename(public_path($filename), public_path($directory.$filename)); */
+                }, $ids);
+
+                $zip->close();
+            }
+            /* Storage::deleteDirectory(directory : 'public/fiches/'); */
+            return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
+        }
     }
 
 }

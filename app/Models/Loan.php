@@ -127,7 +127,10 @@ class Loan extends Model
     }
 
     public static function markAsFinished (Loan $loan) :void {
-        $loan->update(['book_returned_at' => Carbon::now()]);
+        $loan->update([
+            'status' => "Terminé",
+            'book_returned_at' => Carbon::now()
+        ]);
     }
 
     public static function isWithdrawed (Loan $loan) : bool {
