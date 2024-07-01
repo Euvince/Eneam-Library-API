@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\API\SupportedMemory;
 
 use App\Models\SupportedMemory;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use App\Jobs\RejectSupportedMemoryJob;
+use Illuminate\Support\Facades\Storage;
+use App\Actions\SupportedMemory\SMHelper;
+use App\Http\Requests\SupportedMemory\ImportRequest;
 use App\Actions\SupportedMemory\DownloadMemories;
 use App\Actions\SupportedMemory\GenerateReports;
-use App\Actions\SupportedMemory\SMHelper;
 use App\Actions\SupportedMemory\ValidateMemories;
-use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
-use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
-use App\Jobs\RejectSupportedMemoryJob;
+use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
 use App\Http\Responses\SupportedMemory\{
     SingleSupportedMemoryResponse,
     SupportedMemoryCollectionResponse
@@ -147,9 +150,9 @@ class SupportedMemoryController extends Controller
      *
      * @param SupportedMemoryRequest $request
      */
-    public function printReports (/* SupportedMemoryRequest $request */)
+    public function printReports (SupportedMemoryRequest $request)
     {
-        return GenerateReports::printReportsUsingWord(/* $request */);
+        return GenerateReports::printReportsUsingWord($request);
     }
 
 
@@ -220,6 +223,34 @@ class SupportedMemoryController extends Controller
                     : "Le mémoire soutenu a été supprimé avec succès"
             ],
         );
+    }
+
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function getMemories() : View
+    {
+        $memories = SupportedMemory::get();
+        return view('memories', compact('memories'));
+    }
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function importPdfsReports(ImportRequest $request) : RedirectResponse
+    {
+        GenerateReports::importPdfsReports($request);
+        return back()->with(['success' => "Fiches de dépôts de mémoires importées avec succès"]);
+    }
+
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function importWordsReports(ImportRequest $request) : RedirectResponse
+    {
+        GenerateReports::importWordsReports($request);
+        return back()->with(['success' => "Fiches de dépôts de mémoires importées avec succès"]);
     }
 
 }

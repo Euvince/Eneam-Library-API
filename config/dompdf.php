@@ -188,6 +188,8 @@ return array(
          */
         "default_font" => "serif",
 
+        /* "default_charset" => "utf-8", */
+
         /**
          * Image DPI setting
          *

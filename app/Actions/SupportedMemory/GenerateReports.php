@@ -4,11 +4,14 @@ namespace App\Actions\SupportedMemory;
 
 use ZipArchive;
 use Carbon\Carbon;
+use Spatie\PdfToText\Pdf;
+use Illuminate\Http\Request;
 use App\Models\Configuration;
 use PhpOffice\PhpWord\PhpWord;
 use App\Models\SupportedMemory;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Facades\File;
+use PhpOffice\PhpWord\Element\Table;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -17,21 +20,21 @@ use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 class GenerateReports
 {
 
-    public static function printReportUsingBladeView (SupportedMemory $supportedMemory)
+    public static function printReportUsingBladeView (SupportedMemory $memory)
     {
-        if (SupportedMemory::isValide($supportedMemory)) {
-            $supportedMemory->update([
-                'printed_number' => ++$supportedMemory->printed_number,
+        if (SupportedMemory::isValide($memory)) {
+            $memory->update([
+                'printed_number' => ++$memory->printed_number,
             ]);
             $pdf = FacadePdf::loadView(view : 'fiche', data : [
-                'memory' => $supportedMemory,
+                'memory' => $memory,
                 'config' => Configuration::appConfig(),
             ])
             ->setOptions(['defaultFont' => 'sans-serif'])
             ->setPaper('A4', 'portrait');
 
-            $firstAuthorName = $supportedMemory->first_author_firstname;
-            $secondAuthorName = $supportedMemory->second_author_firstname;
+            $firstAuthorName = $memory->first_author_firstname;
+            $secondAuthorName = $memory->second_author_firstname;
             $filename = $secondAuthorName !== NULL
                 ? $firstAuthorName."-".$secondAuthorName.".pdf"
                 : $firstAuthorName.".pdf";
@@ -50,9 +53,10 @@ class GenerateReports
     }
 
 
-    public static function printReportsUsingBladeView (SupportedMemoryRequest $request)
+    public static function printReportsUsingBladeView (/* SupportedMemoryRequest $request */)
     {
-        $ids = $request->validated('ids');
+        /* $ids = $request->validated('ids'); */
+        $ids = [148, 149, 150, 151];
 
         $validMemories = SupportedMemory::whereIn('id', $ids)
             ->where('status', "Invalidé")
@@ -175,7 +179,7 @@ class GenerateReports
 
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
-            return Response::download(public_path($filename))->deleteFileAfterSend();
+            return Response::download(public_path(path : $filename))->deleteFileAfterSend();
         }
         else {
             return response()->json(
@@ -284,21 +288,54 @@ class GenerateReports
                     $writer = IOFactory::createWriter($document, 'Word2007');
                     $writer->save($filename);
 
-                    $zip->addFile(public_path(path : $filename), $filename);
-                    unlink(filename : $filename);
-                    /* $directory = public_path("fiches/");
-                    if (!File::exists($directory)) {
-                        File::makeDirectory($directory, 0755, true);
+                    $directory = "storage/fiches/";
+                    if (!File::exists(public_path($directory))) {
+                        File::makeDirectory(public_path(path : $directory), 0755, true);
                     }
-                    move_uploaded_file(public_path($filename), public_path($directory.$filename));
-                    rename(public_path($filename), public_path($directory.$filename)); */
+                    rename(public_path(path : $filename), public_path(path : $directory . $filename));
+                    $zip->addFile(public_path(path : $directory . $filename), $filename);
                 }, $ids);
 
                 $zip->close();
             }
-            /* Storage::deleteDirectory(directory : 'public/fiches/'); */
+            Storage::deleteDirectory(directory : 'public/fiches/');
             return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
         }
+    }
+
+    public static function importPdfsReports (Request $request) : void {
+        $text = Pdf::getText($request->file('file'), "C:\Program Files\pdftotext\pdftotext.exe");
+        dd(mb_detect_encoding($text));
+        preg_match("/FICHE\s*DE DÉPÔT DE MÉMOIRE\s*:\s*(\d+)/", $text, $matches);
+        dd($matches);
+    }
+
+    public static function importWordsReports (Request $request) : void {
+        $file = IOFactory::load(filename : $request->file);
+        $text = "";
+        foreach($file->getSections() as $section) {
+            foreach($section->getElements() as $element) {
+                if (method_exists($element, 'getText')) {
+                    $text .= $element->getText() . "\n";
+                }
+                else if ($element instanceof Table) {
+                    foreach ($element->getRows() as $row) {
+                        foreach ($row->getCells() as $cell) {
+                            foreach ($cell->getElements() as $cellElement) {
+                                if (method_exists($cellElement, 'getText')) {
+                                    $text .= $cellElement->getText() . "\t";
+                                }
+                            }
+                        }
+                        $text .= "\n";
+                    }
+                }
+            }
+        }
+        dd(mb_detect_encoding($text));
+        /* dd(preg_match("/NOM ET PRÉNOMS\s*:\s*([A-Za-zÀ-ÖØ-öø-ÿ]+)\s+([A-Za-zÀ-ÖØ-öø-ÿ]+)/u", $text, $matches)); */
+        preg_match("/NOM ET PRÉNOMS\s*:\s*([A-Za-zÀ-ÖØ-öø-ÿ]+)\s+([A-Za-zÀ-ÖØ-öø-ÿ]+)/u", $text, $matches);
+        dd($matches);
     }
 
 }

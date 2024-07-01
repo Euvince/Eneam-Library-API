@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Fiche de Dépôt de Mémoire</title>
     <style>
         body {
@@ -42,10 +43,11 @@
     <div class="container">
         <div class="header">
             <h2>{{ $config->school_name }}</h2>
-            <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
+            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ $memory->id }}</h3>
         </div>
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
+            {{-- <p><strong>Numéro d'identification : </strong> {{ $memory->id }} </p> --}}
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->first_author_firstname." ".$memory->first_author_lastname }} </p>
             <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->sector->name."/".$memory->sector->name }} </p>
             <p><strong>PROMOTION : </strong> {{ $memory->soutenance->schoolYear->school_year }} </p>
@@ -62,10 +64,11 @@
     <div class="container">
         <div class="header">
             <h2>{{ $config->school_name }}</h2>
-            <h3>FICHE DE DÉPÔT DE MÉMOIRE</h3>
+            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ $memory->id }}</h3>
         </div>
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
+            {{-- <p><strong>Numéro d'identification : </strong> {{ $memory->id }} </p> --}}
             <p><strong>NOM ET PRÉNOMS DE L’ÉTUDIANT : </strong> {{ $memory->second_author_firstname." ".$memory->second_author_lastname }} </p>
             <p><strong>FILIÈRE & CLASSE : </strong> {{ $memory->sector->sector->name."/".$memory->sector->name }} </p>
             <p><strong>PROMOTION : </strong> {{ $memory->soutenance->schoolYear->school_year }} </p>

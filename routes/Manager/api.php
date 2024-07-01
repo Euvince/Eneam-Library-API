@@ -98,11 +98,11 @@ Route::patch('reject-memory/{supportedMemory}', [SupportedMemoryController::clas
     ->name(name : 'reject-memory')
     ->where(['supportedMemory' => $idRegex]);
 
-Route::get(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport'])
+Route::patch(uri : 'print-filing-report/{supportedMemory}', action : [SupportedMemoryController::class, 'printFilingReport'])
     ->name(name : 'print-filing-report')
     ->where(['supportedMemory' => $idRegex]);
 
-Route::get(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
+Route::patch(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');
 
 Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])

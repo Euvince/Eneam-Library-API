@@ -31,11 +31,18 @@
             </div>
         @endif
         <div class="card-body">
-            <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('eneamiens.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" class="form-control">
                 <br>
-                <button class="btn btn-success">Importer des données utilisateurs</button>
+                <button class="btn btn-success">Importer des énéamiens</button>
+            </form>
+
+            <form class="mt-3" action="{{ route('teachers.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" class="form-control">
+                <br>
+                <button class="btn btn-success">Importer des enseigants</button>
             </form>
 
             <table class="table table-bordered mt-3">
