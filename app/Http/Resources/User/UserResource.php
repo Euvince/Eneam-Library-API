@@ -36,12 +36,12 @@ class UserResource extends JsonResource
             'created_by' => $this->resource->created_by,
             'updated_by' => $this->resource->updated_by,
             'roles' => $this->when(
-                $this->resource->roles->count() > 0,
-                $this->whenLoaded('roles')
+                $this->relationLoaded('roles') && $this->resource->roles->count() > 0,
+                $this->resource->roles
             ),
             'permissions' => $this->when(
-                $this->resource->permissions->count() > 0,
-                $this->whenLoaded('permissions')
+                $this->relationLoaded('permissions') && $this->resource->permissions->count() > 0,
+                $this->resource->permissions
             ),
         ];
     }

@@ -305,8 +305,9 @@ class GenerateReports
 
     public static function importPdfsReports (Request $request) : void {
         $text = Pdf::getText($request->file('file'), "C:\Program Files\pdftotext\pdftotext.exe");
-        dd(mb_detect_encoding($text));
-        preg_match("/FICHE\s*DE DÉPÔT DE MÉMOIRE\s*:\s*(\d+)/", $text, $matches);
+        /* dd($text); */
+        /* dd(utf8_decode($text)); */
+        preg_match("/Appliquée/", $text, $matches);
         dd($matches);
     }
 
@@ -332,7 +333,7 @@ class GenerateReports
                 }
             }
         }
-        dd(mb_detect_encoding($text));
+        dd(utf8_decode($text));
         /* dd(preg_match("/NOM ET PRÉNOMS\s*:\s*([A-Za-zÀ-ÖØ-öø-ÿ]+)\s+([A-Za-zÀ-ÖØ-öø-ÿ]+)/u", $text, $matches)); */
         preg_match("/NOM ET PRÉNOMS\s*:\s*([A-Za-zÀ-ÖØ-öø-ÿ]+)\s+([A-Za-zÀ-ÖØ-öø-ÿ]+)/u", $text, $matches);
         dd($matches);

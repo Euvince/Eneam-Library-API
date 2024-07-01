@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    {{-- <meta charset="utf-8"> --}}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Fiche de Dépôt de Mémoire</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            /* font-family: Arial, sans-serif; */
+            font-family: "DejaVu Sans Mono", monospace;
             margin: 20px; /* Réduire la marge globale */
         }
         .container {

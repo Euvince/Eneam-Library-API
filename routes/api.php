@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Resources\User\UserResource;
+use App\Http\Responses\User\SingleUserResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,11 @@ $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
 Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-    return $request->user();
+    return new SingleUserResponse(
+        statusCode : 200,
+        allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
+        message : "Informations sur l'utilisateur" . " " . $request->user()->firstname . " " . $request->user()->lastname,
+        resource : new UserResource(resource : User::query()->with(['roles'/* , 'permissions' */])->where('id', $request->user()->id)->first())
+    );
 });
 
