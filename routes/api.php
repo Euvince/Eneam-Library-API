@@ -21,11 +21,7 @@ $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
 Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-    return new SingleUserResponse(
-        statusCode : 200,
-        allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
-        message : "Informations sur l'utilisateur" . " " . $request->user()->firstname . " " . $request->user()->lastname,
-        resource : new UserResource(resource : User::query()->with(['roles'/* , 'permissions' */])->where('id', $request->user()->id)->first())
-    );
+    return $request->user()->load(['roles']);
+
 });
 
