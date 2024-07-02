@@ -36,6 +36,7 @@ class Loan extends Model
     protected $casts = [
         'loan_date' => 'date',
         'processing_date' => 'date',
+        'reniew_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'accepted_at' => 'datetime',
