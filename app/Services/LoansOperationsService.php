@@ -20,7 +20,7 @@ class LoansOperationsService
 
     public static function userCanDoLoanRequest (User $user, Article $article) : bool {
 
-        /* dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
+        dump("Livre physique : " . (Article::isPhysical($article) ? "Oui" : "Non"));
         dump("Livre disponible : " . (Article::isAvailable($article) ? "Oui" : "Non"));
         dump("L'utilisateur a une demande soumis pour cet l'article : " . (self::theBorrowerHasAlreadyLoanRequestForThisArticle($user, $article) ? "Oui" : "Non"));
         dump("Deux livres avec l'emprunteur : " . (self::twoBooksAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
@@ -29,7 +29,7 @@ class LoansOperationsService
         dump("Une demande en cours et une demande acceptée : " . (self::OneRequestAlreadyInProgress__OneRequestAlreadyValidated($user) ? "Oui" : "Non"));
         dump("Une demande en cours et n'ayant pas commencée et un livre avec l'emprunteur : " . (self::OneRequestAlreadyInProgressAndNotStarted__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
         dump("Une demande acceptée mais n'ayant pas commencée et un livre avec l'emprunteur : " . (self::OneRequestAlreadyValidatedButNotStarted__OneBookAlreadyWithTheBorrower($user) ? "Oui" : "Non"));
-        die(); */
+        die();
 
         return
             $article->available_stock > 0 &&

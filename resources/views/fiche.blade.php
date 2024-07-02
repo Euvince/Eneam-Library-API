@@ -7,8 +7,7 @@
     <title>Fiche de Dépôt de Mémoire</title>
     <style>
         body {
-            /* font-family: Arial, sans-serif; */
-            font-family: "DejaVu Sans Mono", monospace;
+            font-family: Arial, sans-serif;
             margin: 20px; /* Réduire la marge globale */
         }
         .container {
