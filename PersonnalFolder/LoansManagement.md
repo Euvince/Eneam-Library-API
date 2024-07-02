@@ -13,14 +13,14 @@
 
 
 +Ne peut prêter plus de deux documents à la fois suivant les conditions suivantes
-    -Le Livre doit être disponible physiquement (C'est à dire available = true && is_physical = true)
-    -Si deux livres sont avec lui ou
-    -Si deux demandes sont déjà en cours ou
-    -Si deux demandes sont déjà validées ou
-    -Si une demande est en cours et qu'un livre est avec lui ou
-    -Si une demande est validée et qu'un livre est avec lui ou
-    -Si une demande est en cours et qu'une autre demande est validée ou
     -Si le stock disponible du Livre est de 0 ou
+    -Le Livre n'est pas disponible physiquement ou
+    -Si deux livres sont récupérés ou
+    -Si deux demandes sont déjà en cours ou
+    -Si deux demandes sont déjà acceptées ou
+    -Si une demande est en cours et qu'une autre demande est acceptée ou
+    -Si une demande est en cours et qu'un livre est récupéré ou
+    -Si une demande est acceptée et qu'un livre est récupéré ou
     ???-Prise en compte des cas de **renouvellements**???
 
 +Renouveller une demande d'emprunt

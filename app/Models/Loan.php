@@ -23,6 +23,8 @@ class Loan extends Model
 
     const ACCEPT_STATUS = "Acceptée";
     const REJECT_STATUS = "Rejetée";
+    const RECOVERED_STATUS = "En cours";
+    const RETURNED_STATUS = "Terminée";
 
     protected $fillable = [
         'title', 'loan_date', 'processing_date', 'book_must_returned_on',
@@ -111,7 +113,10 @@ class Loan extends Model
     }
 
     public static function markAsStarted (Loan $loan) :void {
-        $loan->update(['book_recovered_at' => Carbon::now()]);
+        $loan->update([
+            'status' => self::RECOVERED_STATUS,
+            'book_recovered_at' => Carbon::now()
+        ]);
     }
 
     public static function isReniewed (Loan $loan) : bool {
@@ -128,7 +133,7 @@ class Loan extends Model
 
     public static function markAsFinished (Loan $loan) :void {
         $loan->update([
-            'status' => "Terminé",
+            'status' => self::RETURNED_STATUS,
             'book_returned_at' => Carbon::now()
         ]);
     }

@@ -92,7 +92,7 @@ class ArticleFactory extends Factory
             'title' => $title,
             'slug' => \Illuminate\Support\Str::slug($title),
             /* 'type' => $this->faker->randomElement(['Livre', 'Podcast']), */
-            'summary' => $this->faker->paragraph(),
+            'summary' => $this->faker->paragraph(30, true),
             'author' => $author,
             'editor' => $author,
             'editing_year' => $this->faker->year(),

@@ -50,7 +50,7 @@ class LoanObserver
         if (!app()->runningInConsole()) {
             $loan->title = "Nouvelle demande d'emprunt pour le Livre". ' '.$loan->article->title;
             $loan->slug = \Illuminate\Support\Str::slug($loan->title);
-            $loan->status = "En cours";
+            $loan->status = "En cours de traitement";
             $loan->loan_date = Carbon::now();
             $loan->duration = $durationValue;
             $loan->user_id = $user->id;
@@ -141,7 +141,7 @@ class LoanObserver
             'rejected_at' => Carbon::now(),
             'processing_date' => Carbon::now(),
         ]);
-        $loan->delete();
+        /* $loan->delete(); */
     }
 
     public function updating(Loan $loan): void

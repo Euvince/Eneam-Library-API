@@ -46,7 +46,7 @@ class CancelLoanRequestJob implements ShouldQueue
                 'processing_date' => Carbon::now(),
             ]);
             Mail::send(new CancelLoanRequestMail($this->loan));
-            $this->loan->delete();
+            /* $this->loan->delete(); */
         }else return;
     }
 }

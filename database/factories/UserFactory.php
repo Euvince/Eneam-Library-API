@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -28,7 +29,7 @@ class UserFactory extends Factory
             'slug' => \Illuminate\Support\Str::slug($firstname." ".$lastname),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make(value : 'Baba2004'), // password
             'phone_number' => fake()->unique()->phoneNumber(),
             'birth_date' => fake()->date(),
             'sex' => fake()->randomElement(['Masculin', 'Féminin', 'Autre']),
