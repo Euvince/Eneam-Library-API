@@ -180,7 +180,10 @@ class ManagerLoanController extends Controller
      */
     public function markAsWithdrawed (Loan $loan) : JsonResponse
     {
-        if (Loan::isFinished($loan) & !Loan::isWithdrawed($loan)) {
+        if (
+            (Loan::isFinished($loan) && !Loan::isWithdrawed($loan)) ||
+            (Loan::isRejected($loan) && !Loan::isWithdrawed($loan))
+        ) {
             Loan::markAsWithdrawed($loan);
             return response()->json(
                 status : 200,

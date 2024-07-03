@@ -119,7 +119,7 @@ class UserLoanController extends Controller
 
     public function cancelLoanRequest(Loan $loan) : JsonResponse
     {
-        if ($loan->book_recovered_at === NULL) {
+        if ($loan->status === "En cours de traitement" && $loan->book_recovered_at === NULL) {
             /**
              * @var Article $article
              */
