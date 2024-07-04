@@ -44,7 +44,7 @@
     <div class="container">
         <div class="header">
             <h2>{{ $config->school_name }}</h2>
-            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ $memory->id }}</h3>
+            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ \Carbon\Carbon::parse($memory->soutenance->start_date)->year."-".$memory->sector->acronym."-".$memory->id }}</h3>
         </div>
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
@@ -56,6 +56,8 @@
         </div>
         <div class="footer">
             <p>Signature de l'Étudiant</p>
+            {{-- <img src="data:image/png;base64,'.base64_encode(file_get_contents({{ $qrCodeImg }})).'" alt="" style="width: 100px; height: 100px;"> --}}
+            <img src="{{ $qrCodeImg }}" alt="" style="width: 100px; height: 100px;">
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
             <br><br>
@@ -65,7 +67,7 @@
     <div class="container">
         <div class="header">
             <h2>{{ $config->school_name }}</h2>
-            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ $memory->id }}</h3>
+            <h3>FICHE DE DÉPÔT DE MÉMOIRE : {{ \Carbon\Carbon::parse($memory->soutenance->start_date)->year."-".$memory->sector->acronym."-".$memory->id }}</h3>
         </div>
         <div class="content">
             <p><strong>{{ $config->school_city }}, le : </strong> {{ \Carbon\Carbon::now()->translatedFormat('l d F Y') }} </p>
@@ -77,6 +79,8 @@
         </div>
         <div class="footer">
             <p>Signature de l'Étudiant</p>
+            {{-- <img src="data:image/png;base64,'.base64_encode(file_get_contents({{ $qrCodeImg }})).'" alt="" style="width: 100px; height: 100px;"> --}}
+            <img src="{{ $qrCodeImg }}" alt="" style="width: 100px; height: 100px;">
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
             <br><br>

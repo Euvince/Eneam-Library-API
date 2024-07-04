@@ -65,7 +65,7 @@ class UserController extends Controller
         /* dd(file_exists(public_path("pdfs/file.pdf")));
         Ghostscript::setGsPath(path : "C:\Program Files\gs\gs10.03.1\bin\gswin64c.exe");
         $pdf = new Pdf(public_path("pdfs/file.pdf"));
-        $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Jpg)->save(public_path("Images")); */
+        $pdf->format(outputFormat : \Spatie\PdfToImage\Enums\OutputFormat::Jpg)->save(public_path("images")); */
 
         return new SingleUserResponse(
             statusCode : 200,

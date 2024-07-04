@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -28,7 +29,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
-    use HasProfilePicture, HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable, InteractsWithMedia;
+    use HasProfilePicture, HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable, InteractsWithMedia, SoftDeletes;
 
     const HAS_PAID = 1;
     const HAS_ACCESS = 1;

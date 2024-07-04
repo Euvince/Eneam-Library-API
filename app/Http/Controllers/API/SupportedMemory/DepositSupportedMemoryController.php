@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\SupportedMemory\SupportedMemoryResource;
 use App\Http\Responses\SupportedMemory\SingleSupportedMemoryResponse;
 use App\Http\Requests\SupportedMemory\DepositSupportedMemoryRequest;
+use App\Jobs\NotifyDepositSupportedMemoryJob;
 use Illuminate\Http\UploadedFile;
 
 class DepositSupportedMemoryController extends Controller
@@ -20,6 +21,7 @@ class DepositSupportedMemoryController extends Controller
     {
         /* $this->authorize('create', SupportedMemory::class); */
         $supportedMemory = SupportedMemory::create(SMHelper::helper(new SupportedMemory(), $request));
+        NotifyDepositSupportedMemoryJob::dispatch($supportedMemory);
         return new SingleSupportedMemoryResponse(
             statusCode : 201,
             allowedMethods : 'GET, POST, DELETE',

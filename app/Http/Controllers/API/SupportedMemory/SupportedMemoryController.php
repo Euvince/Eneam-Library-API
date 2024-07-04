@@ -241,7 +241,7 @@ class SupportedMemoryController extends Controller
     public function importPdfsReports(ImportRequest $request) : RedirectResponse
     {
         GenerateReports::importPdfsReports($request);
-        return back()->with(['success' => "Fiches de dépôts de mémoires importées avec succès"]);
+        return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
     }
 
     /**
@@ -250,7 +250,7 @@ class SupportedMemoryController extends Controller
     public function importWordsReports(ImportRequest $request) : RedirectResponse
     {
         GenerateReports::importWordsReports($request);
-        return back()->with(['success' => "Fiches de dépôts de mémoires importées avec succès"]);
+        return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
     }
 
 }
