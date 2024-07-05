@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\SupportedMemory;
 
+use Illuminate\Http\Request;
 use App\Models\SupportedMemory;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
@@ -231,14 +232,14 @@ class SupportedMemoryController extends Controller
     */
     public function getMemories() : View
     {
-        $memories = SupportedMemory::get();
+        $memories = SupportedMemory::paginate(30);
         return view('memories', compact('memories'));
     }
 
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function importPdfsReports(ImportRequest $request) : RedirectResponse
+    public function importPdfsReports(/* Import */Request $request) : RedirectResponse
     {
         GenerateReports::importPdfsReports($request);
         return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
@@ -247,7 +248,7 @@ class SupportedMemoryController extends Controller
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function importWordsReports(ImportRequest $request) : RedirectResponse
+    public function importWordsReports(/* Import */Request $request) : RedirectResponse
     {
         GenerateReports::importWordsReports($request);
         return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);

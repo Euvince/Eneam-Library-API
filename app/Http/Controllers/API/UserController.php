@@ -201,7 +201,7 @@ class UserController extends Controller
     */
     public function getUsers() : View
     {
-        $users = User::get();
+        $users = User::paginate(30);
         return view('users', compact('users'));
     }
 

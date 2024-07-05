@@ -1,2 +1,3 @@
--Pour l'abonnement des utilisateurs, vérifier si l'identifiant du paiement est valide au niveau du trésor publique.
+-Pour l'abonnement des utilisateurs,
+    -Dans le cas ou le Trésor public propose une API vérifier si l'identifiant du paiement est valide au niveau du trésor public.
 -Pour valider le thème, vérifier si une fiche de dépôt de mémoire est déjà enrégistré avec un des 2 matricules ou nom prénom, le même cycle, la même année de soutenance....

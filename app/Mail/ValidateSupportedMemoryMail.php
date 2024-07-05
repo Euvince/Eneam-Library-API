@@ -6,6 +6,7 @@ use App\Models\SupportedMemory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +21,8 @@ class ValidateSupportedMemoryMail extends Mailable
     public function __construct(
         private readonly string $name,
         private readonly string $email,
-        private readonly SupportedMemory $sm
+        private readonly string $attachment,
+        private readonly SupportedMemory $sm,
     )
     {
     }
@@ -55,6 +57,10 @@ class ValidateSupportedMemoryMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromPath(path : $this->attachment)
+                ->as(name : 'FICHE DE DÉPÔT DE MÉMOIRE.docx')
+                /* ->withMime('application/docx') */
+        ];
     }
 }

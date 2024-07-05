@@ -57,9 +57,10 @@
         <div class="footer">
             <p>Signature de l'Étudiant</p>
             {{-- <img src="data:image/png;base64,'.base64_encode(file_get_contents({{ $qrCodeImg }})).'" alt="" style="width: 100px; height: 100px;"> --}}
-            <img src="{{ $qrCodeImg }}" alt="" style="width: 100px; height: 100px;">
+            <img src="{{ $qrCodeImg }}" alt="" style="width: 85px; height: 85px;">
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
+            <img src="{{ $signatureImg }}" alt="" style="width: 85px; height: 85px;">
             <br><br>
             <p>{{ $config->archivist_full_name }}</p>
         </div>
@@ -80,9 +81,10 @@
         <div class="footer">
             <p>Signature de l'Étudiant</p>
             {{-- <img src="data:image/png;base64,'.base64_encode(file_get_contents({{ $qrCodeImg }})).'" alt="" style="width: 100px; height: 100px;"> --}}
-            <img src="{{ $qrCodeImg }}" alt="" style="width: 100px; height: 100px;">
+            <img src="{{ $qrCodeImg }}" alt="" style="width: 85px; height: 85px;">
             <br><br>
             <p>Signature Chef Service Documentation et Archives</p>
+            <img src="{{ $signatureImg }}" alt="" style="width: 85px; height: 85px;">
             <br><br>
             <p>{{ $config->archivist_full_name }}</p>
         </div>

@@ -4,6 +4,7 @@ namespace App\Actions\SupportedMemory;
 
 use ZipArchive;
 use Carbon\Carbon;
+use BaconQrCode\Writer;
 use Spatie\PdfToText\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Configuration;
@@ -12,11 +13,14 @@ use App\Models\SupportedMemory;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\Element\Table;
+use App\Jobs\SendFilingReportSignedJob;
+use BaconQrCode\Renderer\ImageRenderer;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
-use App\Jobs\SendFilingReportSignedJob;
 
 class GenerateReports
 {
@@ -24,13 +28,15 @@ class GenerateReports
     public static function printReportUsingBladeView (SupportedMemory $memory)
     {
         if (SupportedMemory::isValide($memory)) {
+            $file = self::generateQrCodeImage($memory->id);
             $memory->update([
                 'printed_number' => ++$memory->printed_number,
             ]);
             $pdf = FacadePdf::loadView(view : 'fiche', data : [
                 'memory' => $memory,
                 'config' => Configuration::appConfig(),
-                'qrCodeImg' => self::getImage(public_path(path : "images/47698.png"))
+                'qrCodeImg' => self::getImage(public_path(path : "qrcodes/$file")),
+                'signatureImg' => self::getImage(public_path(path : "images/signature.png"))
             ])
             ->setOptions(['defaultFont' => 'sans-serif'])
             ->setPaper('A4', 'portrait');
@@ -41,6 +47,7 @@ class GenerateReports
                 ? $firstAuthorName."-".$secondAuthorName.".pdf"
                 : $firstAuthorName.".pdf";
 
+            File::deleteDirectory(public_path('qrcodes'));
             return $pdf->download(
                 filename : $filename
             );
@@ -84,13 +91,15 @@ class GenerateReports
             if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
                 array_map(function (int $id) use ($zip) {
                     $supportedMemory = SupportedMemory::find($id);
+                    $file = self::generateQrCodeImage($supportedMemory->id);
                     $supportedMemory->update([
                         'printed_number' => ++$supportedMemory->printed_number,
                     ]);
                     $pdf = FacadePdf::loadView(view : 'fiche', data : [
                         'memory' => $supportedMemory,
                         'config' => Configuration::appConfig(),
-                        'qrCodeImg' => self::getImage(public_path(path : "images/47698.png"))
+                        'qrCodeImg' => self::getImage(public_path(path : "qrcodes/$file")),
+                        'signatureImg' => self::getImage(public_path(path : "images/signature.png"))
                     ])
                     ->setOptions(['defaultFont' => 'sans-serif'])
                     ->setPaper('A4', 'portrait');
@@ -107,6 +116,7 @@ class GenerateReports
 
                 $zip->close();
             }
+            File::deleteDirectory(public_path('qrcodes'));
             Storage::deleteDirectory(directory : 'public/fiches/');
             return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
         }
@@ -116,17 +126,19 @@ class GenerateReports
     public static function printReportUsingWord (SupportedMemory $memory)
     {
         if (SupportedMemory::isValide($memory)) {
+            $file = self::generateQrCodeImage($memory->id);
             $memory->update([
                 'printed_number' => ++$memory->printed_number,
             ]);
             $config = Configuration::appConfig();
             $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
-            $imagePath = public_path(path : "images/47698.png");
+            $imagePath = public_path(path : "qrcodes/$file");
+            $signaturePath = public_path(path : "images/signature.png");
             \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
             $document = new PhpWord();
             $sectionStyles = [
-                'marginTop' => 700,
-                'marginBottom' => 400,
+                'marginTop' => 600,
+                'marginBottom' => 200,
             ];
             $section1 = $document->addSection($sectionStyles);
             $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
@@ -144,7 +156,7 @@ class GenerateReports
             $table1->addRow();
             $table1->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
             $table1->addRow();
-            $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+            $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 400]);
             $bottomTable1 = $section1->addTable();
             $bottomTable1->addRow();
             $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
@@ -152,14 +164,23 @@ class GenerateReports
             $bottomTable1->addRow();
             $bottomTable1->addCell()->addImage(
                 $imagePath, [
-                    'width' => 45,
-                    'height' => 45,
+                    'width' => 60,
+                    'height' => 60,
                     /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
                 ]
             );
-            $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600, 'spaceAfter' => 300]);
+            $bottomTable1->addCell()->addImage(
+                $signaturePath, [
+                    'width' => 80,
+                    'height' => 80,
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                ]
+            );
+            $bottomTable1->addRow();
+            $bottomTable1->addCell();
+            $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 50, 'spaceAfter' => 80]);
 
-            $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 420]);
+            $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 600]);
 
             $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
             $section1->addTitle(mb_strtoupper($config->school_name), 1);
@@ -184,12 +205,21 @@ class GenerateReports
             $bottomTable2->addRow();
             $bottomTable2->addCell()->addImage(
                 $imagePath, [
-                    'width' => 45,
-                    'height' => 45,
+                    'width' => 60,
+                    'height' => 60,
                     /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
                 ]
             );
-            $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600]);
+            $bottomTable2->addCell()->addImage(
+                $signaturePath, [
+                    'width' => 80,
+                    'height' => 80,
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                ]
+            );
+            $bottomTable2->addRow();
+            $bottomTable2->addCell();
+            $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 50]);
 
             $firstAuthorName = $memory->first_author_firstname;
             $secondAuthorName = $memory->second_author_firstname;
@@ -199,6 +229,7 @@ class GenerateReports
 
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
+            File::deleteDirectory(public_path('qrcodes'));
             return Response::download(public_path(path : $filename))->deleteFileAfterSend();
         }
         else {
@@ -240,17 +271,20 @@ class GenerateReports
             if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
                 array_map(function (int $id) use ($zip) {
                     $memory = SupportedMemory::find($id);
+                    $file = self::generateQrCodeImage($memory->id);
                     $memory->update([
                         'printed_number' => ++$memory->printed_number,
                     ]);
 
                     $config = Configuration::appConfig();
                     $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
+                    $imagePath = public_path(path : "qrcodes/$file");
+                    $signaturePath = public_path(path : "images/signature.png");
                     \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
                     $document = new PhpWord();
                     $sectionStyles = [
-                        'marginTop' => 700,
-                        'marginBottom' => 400,
+                        'marginTop' => 600,
+                        'marginBottom' => 200,
                     ];
                     $section1 = $document->addSection($sectionStyles);
                     $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
@@ -268,16 +302,31 @@ class GenerateReports
                     $table1->addRow();
                     $table1->addCell(width : 32500)->addText("PROMOTION : " .$memory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
                     $table1->addRow();
-                    $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 410]);
+                    $table1->addCell(width : 32500)->addText("THÈME : " .$memory->theme, ['size' => 11], ['spaceAfter' => 400]);
                     $bottomTable1 = $section1->addTable();
                     $bottomTable1->addRow();
                     $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
                     $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
                     $bottomTable1->addRow();
+                    $bottomTable1->addCell()->addImage(
+                        $imagePath, [
+                            'width' => 60,
+                            'height' => 60,
+                            /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                        ]
+                    );
+                    $bottomTable1->addCell()->addImage(
+                        $signaturePath, [
+                            'width' => 80,
+                            'height' => 80,
+                            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                        ]
+                    );
+                    $bottomTable1->addRow();
                     $bottomTable1->addCell();
-                    $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600, 'spaceAfter' => 300]);
+                    $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 50, 'spaceAfter' => 80]);
 
-                    $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 420]);
+                    $section1->addText("...............................................................................................................................................................", ['bold' =>true], ['spaceAfter' => 600]);
 
                     $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
                     $section1->addTitle(mb_strtoupper($config->school_name), 1);
@@ -300,8 +349,23 @@ class GenerateReports
                     $bottomTable2->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
                     $bottomTable2->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
                     $bottomTable2->addRow();
+                    $bottomTable2->addCell()->addImage(
+                        $imagePath, [
+                            'width' => 60,
+                            'height' => 60,
+                            /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                        ]
+                    );
+                    $bottomTable2->addCell()->addImage(
+                        $signaturePath, [
+                            'width' => 80,
+                            'height' => 80,
+                            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                        ]
+                    );
+                    $bottomTable2->addRow();
                     $bottomTable2->addCell();
-                    $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 600]);
+                    $bottomTable2->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 50]);
 
                     $firstAuthorName = $memory->first_author_firstname;
                     $secondAuthorName = $memory->second_author_firstname;
@@ -322,6 +386,7 @@ class GenerateReports
 
                 $zip->close();
             }
+            File::deleteDirectory(public_path('qrcodes'));
             Storage::deleteDirectory(directory : 'public/fiches/');
             return Response::download($zipFilePath, $zipFileName)->deleteFileAfterSend();
         }
@@ -329,6 +394,7 @@ class GenerateReports
 
     public static function importPdfsReports (Request $request) : void {
         foreach ($request->files as $file) {
+            dd($file->getClientOriginalName()); //Je veux le chemin Local pour éviter de stocker dans le projet
             $text = Pdf::getText($file, "C:\Program Files\pdftotext\pdftotext.exe");
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
@@ -365,13 +431,33 @@ class GenerateReports
         }
     }
 
-
-    public static function getImage(string $path)
+    public static function getImage(string $path) : string
     {
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         return $base64;
+    }
+
+    public static function generateQrCodeImage (int $id) : string
+    {
+        $renderer = new ImageRenderer(
+            new RendererStyle(400),
+            new ImagickImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $qrCodeImage = $writer->writeString($id);
+        $path = public_path('qrcodes');
+        $filename = time()."qrcode".$id.'.png';
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
+        File::put($path . '/' . $filename, $qrCodeImage);
+        return $filename;
+    }
+
+    public static function wordToPdf () : void {
+
     }
 
 }

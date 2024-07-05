@@ -33,14 +33,14 @@
         <div class="card-body">
             <form action="{{ route('import.pdfs.reports') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" class="form-control">
+                <input type="file" name="files[]" class="form-control" multiple>
                 <br>
                 <button class="btn btn-success">Importer des fiches(pdfs)</button>
             </form>
 
             <form class="mt-3" action="{{ route('import.words.reports') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" class="form-control">
+                <input type="file" name="files[]" class="form-control" multiple>
                 <br>
                 <button class="btn btn-success">Importer des fiches(words)</button>
             </form>
@@ -70,7 +70,7 @@
                 </tr>
                 @endforeach
             </table>
-
+            {{ $memories->links() }}
         </div>
     </div>
 </div>

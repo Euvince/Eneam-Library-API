@@ -2,16 +2,23 @@
 
 -L'utilisateur ne peut avoir certains rôles à la fois
 
--Prévisualisation de fichiers;
-
 -Continuer les tâches multiples;
 
 -Continuer les Permissions, Polices, Middlewares et Conditions à la fin du projet
 
--Les tests unitaires;
+-Les tests unitaires à la fin du projet;
 
--Les caractères bizarres qui s'affichent pas correctement;
+*****************************************************************************************************************
 
+-Prévisualisation de fichiers avec media library et spatie pdftoimage (Commande ghostscript introuvable);
+
+-Récupération d'identifiant à partir du découpage du code QR du document avec Zbar-php et imagick (Commande ghostscript introuvable)
+
+*****************************************************************************************************************
+
++Packages supplémetaires :
+    .Simplesoftwareio/simple-qrcode si nécéssaire
+    .Zbar-php si nécéssaire
 
 *****************************************************************************************************************
 
