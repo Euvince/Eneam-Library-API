@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ValidateSupportedMemoryMail extends Mailable
+class SendFilingReportMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -37,7 +37,7 @@ class ValidateSupportedMemoryMail extends Mailable
         return new Envelope(
             to : env('MAIL_TO_ADDRESS'),
             /* to : [$this->email], */
-            subject : 'Validation de dépôt de mémoire soutenu.',
+            subject: 'Fiche de dépôt de votre mémoire',
         );
     }
 
@@ -54,10 +54,10 @@ class ValidateSupportedMemoryMail extends Mailable
             ->first();
 
         return new Content(
-            markdown: 'mail.validate-supported-memory-mail',
+            markdown: 'mail.send-filing-report-mail',
             with: [
                 'sm' => $this->sm,
-                'name' => $this->name,
+                'name' =>$this->name,
                 'manager' => $manager,
             ]
         );
@@ -71,8 +71,8 @@ class ValidateSupportedMemoryMail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath(path : public_path($this->file))
-                ->as(name : 'FICHE DE DÉPÔT DE MÉMOIRE.docx')
+            Attachment::fromPath(path : $this->file)
+                ->as(name : 'FICHE DE DÉPÔT DE MÉMOIRE.pdf')
                 /* ->withMime('application/docx') */
         ];
     }

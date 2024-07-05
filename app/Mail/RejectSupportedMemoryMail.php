@@ -2,12 +2,14 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\SupportedMemory;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RejectSupportedMemoryMail extends Mailable
@@ -43,9 +45,21 @@ class RejectSupportedMemoryMail extends Mailable
      */
     public function content(): Content
     {
+        $manager = User::query()
+            ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                $query->where('name', "Gestionnaire");
+            })
+            ->where('firstname', 'AKOMIA')
+            ->first();
+
         return new Content(
             markdown: 'mail.reject-supported-memory-mail',
-            with: ['name' =>$this->name, 'reason' => $this->reason, 'sm' => $this->sm]
+            with: [
+                'sm' => $this->sm,
+                'name' =>$this->name,
+                'manager' => $manager,
+                'reason' => $this->reason,
+            ]
         );
     }
 

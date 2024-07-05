@@ -22,16 +22,16 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file']
+            'files' => ['required']
         ];
     }
 
     public function messages() : array {
         return [
-            "file.required" => "Le fichier à importer est requis.",
-            "file.file" => "Le fichier à importer doit être un fichier valide.",
-            /* "file.mimes" => "Le fichier à importer doit être de type : csv, xlsx.", */
-            /* "file.max" => "Le fichier à importer ne peut dépasser 10mo.", */
+            "files.required" => "Le(s) fichier(s) à importer est requis.",
+            "files.files" => "Le(s) fichier(s) à importer doit être un fichier valide.",
+            /* "files.mimes" => "Le(s) fichier(s) à importer doit/doivent être de type : csv, xlsx.", */
+            /* "files.max" => "Le(s) fichier(s) à importer ne peut/peuvent dépasser 10mo.", */
         ];
     }
 }

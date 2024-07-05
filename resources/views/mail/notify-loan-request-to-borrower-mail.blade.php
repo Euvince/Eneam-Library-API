@@ -14,6 +14,6 @@ Nous reviendrons vers vous dès que votre demande aura été traitée. Si vous a
 
 Cordialement,
 
-L'ENEAM.
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

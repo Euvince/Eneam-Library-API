@@ -36,7 +36,7 @@ class ArticleHelper
         {
             $filespaths = [];
             foreach($data['files_paths'] as $file) {
-                /** @var UploadedFile|null $filesPathsCollection */
+                /** @var UploadedFile|null $file */
                 $file = $file->storeAs('Articles/articles', time().'-'.$file->getClientOriginalName(), 'public');
                 $filespaths[] = $file;
             }

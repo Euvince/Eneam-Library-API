@@ -2,16 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Mail\SendFilingReportSignedMail;
 use Illuminate\Bus\Queueable;
 use App\Models\SupportedMemory;
+use App\Mail\SendFilingReportMail;
+use File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class SendFilingReportSignedJob implements ShouldQueue
+class SendFilingReportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,6 +21,7 @@ class SendFilingReportSignedJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
+        private readonly string $attachments,
         private readonly SupportedMemory $supportedMemory
     )
     {
@@ -36,7 +39,8 @@ class SendFilingReportSignedJob implements ShouldQueue
         $emails[$secondAuthorFullName] = $this->supportedMemory->second_author_email;
 
         foreach ($emails as $name => $email) {
-            Mail::send(new SendFilingReportSignedMail($name, $email, $this->supportedMemory));
+            Mail::send(new SendFilingReportMail($this->attachments, $name, $email, $this->supportedMemory));
         }
+        File::delete(paths : $this->attachments);
     }
 }

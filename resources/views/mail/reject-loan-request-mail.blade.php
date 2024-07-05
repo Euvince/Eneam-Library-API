@@ -19,6 +19,6 @@ Nous vous invitons à consulter notre bibliothèque pour d'autres livres qui pou
 
 Cordialement,
 
-L'ENEAM
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

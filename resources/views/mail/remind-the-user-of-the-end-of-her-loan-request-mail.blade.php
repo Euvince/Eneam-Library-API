@@ -23,6 +23,6 @@ Si vous avez besoin de plus de temps pour finir votre lecture, vous pouvez renou
 
 Cordialement,
 
-L'ENEAM.
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

@@ -64,7 +64,7 @@ class ValidateSupportedMemoryJob implements ShouldQueue
                 'marginTop' => 600,
                 'marginBottom' => 200,
             ];
-            $section1 = $document->addSection($sectionStyles);
+            $section1 = $document->addSection(/* $sectionStyles */);
             $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
             $section1->addTitle(mb_strtoupper($config->school_name), 1);
             $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE : '.Carbon::parse($this->supportedMemory->soutenance->start_date)->year."-".$this->supportedMemory->sector->acronym."-".$this->supportedMemory->id,
@@ -107,7 +107,7 @@ class ValidateSupportedMemoryJob implements ShouldQueue
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
 
-            Mail::send(new ValidateSupportedMemoryMail($name, $email, public_path($filename), $this->supportedMemory));
+            Mail::send(new ValidateSupportedMemoryMail($filename, $name, $email, $this->supportedMemory));
         }
         File::delete(public_path($filename));
         File::deleteDirectory(public_path('qrcodes'));

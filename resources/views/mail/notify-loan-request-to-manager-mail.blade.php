@@ -27,6 +27,6 @@ Merci de prendre en charge cette demande dès que possible. Vous pouvez consulte
 </div>
 @endif
 
-Cordialement.
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

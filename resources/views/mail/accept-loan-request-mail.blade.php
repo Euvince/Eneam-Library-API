@@ -27,6 +27,6 @@ Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contac
 
 Cordialement,
 
-L'ENEAM.
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

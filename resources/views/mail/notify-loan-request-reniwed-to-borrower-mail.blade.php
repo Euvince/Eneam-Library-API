@@ -18,6 +18,6 @@ Si vous avez des questions ou besoin de plus d'informations, n'hésitez pas à n
 
 Cordialement,
 
-L'ENEAM.
+L'<strong>ENEAM</strong>.
 
 </x-mail::message>

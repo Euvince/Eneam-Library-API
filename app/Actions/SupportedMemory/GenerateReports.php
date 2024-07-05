@@ -11,14 +11,15 @@ use App\Models\Configuration;
 use PhpOffice\PhpWord\PhpWord;
 use App\Models\SupportedMemory;
 use PhpOffice\PhpWord\IOFactory;
+use App\Jobs\SendFilingReportJob;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\Element\Table;
-use App\Jobs\SendFilingReportSignedJob;
 use BaconQrCode\Renderer\ImageRenderer;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use App\Http\Requests\SupportedMemory\ImportRequest;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 
@@ -392,19 +393,28 @@ class GenerateReports
         }
     }
 
-    public static function importPdfsReports (Request $request) : void {
-        foreach ($request->files as $file) {
-            dd($file->getClientOriginalName()); //Je veux le chemin Local pour éviter de stocker dans le projet
-            $text = Pdf::getText($file, "C:\Program Files\pdftotext\pdftotext.exe");
+    public static function importPdfsReports (ImportRequest $request) : void {
+        $data = $request->validated();
+        foreach ($data['files'] as $file) {
+            /** @var UploadedFile|null $file */
+            $filename = $file->storeAs('fiches-importées', time().'-'.$file->getClientOriginalName(), 'public');
+            $filepath = "storage/".$filename;
+            $text = Pdf::getText(public_path(path : $filepath), "C:\Program Files\pdftotext\pdftotext.exe");
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
-            SendFilingReportSignedJob::dispatch($memory);
+            // Décoder également le code QR pour envoyer la fiche au bon destinataire(étudiant)
+            SendFilingReportJob::dispatch(public_path(path: $filepath), $memory);
+            /* Storage::deleteDirectory(directory : 'public/fiches-importées'); */
         }
     }
 
-    public static function importWordsReports (Request $request) : void {
-        foreach ($request->files as $file) {
-            $loadedFile = IOFactory::load(filename : $file);
+    public static function importWordsReports (ImportRequest $request) : void {
+        $data = $request->validated();
+        foreach ($data['files'] as $file) {
+             /** @var UploadedFile|null $file */
+             $filename = $file->storeAs('fiches-importées', time().'-'.$file->getClientOriginalName(), 'public');
+             $filepath = "storage/".$filename;
+            $loadedFile = IOFactory::load(filename : $filepath, readerName : 'Word2007');
             $text = "";
             foreach($loadedFile->getSections() as $section) {
                 foreach($section->getElements() as $element) {
@@ -427,7 +437,9 @@ class GenerateReports
             }
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
-            SendFilingReportSignedJob::dispatch($memory);
+            // Décoder également le code QR pour envoyer la fiche au bon destinataire(étudiant)
+            SendFilingReportJob::dispatch(public_path(path: $filepath), $memory);
+            /* Storage::deleteDirectory(directory : 'public/fiches-importées'); */
         }
     }
 
