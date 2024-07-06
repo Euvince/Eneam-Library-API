@@ -405,7 +405,7 @@ class GenerateReports
             $text = Pdf::getText(public_path(path : $filepath), "C:\Program Files\pdftotext\pdftotext.exe");
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
-            // Décoder également le code QR pour envoyer la fiche au bon destinataire(étudiant)
+            // Décoder également le code QR qui contenir l'email pour envoyer la fiche au bon destinataire(étudiant)
             SendFilingReportJob::dispatch(public_path(path: $filepath), $memory);
             /* Storage::deleteDirectory(directory : 'public/fiches-importées'); */
         }
@@ -440,7 +440,7 @@ class GenerateReports
             }
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
-            // Décoder également le code QR pour envoyer la fiche au bon destinataire(étudiant)
+            // Décoder également le code QR qui doit contenir l'email pour envoyer la fiche au bon destinataire(étudiant)
             SendFilingReportJob::dispatch(public_path(path: $filepath), $memory);
             /* Storage::deleteDirectory(directory : 'public/fiches-importées'); */
         }

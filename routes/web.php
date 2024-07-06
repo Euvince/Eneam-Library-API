@@ -29,22 +29,6 @@ Route::controller(UserController::class)->group(function(){
     Route::post(uri : 'import-eneamiens-students', action : 'import')->name('eneamiens.students.import');
 });
 
-Route::get('/php-blade/{memory}', action : [
-    App\Actions\SupportedMemory\GenerateReports::class, 'printReportUsingBladeView'
-])->where(['memory' => $idRegex]);
-
-Route::get('/php-word/{memory}', action : [
-    App\Actions\SupportedMemory\GenerateReports::class, 'printReportUsingWord'
-])->where(['memory' => $idRegex]);
-
-Route::get('/php-blades', action : [
-    App\Actions\SupportedMemory\GenerateReports::class, 'printReportsUsingBladeView'
-]);
-
-Route::get('/php-words', action : [
-    App\Actions\SupportedMemory\GenerateReports::class, 'printReportsUsingWord'
-]);
-
 Route::controller(SupportedMemoryController::class)->group(function(){
     Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
     Route::post(uri : 'import-pdfs-reports', action : 'importPdfsReports')->name(name : 'import.pdfs.reports');
@@ -56,15 +40,6 @@ Route::controller(SupportedMemoryController::class)->group(function(){
     $imagick->readImage(public_path('pdfs/file.pdf'));
     $imagick->writeImage('converted.jpg', true);
     dd("done");
-}); */
-
-
-/* Route::get('/check-mbstring', function () {
-    if (extension_loaded('mbstring')) {
-        return 'Mbstring is installed and loaded.';
-    } else {
-        return 'Mbstring is not installed.';
-    }
 }); */
 
 /* Route::get('/check-imagick', function () {
