@@ -24,9 +24,9 @@ Route::get('/', function () {
 
 Route::controller(UserController::class)->group(function(){
     Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');
-    Route::get(uri : 'users-export', action : 'export')->name('users.export');
-    Route::post(uri : 'teachers-import', action : 'import')->name('teachers.import');
-    Route::post(uri : 'eneamiens-import', action : 'import')->name('eneamiens.import');
+    /* Route::get(uri : 'users-export', action : 'export')->name('users.export'); */
+    Route::post(uri : 'import-teachers', action : 'import')->name('teachers.import');
+    Route::post(uri : 'import-eneamiens-students', action : 'import')->name('eneamiens.students.import');
 });
 
 Route::get('/php-blade/{memory}', action : [

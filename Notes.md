@@ -4,7 +4,13 @@
 
 -Continuer les tâches multiples;
 
--Continuer les Permissions, Polices, Middlewares et Conditions à la fin du projet
+-Continuer les Permissions, Polices, Middlewares et Conditions à la fin du projet;
+
+-Finir de tester l'authentification) :
+    +Forgot Pasword;
+    +Password Reset;
+    +Verify Email;
+    +Double Authentification complète;
 
 -Les tests unitaires à la fin du projet;
 

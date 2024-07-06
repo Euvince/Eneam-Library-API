@@ -4,6 +4,7 @@ namespace App\Actions\SupportedMemory;
 
 use ZipArchive;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use BaconQrCode\Writer;
 use Spatie\PdfToText\Pdf;
 use Illuminate\Http\Request;
@@ -230,6 +231,7 @@ class GenerateReports
 
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
+            dd("Arrêt");
             File::deleteDirectory(public_path('qrcodes'));
             return Response::download(public_path(path : $filename))->deleteFileAfterSend();
         }
@@ -376,6 +378,7 @@ class GenerateReports
 
                     $writer = IOFactory::createWriter($document, 'Word2007');
                     $writer->save($filename);
+                    die();
 
                     $directory = "storage/fiches/";
                     if (!File::exists(public_path($directory))) {
@@ -468,8 +471,21 @@ class GenerateReports
         return $filename;
     }
 
-    public static function wordToPdf () : void {
+    public static function wordToPdf (string $wordFilePath, SupportedMemory $memory)/*  : string */
+    {
+        $phpWord = IOFactory::load($wordFilePath);
+        $htmlWriter = IOFactory::createWriter($phpWord, 'HTML');
+        $htmlFile = time()."document-$memory->id.html";
+        $htmlWriter->save($htmlFile);
 
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(file_get_contents($htmlFile));
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfFile = public_path(time()."document-$memory->id.pdf");
+        file_put_contents($pdfFile, $dompdf->output());
+
+        /* return $pdfFile; */
     }
 
 }

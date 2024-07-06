@@ -68,19 +68,19 @@ class ValidateSupportedMemoryJob implements ShouldQueue
             $document->addTitleStyle(1, ['bold' => true, 'size' => 13], ['align' => 'start']);
             $section1->addTitle(mb_strtoupper($config->school_name), 1);
             $section1->addText('FICHE DE DÉPÔT DE MÉMOIRE : '.Carbon::parse($this->supportedMemory->soutenance->start_date)->year."-".$this->supportedMemory->sector->acronym."-".$this->supportedMemory->id,
-                ['size' => 11], ['align' => 'center', 'spaceBefore' => 250, 'spaceAfter' => 250]
+                ['size' => 11], ['align' => 'center', 'spaceBefore' => 300, 'spaceAfter' => 300]
             );
             $section1->addText($config->school_city.', le '.$now, ['size' => 11], ['align' => 'end', 'spaceAfter' => 250]);
 
             $table1 = $section1->addTable();
             $table1->addRow();
-            $table1->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$name, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addCell(width : 32500)->addText("NOM ET PRÉNOMS : " .$name, ['size' => 11], ['spaceAfter' => 300]);
             $table1->addRow();
-            $table1->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$this->supportedMemory->sector->sector->name."/".$this->supportedMemory->sector->name, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addCell(width : 32500)->addText("FILIÈRE & CLASSE : " .$this->supportedMemory->sector->sector->name."/".$this->supportedMemory->sector->name, ['size' => 11], ['spaceAfter' => 300]);
             $table1->addRow();
-            $table1->addCell(width : 32500)->addText("PROMOTION : " .$this->supportedMemory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 280]);
+            $table1->addCell(width : 32500)->addText("PROMOTION : " .$this->supportedMemory->soutenance->schoolYear->school_year, ['size' => 11], ['spaceAfter' => 300]);
             $table1->addRow();
-            $table1->addCell(width : 32500)->addText("THÈME : " .$this->supportedMemory->theme, ['size' => 11], ['spaceAfter' => 400]);
+            $table1->addCell(width : 32500)->addText("THÈME : " .$this->supportedMemory->theme, ['size' => 11], ['spaceAfter' => 600]);
             $bottomTable1 = $section1->addTable();
             $bottomTable1->addRow();
             $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
@@ -105,7 +105,11 @@ class ValidateSupportedMemoryJob implements ShouldQueue
             $bottomTable1->addCell()->addText($config->archivist_full_name, ['size' => 11], ['align' => 'center', 'spaceBefore' => 50, 'spaceAfter' => 80]);
 
             $writer = IOFactory::createWriter($document, 'Word2007');
-            $writer->save($filename);
+            $writer->save(public_path($filename));
+            /* GenerateReports::wordToPdf(
+                wordFilePath : public_path($filename),
+                memory : $this->supportedMemory,
+            ); */
 
             Mail::send(new ValidateSupportedMemoryMail($filename, $name, $email, $this->supportedMemory));
         }

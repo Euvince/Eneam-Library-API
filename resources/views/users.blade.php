@@ -31,7 +31,7 @@
             </div>
         @endif
         <div class="card-body">
-            <form action="{{ route('eneamiens.import') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('eneamiens.students.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" class="form-control">
                 <br>

@@ -11,6 +11,11 @@ $slugRegex = '[0-9a-z\-]+';
 Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
 
+Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
+    Route::post(uri : 'import-teachers', action : 'import')->name('teachers.import');
+    Route::post(uri : 'import-eneam-students', action : 'import')->name('eneamiens.import');
+});
+
 Route::patch(uri : '/give-access-to-user/{user}', action : [App\Http\Controllers\API\UserController::class, 'giveAccessToUser'])
     ->name('give-access-to-user')
     ->where(['user' => $idRegex]);
