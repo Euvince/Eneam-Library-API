@@ -226,7 +226,6 @@ class SupportedMemoryController extends Controller
         );
     }
 
-
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -236,21 +235,27 @@ class SupportedMemoryController extends Controller
         return view('memories', compact('memories'));
     }
 
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function importPdfsReports(ImportRequest $request) : RedirectResponse
-    {
-        GenerateReports::importPdfsReports($request);
-        return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
-    }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function importWordsReports(ImportRequest $request) : RedirectResponse
+     * Method importReports
+     *
+     * @param ImportRequest $request [explicite description]
+     */
+    public function importReports(ImportRequest $request) : RedirectResponse | JsonResponse
     {
-        GenerateReports::importWordsReports($request);
+        dd($request->validated());
+        $message = "La fiche de dépôt de mémoire a été envoyée avec succès";
+        if (count($request->files) > 1) $message = "Les fiches de dépôts de mémoires ont été envoyées avec succès";
+
+        // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
+        if (request()->routeIs('import.pdfs.reports')) GenerateReports::importPdfsReports($request);
+        else GenerateReports::importWordsReports($request);
+        /* return response()->json(
+            status : 200,
+            data : [
+                'message' => $message
+            ],
+        ); */
         return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
     }
 

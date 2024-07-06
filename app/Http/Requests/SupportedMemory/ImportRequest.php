@@ -21,17 +21,40 @@ class ImportRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'files' => ['required']
-        ];
+        $rules = [];
+
+        if (request()->routeIs('import.pdfs.reports'))
+        $rules['files'] = ['required', 'file', 'mimes:pdf', /* 'max:10' */];
+        else if (request()->routeIs('import.words.reports'))
+        $rules['files'] = ['required', 'file', 'mimes:word', /* 'max:10' */];
+
+        return $rules;
     }
 
     public function messages() : array {
-        return [
-            "files.required" => "Le(s) fichier(s) à importer est requis.",
-            "files.files" => "Le(s) fichier(s) à importer doit être un fichier valide.",
-            /* "files.mimes" => "Le(s) fichier(s) à importer doit/doivent être de type : csv, xlsx.", */
-            /* "files.max" => "Le(s) fichier(s) à importer ne peut/peuvent dépasser 10mo.", */
-        ];
+        /* dd(count(request()->files)); */
+        $messages = [];
+        if (request()->routeIs('import.pdfs.reports') || request()->routeIs('import.words.reports')) {
+            $messages['files.required'] = "Le fichier à importer est requis.";
+            $messages['files.file'] = "Le fichier à importer doit être un fichier valide.";
+        }
+        if ((request()->routeIs('import.pdfs.reports') || request()->routeIs('import.words.reports')) && count(request()->files) > 1) {
+            $messages['files.required'] = "Les fichiers à importer sont requis.";
+            $messages['files.file'] = "Les fichiers à importer doivent être des fichier valides.";
+        }
+        if (request()->routeIs('import.pdfs.reports')) {
+            $messages['files.mimes'] = "Le fichier doit être de type pdf";
+        }
+        if (request()->routeIs('import.pdfs.reports') && count(request()->files) > 1) {
+            $messages['files.mimes'] = "Les fichiers doivent être de type pdf";
+        }
+        if (request()->routeIs('import.words.reports')) {
+            $messages['files.mimes'] = "Le fichier doit être de type word";
+        }
+        if (request()->routeIs('import.words.reports') && count(request()->files) > 1) {
+            $messages['files.mimes'] = "Les fichiers doivent être de type word";
+        }
+
+        return $messages;
     }
 }

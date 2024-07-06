@@ -15,7 +15,7 @@ class ConfigurationSeeder extends Seeder
     {
         for ((int) $i = 0; $i <= 10; $i++) {
             Configuration::create([
-                'school_name' => "École Nationnale d'Économie Appliquée et de Management",
+                'school_name' => "École Nationale d'Économie Appliquée et de Management",
                 'school_acronym' => "ENEAM",
                 'school_city' => "Cotonou",
                 'archivist_full_name' => "Ghislaine AKOMIA",
@@ -40,7 +40,7 @@ class ConfigurationSeeder extends Seeder
         }
 
         Configuration::create([
-            'school_name' => "École Nationnale d'Économie Appliquée et de Management",
+            'school_name' => "École Nationale d'Économie Appliquée et de Management",
             'school_acronym' => "ENEAM",
             'school_city' => "Cotonou",
             'archivist_full_name' => "Ghislaine AKOMIA",

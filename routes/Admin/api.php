@@ -5,15 +5,15 @@ use Illuminate\Support\Facades\Route;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
-/* Route::group(['middleware' => 'auth:sanctum'], function () {}); */
-
 // Users
 Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
 
 Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
-    Route::post(uri : 'import-teachers', action : 'import')->name('teachers.import');
-    Route::post(uri : 'import-eneam-students', action : 'import')->name('eneamiens.import');
+    // Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');
+    // Route::get(uri : 'export-users', action : 'export')->name('export.users');
+    Route::post(uri : 'import-teachers', action : 'importUsers')->name('import.teachers');
+    Route::post(uri : 'import-eneamiens-students', action : 'importUsers')->name('import.eneamiens.students');
 });
 
 Route::patch(uri : '/give-access-to-user/{user}', action : [App\Http\Controllers\API\UserController::class, 'giveAccessToUser'])

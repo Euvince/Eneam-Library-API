@@ -1,8 +1,10 @@
 <?php
 
+use App\Actions\SupportedMemory\GenerateReports;
 use App\Http\Controllers\API\SupportedMemory\SupportedMemoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
+use App\Models\SupportedMemory;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,18 +24,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::controller(UserController::class)->group(function(){
-    Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');
-    /* Route::get(uri : 'users-export', action : 'export')->name('users.export'); */
-    Route::post(uri : 'import-teachers', action : 'import')->name('teachers.import');
-    Route::post(uri : 'import-eneamiens-students', action : 'import')->name('eneamiens.students.import');
-});
-
 Route::controller(SupportedMemoryController::class)->group(function(){
     Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
-    Route::post(uri : 'import-pdfs-reports', action : 'importPdfsReports')->name(name : 'import.pdfs.reports');
-    Route::post(uri : 'import-words-reports', action : 'importWordsReports')->name(name : 'import.words.reports');
+    Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
+    Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
 });
+
+/* Route::get('/php-blade/{memory}', function (SupportedMemory $memory) {
+    return GenerateReports::printReportUsingBladeView($memory);
+});
+
+Route::get('/php-word/{memory}', function (SupportedMemory $memory) {
+    return GenerateReports::printReportUsingWord($memory);
+});
+
+Route::get('/php-blades', function (SupportedMemory $memory) {
+    return GenerateReports::printReportsUsingBladeView($memory);
+});
+
+Route::get('/php-words', function (SupportedMemory $memory) {
+    return GenerateReports::printReportsUsingWord($memory);
+}); */
+
+
 
 /* Route::get('generate-img-by-pdf', function () {
     $imagick = new Imagick(public_path('pdfs/file.pdf'));

@@ -64,10 +64,9 @@ class GenerateReports
     }
 
 
-    public static function printReportsUsingBladeView (/* SupportedMemoryRequest $request */)
+    public static function printReportsUsingBladeView (SupportedMemoryRequest $request)
     {
-        /* $ids = $request->validated('ids'); */
-        $ids = [148, 149, 150, 151];
+        $ids = $request->validated('ids');
 
         $validMemories = SupportedMemory::whereIn('id', $ids)
             ->where('status', "Invalidé")
@@ -231,7 +230,6 @@ class GenerateReports
 
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
-            dd("Arrêt");
             File::deleteDirectory(public_path('qrcodes'));
             return Response::download(public_path(path : $filename))->deleteFileAfterSend();
         }
@@ -245,10 +243,9 @@ class GenerateReports
     }
 
 
-    public static function printReportsUsingWord (/* SupportedMemoryRequest $request */)
+    public static function printReportsUsingWord (SupportedMemoryRequest $request)
     {
-       /*  $ids = $request->validated('ids'); */
-       $ids = [148, 149, 150, 151];
+        $ids = $request->validated('ids');
 
         $validMemories = SupportedMemory::whereIn('id', $ids)
             ->where('status', "Invalidé")
@@ -378,7 +375,6 @@ class GenerateReports
 
                     $writer = IOFactory::createWriter($document, 'Word2007');
                     $writer->save($filename);
-                    die();
 
                     $directory = "storage/fiches/";
                     if (!File::exists(public_path($directory))) {
@@ -402,6 +398,7 @@ class GenerateReports
             /** @var UploadedFile|null $file */
             $filename = $file->storeAs('fiches-importées', time().'-'.$file->getClientOriginalName(), 'public');
             $filepath = "storage/".$filename;
+            // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
             $text = Pdf::getText(public_path(path : $filepath), "C:\Program Files\pdftotext\pdftotext.exe");
             preg_match("/\d{4}-[A-Z]+-\d+/", $text, $matches);
             $memory = SupportedMemory::find((int)explode('-', $matches[0])[2]);
@@ -419,6 +416,7 @@ class GenerateReports
              $filepath = "storage/".$filename;
             $loadedFile = IOFactory::load(filename : $filepath, readerName : 'Word2007');
             $text = "";
+            // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
             foreach($loadedFile->getSections() as $section) {
                 foreach($section->getElements() as $element) {
                     if (method_exists($element, 'getText')) {

@@ -206,20 +206,31 @@ class UserController extends Controller
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function export()
+     * Method importUsers
+     *
+     * @param ImportRequest $request [explicite description]
+     */
+    public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        $message = $request->routeIs('teachers.import')
+            ? "Enseignants importés avec succès"
+            : "Étudiants énéamiens importés avec succès";
+
+        Excel::import(new UsersImport($request), $request->file);
+        return response()->json(
+            status : 200,
+            data : [
+                'message' => $message
+            ],
+        );
+        /* return request()->routeIs('teachers.import')
+            ? back()->with(['success' => $message])
+            : back()->with(['success' => $message]); */
     }
 
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function import(ImportRequest $request) : RedirectResponse
+    public function exportUsers()
     {
-        Excel::import(new UsersImport($request), $request->file);
-        return back()->with(['success' => "Données importées avec succès"]);
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
 }

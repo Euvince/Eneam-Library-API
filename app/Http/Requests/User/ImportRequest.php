@@ -22,7 +22,7 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'mimetypes:text/csv,text/plain,application/csv,xlsx', 'max:10240']
+            'file' => ['required', 'file', 'mimetypes:text/csv,text/plain,application/csv,xlsx'/* , 'max:10240' */]
         ];
     }
 
@@ -31,7 +31,7 @@ class ImportRequest extends FormRequest
             "file.required" => "Le fichier à importer est requis.",
             "file.file" => "Le fichier à importer doit être un fichier valide.",
             /* "file.mimes" => "Le fichier à importer doit être de type : csv, xlsx.", */
-            "file.max" => "Le fichier à importer ne peut dépasser 10mo.",
+            /* "file.max" => "Le fichier à importer ne peut dépasser 10mo.", */
         ];
     }
 

@@ -20,7 +20,6 @@ $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
 // Configurations
-
 Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
     Route::get(uri : 'last', action : ConfigurationController::class
     )->name(name : 'last');
@@ -105,6 +104,12 @@ Route::patch(uri : 'print-filing-report/{supportedMemory}', action : [SupportedM
 Route::patch(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');
 
+/* Route::controller(SupportedMemoryController::class)->group(function(){
+    Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
+    Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
+    Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
+}); */
+
 Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])
     ->name('destroy-memories');
 
@@ -136,7 +141,6 @@ Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'de
 
 
 // Emprunts Borrower
-
 Route::get(uri : '/can-do-loan-request/{article}', action : [UserLoanController::class, 'canDoLoanRequest'])
     ->name(name : 'can-do-loan-request')
     ->where(['article' => $idRegex]);
@@ -158,7 +162,6 @@ Route::delete(uri : '/cancel-loan-request/{loan}', action : [UserLoanController:
     ->where(['loan' => $idRegex]);
 
 // Emprunts Manager
-
 Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
     ->except(methods : ['store', 'update']);
 

@@ -51,6 +51,7 @@ class CreateNewUser implements CreatesNewUsers
         return $user;
     }
 
+
     public function helper(array $input) : User {
         $routeUri = $this->request->route()->uri();
         switch ($routeUri) {
@@ -60,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
                     'lastname' => ['required', 'string', 'max:255'],
                     'email' => [
                         'required','string','email','max:255',
-                        Rule::unique(User::class)->withoutTrashed(),
+                        Rule::unique(User::class)/* ->withoutTrashed() */,
                     ],
                     'password' => $this->passwordRules(),
                 ])->validate();
