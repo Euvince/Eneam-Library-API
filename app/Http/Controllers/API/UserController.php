@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ImportRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Role;
 use App\Models\User;
 use App\Http\Responses\User\{
@@ -212,20 +213,42 @@ class UserController extends Controller
      */
     public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
     {
+        /* if ($request->routeIs("import.eneamiens.students")) {
+            $students = User::query()
+                ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                    $query->where('name', "Etudiant-Eneamien");
+                })->get();
+            foreach ($students as $student) {
+                $student->permissions()->detach();
+                $student->roles()->detach();
+                $student->delete();
+            }
+        }
+
+        else if ($request->routeIs("import.teachers")) {
+            $teachers = User::query()
+                ->whereHas(relation : 'roles', callback : function (Builder $query) {
+                    $query->where('name', "Enseignant");
+                })->get();
+            foreach ($teachers as $teacher) {
+                $teacher->delete();
+            }
+        } */
+
         $message = $request->routeIs('teachers.import')
             ? "Enseignants importés avec succès"
             : "Étudiants énéamiens importés avec succès";
 
         Excel::import(new UsersImport($request), $request->file);
-        return response()->json(
-            status : 200,
-            data : [
-                'message' => $message
-            ],
-        );
-        /* return request()->routeIs('teachers.import')
-            ? back()->with(['success' => $message])
-            : back()->with(['success' => $message]); */
+        return str_contains(request()->route()->getName(), 'api')
+            ?  response()->json(
+                    status : 200,
+                    data : ['message' => $message]
+                )
+            :  (request()->routeIs('teachers.import')
+                    ? back()->with(['success' => $message])
+                    : back()->with(['success' => $message])
+                );
     }
 
     public function exportUsers()

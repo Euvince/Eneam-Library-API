@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Database\Eloquent\Builder;
 
 class UsersImport implements ToModel
 {
@@ -27,14 +26,6 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         if ($this->request->routeIs("import.eneamiens.students")) {
-
-            /* $students = User::query()
-                ->whereHas(relation : 'roles', callback : function (Builder $query) {
-                    $query->where('name', "Etudiant-Eneamien");
-                })->all(); */
-            foreach (User::all() as $student) {
-                $student->delete();
-            }
 
             $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
             $password = Helpers::generateRandomPassword();
@@ -55,14 +46,6 @@ class UsersImport implements ToModel
 
         else if ($this->request->routeIs("import.teachers")) {
 
-            $teachers = User::query()
-                ->whereHas(relation : 'roles', callback : function (Builder $query) {
-                    $query->where('name', "Enseignant");
-                })->get();
-            foreach ($teachers as $teacher) {
-                $teacher->delete();
-            }
-
             $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
             $password = Helpers::generateRandomPassword();
             $user = new User([
@@ -78,7 +61,7 @@ class UsersImport implements ToModel
             $user->update([
                 'has_paid' => true, 'has_access' => true,
             ]);
-            SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password, $user->matricule);
+            SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password);
             return $user;
         }
     }

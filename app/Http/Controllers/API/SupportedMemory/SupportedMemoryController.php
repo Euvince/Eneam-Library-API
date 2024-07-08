@@ -249,13 +249,14 @@ class SupportedMemoryController extends Controller
         // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
         if (request()->routeIs('import.pdfs.reports')) GenerateReports::importPdfsReports($request);
         else GenerateReports::importWordsReports($request);
-        return response()->json(
-            status : 200,
-            data : [
-                'message' => $message
-            ],
-        );
-        // return back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
+        return str_contains(request()->route()->getName(), 'api')
+            ?   response()->json(
+                    status : 200,
+                    data : [
+                        'message' => $message
+                    ],
+                )
+            :   back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
     }
 
 }

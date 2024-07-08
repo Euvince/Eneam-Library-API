@@ -21,7 +21,7 @@ class SendConnectionCredentialsToUserMail extends Mailable
     public function __construct(
         private readonly string $email,
         private readonly string $password,
-        private readonly string $matricule,
+        private readonly ?string $matricule = NULL,
     )
     {
     }
