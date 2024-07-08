@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string(column : 'school_acronym');
             $table->string(column : 'school_city');
             $table->string(column : 'archivist_full_name');
+            $table->string(column : 'archivist_signature')->nullable();
             $table->float(column : 'eneamien_subscribe_amount');
             $table->float(column : 'extern_subscribe_amount');
             $table->integer(column : 'subscription_expiration_delay');

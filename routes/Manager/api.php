@@ -33,6 +33,8 @@ Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
             ->name(name : 'school-city');
         Route::patch(uri : 'archivist-full-name', action : UpdateConfigurationController::class)
             ->name(name : 'archivist-full-name');
+        Route::patch(uri : 'archivist-signature', action : UpdateConfigurationController::class)
+            ->name(name : 'archivist-signature');
         Route::patch(uri : 'eneamien-subscribe-amount', action : UpdateConfigurationController::class)
             ->name(name : 'eneamien-subscribe-amount');
         Route::patch(uri : 'extern-subscribe-amount', action : UpdateConfigurationController::class)

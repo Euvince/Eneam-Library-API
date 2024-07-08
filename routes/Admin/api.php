@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
-// Users
-Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
+Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Configurations"]], function () {
+    // Users
+    Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
+});
 
 Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
     // Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');

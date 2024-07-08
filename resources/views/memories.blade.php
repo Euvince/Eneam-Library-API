@@ -16,6 +16,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-danger mt-3 mx-3">
+                {{ session('error') }}
+            </div>
+        @endif
         @error('message')
             <div class="alert alert-err mt-3 mx-3">
                 {{ $message }}
@@ -60,14 +65,14 @@
                     <th>Président du jury</th>
                 </tr>
                 @foreach($memories as $memory)
-                <tr>
-                    <td>{{ $memory->id }}</td>
-                    <td>{{ $memory->theme }}</td>
-                    <td>{{ $memory->first_author_firstname }}</td>
-                    <td>{{ $memory->second_author_firstname }}</td>
-                    <td>{{ $memory->memory_master_name }}</td>
-                    <td>{{ $memory->jury_president_name }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ $memory->id }}</td>
+                        <td>{{ $memory->theme }}</td>
+                        <td>{{ $memory->first_author_firstname }}</td>
+                        <td>{{ $memory->second_author_firstname }}</td>
+                        <td>{{ $memory->memory_master_name }}</td>
+                        <td>{{ $memory->jury_president_name }}</td>
+                    </tr>
                 @endforeach
             </table>
             {{ $memories->links() }}

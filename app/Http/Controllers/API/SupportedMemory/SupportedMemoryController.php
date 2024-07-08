@@ -243,20 +243,24 @@ class SupportedMemoryController extends Controller
      */
     public function importReports(ImportRequest $request) : RedirectResponse | JsonResponse
     {
-        $message = "La fiche de dépôt de mémoire a été envoyée avec succès";
-        if (count($request->validated('files')) > 1) $message = "Les fiches de dépôts de mémoires ont été envoyées avec succès";
+        try {
+            $message = "La fiche de dépôt de mémoire a été envoyée avec succès";
+            if (count($request->validated('files')) > 1) $message = "Les fiches de dépôts de mémoires ont été envoyées avec succès";
 
-        // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
-        if (request()->routeIs('import.pdfs.reports')) GenerateReports::importPdfsReports($request);
-        else GenerateReports::importWordsReports($request);
-        return str_contains(request()->route()->getName(), 'api')
-            ?   response()->json(
-                    status : 200,
-                    data : [
-                        'message' => $message
-                    ],
-                )
-            :   back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
+            // S'assurer qu'il s'agit bien de fiches de dépôt de mémoires sinon l'information codée ne pourrait être décodée
+            if (request()->routeIs('import.pdfs.reports')) GenerateReports::importPdfsReports($request);
+            else GenerateReports::importWordsReports($request);
+            return str_contains(request()->route()->getName(), 'api')
+                ?   response()->json(
+                        status : 200,
+                        data : [
+                            'message' => $message
+                        ],
+                    )
+                :   back()->with(['success' => "Fiches de dépôts de mémoires envoyées avec succès"]);
+        }catch (\Exception $e) {
+            back()->with(['error' => "Une erreur est survenue lors de l'enrégistrement des données."]);
+        }
     }
 
 }

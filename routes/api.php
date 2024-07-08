@@ -24,4 +24,3 @@ Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request)
     return $request->user()->load(['roles']);
 
 });
-

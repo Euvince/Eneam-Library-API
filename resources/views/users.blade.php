@@ -16,6 +16,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-danger mt-3 mx-3">
+                {{ session('error') }}
+            </div>
+        @endif
         @error('message')
             <div class="alert alert-err mt-3 mx-3">
                 {{ $message }}
@@ -47,7 +52,7 @@
 
             <table class="table table-bordered mt-3">
                 <tr>
-                    <th colspan="3">
+                    <th colspan="5">
                         Liste des utilisateurs
                         <a class="btn btn-primary float-end" href="{{ route('export.users') }}">Exporter des données utilisateurs</a>
                     </th>
@@ -56,13 +61,18 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th colspan="2">Actions</th>
                 </tr>
                 @foreach($users as $user)
-                <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        {{-- <td colspan="2">
+                            <button class="btn btn-sm btn-warning mx-3">Modifier</button>
+                            <button class="btn btn-sm btn-danger">Supprimer</button>
+                        </td> --}}
+                    </tr>
                 @endforeach
             </table>
             {{ $users->links() }}

@@ -18,6 +18,7 @@ use App\Http\Responses\User\{
 };
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Org_Heigl\Ghostscript\Ghostscript;
@@ -213,7 +214,7 @@ class UserController extends Controller
      */
     public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
     {
-        /* if ($request->routeIs("import.eneamiens.students")) {
+        if ($request->routeIs("import.eneamiens.students")) {
             $students = User::query()
                 ->whereHas(relation : 'roles', callback : function (Builder $query) {
                     $query->where('name', "Etudiant-Eneamien");
@@ -221,7 +222,7 @@ class UserController extends Controller
             foreach ($students as $student) {
                 $student->permissions()->detach();
                 $student->roles()->detach();
-                $student->delete();
+                $student->forceDelete();
             }
         }
 
@@ -231,24 +232,30 @@ class UserController extends Controller
                     $query->where('name', "Enseignant");
                 })->get();
             foreach ($teachers as $teacher) {
-                $teacher->delete();
+                $teacher->forceDelete();
             }
-        } */
+        }
 
         $message = $request->routeIs('teachers.import')
             ? "Enseignants importés avec succès"
             : "Étudiants énéamiens importés avec succès";
 
-        Excel::import(new UsersImport($request), $request->file);
-        return str_contains(request()->route()->getName(), 'api')
-            ?  response()->json(
-                    status : 200,
-                    data : ['message' => $message]
-                )
-            :  (request()->routeIs('teachers.import')
-                    ? back()->with(['success' => $message])
-                    : back()->with(['success' => $message])
-                );
+        try {
+            Excel::import(new UsersImport($request), $request->file);
+            return str_contains(request()->route()->getName(), 'api')
+                ?  response()->json(
+                        status : 200,
+                        data : ['message' => $message]
+                    )
+                :  (request()->routeIs('teachers.import')
+                        ? back()->with(['success' => $message])
+                        : back()->with(['success' => $message])
+                    );
+        }catch(\Exception $e) {
+            return (int)$e->getCode() === 23000
+                ? back()->with(['error' => "Un ou plusieurs enrégistrement dans le fichier existent déjà, veuillez vérifier vos données"])
+                : back()->with(['error' => "Une erreur est survenue lors de l'enrégistrement des données."]);
+        }
     }
 
     public function exportUsers()

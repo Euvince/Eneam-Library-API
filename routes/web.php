@@ -31,6 +31,12 @@ Route::controller(App\Http\Controllers\API\UserController::class)->group(functio
     Route::post(uri : 'import-eneamiens-students', action : 'importUsers')->name('import.eneamiens.students');
 });
 
+Route::controller(SupportedMemoryController::class)->group(function(){
+    Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
+    Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
+    Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
+});
+
 /* Route::get('/php-blade/{memory}', function (SupportedMemory $memory) {
     return GenerateReports::printReportUsingBladeView($memory);
 });

@@ -34,7 +34,7 @@ class UsersImport implements ToModel
                 'lastname'  => $row[1],
                 'matricule' => $row[3],
                 'firstname' => $row[0],
-                'password'  => Hash::make($row[4]),
+                'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Etudiant-Eneamien']);
             foreach ($eneamienStudentPermissions as $permission) {
@@ -52,7 +52,7 @@ class UsersImport implements ToModel
                 'email'     => $row[2],
                 'lastname'  => $row[1],
                 'firstname' => $row[0],
-                'password'  => Hash::make($row[3]),
+                'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Enseignant']);
             foreach ($teacherPermissions as $permission) {
