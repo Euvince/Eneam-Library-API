@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers;
 use App\Jobs\SendConnectionCredentialsToUserJob;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,16 +28,16 @@ class UsersImport implements ToModel
     {
         if ($this->request->routeIs("import.eneamiens.students")) {
 
-            $students = User::query()
+            /* $students = User::query()
                 ->whereHas(relation : 'roles', callback : function (Builder $query) {
                     $query->where('name', "Etudiant-Eneamien");
-                })->get();
-            foreach ($students as $student) {
+                })->all(); */
+            foreach (User::all() as $student) {
                 $student->delete();
             }
 
             $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
-            $password = "";
+            $password = Helpers::generateRandomPassword();
             $user = new User([
                 'email'     => $row[2],
                 'lastname'  => $row[1],
@@ -48,7 +49,7 @@ class UsersImport implements ToModel
             foreach ($eneamienStudentPermissions as $permission) {
                 $user->givePermissionTo($permission);
             }
-            SendConnectionCredentialsToUserJob::dispatch($row[2], $password, $row[3]);
+            SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password, $user->matricule);
             return $user;
         }
 
@@ -63,7 +64,7 @@ class UsersImport implements ToModel
             }
 
             $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
-            $password = "";
+            $password = Helpers::generateRandomPassword();
             $user = new User([
                 'email'     => $row[2],
                 'lastname'  => $row[1],
@@ -77,7 +78,7 @@ class UsersImport implements ToModel
             $user->update([
                 'has_paid' => true, 'has_access' => true,
             ]);
-            SendConnectionCredentialsToUserJob::dispatch($row[2], $password, $row[3]);
+            SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password, $user->matricule);
             return $user;
         }
     }

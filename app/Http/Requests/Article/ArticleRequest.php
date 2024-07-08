@@ -105,7 +105,7 @@ class ArticleRequest extends FormRequest
             ];
             if (request()->has('has_audios') && (boolean)request()->has_audios === true) {
                 $messages['files_paths.*.max'] = "La taille de chaque fichier de livre ne peut dépassser ...";
-                $messages['files_paths.*file'] = "Chaque fichier de livre doit être un fichier valide.";
+                $messages['files_paths.*.file'] = "Chaque fichier de livre doit être un fichier valide.";
                 $messages['files_paths.*.mimes'] = "Chaque fichier de livre doit être de type : pdf, epub, mobi ou mp3.";
             }
         }

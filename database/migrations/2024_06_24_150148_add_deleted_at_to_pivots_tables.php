@@ -11,24 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('article_loan', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('article_keyword', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('article_reservation', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('model_has_permissions', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('role_has_permissions', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        $tables = [
+            'article_loan', 'article_keyword', 'article_reservation',
+            'model_has_roles', 'model_has_permissions', 'role_has_permissions'
+        ];
+
+        foreach ($tables as $tableName) {
+            Schema::table($tableName, function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -36,23 +28,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('article_loan', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('article_keyword', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('article_reservation', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('model_has_permissions', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('role_has_permissions', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        $tables = [
+            'article_loan', 'article_keyword', 'article_reservation',
+            'model_has_roles', 'model_has_permissions', 'role_has_permissions'
+        ];
+
+        foreach ($tables as $tableName) {
+            Schema::table($tableName, function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };
