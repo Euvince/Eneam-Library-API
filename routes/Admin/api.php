@@ -69,13 +69,14 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer le
 });
 
 
-// Filières et spécialités
+Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "Gérer les Secteurs et Spécialités"]], function () use($idRegex) {
+    // Filières et spécialités
+    Route::apiResource(name : 'sector', controller : App\Http\Controllers\API\SectorController::class);
 
-Route::apiResource(name : 'sector', controller : App\Http\Controllers\API\SectorController::class);
+    Route::get(uri : '/check-sector-childrens/{sector}', action : [App\Http\Controllers\API\SectorController::class, 'checkChildrens'])
+        ->name('check-sector-childrens')
+        ->where(['sector' => $idRegex]);
 
-Route::get(uri : '/check-sector-childrens/{sector}', action : [App\Http\Controllers\API\SectorController::class, 'checkChildrens'])
-    ->name('check-sector-childrens')
-    ->where(['sector' => $idRegex]);
-
-Route::delete(uri : '/destroy-sectors', action : [App\Http\Controllers\API\SectorController::class, 'destroySectors'])
-    ->name('destroy-sectors');
+    Route::delete(uri : '/destroy-sectors', action : [App\Http\Controllers\API\SectorController::class, 'destroySectors'])
+        ->name('destroy-sectors');
+});
