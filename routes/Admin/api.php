@@ -45,6 +45,8 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Voir les 
 
 Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Rôles"]], function () use($idRegex) {
     /// Rôles
+    Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);
+
     Route::get(uri : '/check-role-childrens/{role}', action : [App\Http\Controllers\API\RoleController::class, 'checkChildrens'])
         ->name('check-role-childrens')
         ->where(['role' => $idRegex]);
@@ -53,21 +55,18 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer le
         ->name('destroy-roles');
 });
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Voir les Permissions"]], function () use($idRegex) {
-    /// Rôles
-    Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);
+
+Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Cycles"]], function () use($idRegex) {
+    // Cycles
+    Route::apiResource(name : 'cycle', controller : App\Http\Controllers\API\CycleController::class);
+
+    Route::get(uri : '/check-cycle-childrens/{cycle}', action : [App\Http\Controllers\API\CycleController::class, 'checkChildrens'])
+        ->name('check-cycle-childrens')
+        ->where(['cycle' => $idRegex]);
+
+    Route::delete(uri : '/destroy-cycles', action : [App\Http\Controllers\API\CycleController::class, 'destroyCycles'])
+        ->name('destroy-cycles');
 });
-
-
-// Cycles
-Route::apiResource(name : 'cycle', controller : App\Http\Controllers\API\CycleController::class);
-
-Route::get(uri : '/check-cycle-childrens/{cycle}', action : [App\Http\Controllers\API\CycleController::class, 'checkChildrens'])
-    ->name('check-cycle-childrens')
-    ->where(['cycle' => $idRegex]);
-
-Route::delete(uri : '/destroy-cycles', action : [App\Http\Controllers\API\CycleController::class, 'destroyCycles'])
-    ->name('destroy-cycles');
 
 
 // Filières et spécialités
