@@ -15,6 +15,7 @@ class PermissionSeeder extends Seeder
         $adminPermissions = [
             'Gérer les Rôles',
             'Gérer les Cycles',
+            'Voir les Permissions',
             'Gérer les Utilisateurs',
             'Gérer les Secteurs et Spécialités',
         ];
