@@ -31,16 +31,18 @@ class ChangeUserCanReniewLoanRequestValue extends Command
      */
     public function handle(AuthManager $auth) : void
     {
-        /**
-         * @var \App\Models\User $user
-         */
-        $user = $auth->user();
+        if ($auth->check()) {
+            /**
+            * @var \App\Models\User $user
+             */
+            $user = $auth->user();
 
-        foreach (\App\Models\Loan::all() as $loan) {
-            if (LoansOperationsService::userCanReniewLoanRequest($loan, $user)) {
-                $user->update([
-                    'can_reniew_loan_request' => true
-                ]);
+            foreach (\App\Models\Loan::all() as $loan) {
+                if (LoansOperationsService::userCanReniewLoanRequest($loan, $user)) {
+                    $user->update([
+                        'can_reniew_loan_request' => true
+                    ]);
+                }
             }
         }
     }

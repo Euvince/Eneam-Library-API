@@ -37,7 +37,7 @@ class ConfigurationPolicy
      */
     public function update(User $user, Configuration $configuration): bool
     {
-        return 
+        //
     }
 
     /**

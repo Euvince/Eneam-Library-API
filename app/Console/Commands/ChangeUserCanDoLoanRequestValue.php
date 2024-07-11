@@ -32,16 +32,18 @@ class ChangeUserCanDoLoanRequestValue extends Command
      */
     public function handle(AuthManager $auth) : void
     {
-        /**
-         * @var User $user
-         */
-        $user = $auth->user();
+        if ($auth->check()) {
+            /**
+            * @var User $user
+             */
+            $user = $auth->user();
 
-        foreach (\App\Models\Article::all() as $article) {
-            if (LoansOperationsService::userCanDoLoanRequest($user, $article)) {
-                $user->update([
-                    'can_do_loan_request' => true
-                ]);
+            foreach (\App\Models\Article::all() as $article) {
+                if (LoansOperationsService::userCanDoLoanRequest($user, $article)) {
+                    $user->update([
+                        'can_do_loan_request' => true
+                    ]);
+                }
             }
         }
     }
