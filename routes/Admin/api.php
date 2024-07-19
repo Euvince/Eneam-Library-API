@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Utilisateurs"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Utilisateurs"] */], function () use($idRegex) {
     // Users
     Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
@@ -29,7 +29,7 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer le
         ->name('destroy-users');
 });
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Abonnements"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Abonnements"] */], function () use($idRegex) {
     // Subscriptions
     Route::apiResource(name : 'subscription', controller : App\Http\Controllers\API\SubscriptionController::class);
 
@@ -37,26 +37,26 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer le
         ->name('destroy-subscriptions');
 });
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Voir les Permissions"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Voir les Permissions"] */], function () use($idRegex) {
     // Permissions
     Route::apiResource(name : 'permission', controller : App\Http\Controllers\API\PermissionController::class)
     ->except(['store', 'update', 'destroy']);
 });
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Rôles"]], function () use($idRegex) {
-    /// Rôles
+Route::group(['middleware' => ["auth:sanctum", "verified", "permission:Gérer les Rôles"]], function () use($idRegex) {
+    // Rôles
     Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);
 
     Route::get(uri : '/check-role-childrens/{role}', action : [App\Http\Controllers\API\RoleController::class, 'checkChildrens'])
         ->name('check-role-childrens')
         ->where(['role' => $idRegex]);
 
-    Route::delete(uri : '/destroy-roles', action : [App\Http\Controllers\API\SectorController::class, 'destroyRoles'])
+    Route::delete(uri : '/destroy-roles', action : [App\Http\Controllers\API\RoleController::class, 'destroyRoles'])
         ->name('destroy-roles');
 });
 
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer les Cycles"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Cycles"] */], function () use($idRegex) {
     // Cycles
     Route::apiResource(name : 'cycle', controller : App\Http\Controllers\API\CycleController::class);
 
@@ -69,7 +69,7 @@ Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "role:Gérer le
 });
 
 
-Route::group(['middleware' => ["auth:sanctum", /* "verified", */ "Gérer les Secteurs et Spécialités"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Secteurs et Spécialités"] */], function () use($idRegex) {
     // Filières et spécialités
     Route::apiResource(name : 'sector', controller : App\Http\Controllers\API\SectorController::class);
 

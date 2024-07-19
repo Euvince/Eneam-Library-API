@@ -60,7 +60,7 @@ class RoleRequest extends FormRequest
         $routeName = request()->route()->getName();
 
         if ($routeName === "role.store" || $routeName === "role.update") {
-            if (count(request()->permissions) > 1) $messages['permissions.exists'] = "Une des permissions sélectionnées est invalide.";
+            if (request()->has('permissions') && count(request()->permissions) > 1) $messages['permissions.exists'] = "Une des permissions sélectionnées est invalide.";
         }
         else if ($routeName === "destroy-roles") {
             $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs rôle(s)";

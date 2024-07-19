@@ -19,7 +19,7 @@ class CommentController extends Controller
         private readonly AuthManager $auth
     )
     {
-        $this->authorizeResource(Comment::class);
+        /* $this->authorizeResource(Comment::class); */
     }
 
     /**

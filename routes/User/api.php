@@ -18,3 +18,36 @@ Route::patch('download-memory/{supportedMemory}', [SupportedMemoryController::cl
 
 Route::patch(uri : '/download-memories', action : [SupportedMemoryController::class, 'downloadMemories'])
     ->name('download-memories');
+
+
+Route::get('/pdf/{filename}', function ($filename) {
+    $path = storage_path('app/public/SupportedMemories/memories/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
+Route::get('/epub/{filename}', function ($filename) {
+    $path = storage_path('app/public/Articles/articles/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = 'application/epub+zip';
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});

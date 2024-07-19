@@ -21,6 +21,5 @@ $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
 Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-    return $request->user()->load(['roles']);
-
+    return $request->user()->load(['roles'/* , 'permissions' */]);
 });

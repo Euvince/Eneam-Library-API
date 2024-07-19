@@ -29,8 +29,10 @@
 
 *****************************************************************************************************************
 
--Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
+**Optionnel**
 
--Gérer plus tard les Acesseurs et Mutateurs pour alléger les Observateurs;
++Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
 
--Gérer plus tard les transactions ainsi que les conflits d'accès simultanés aux données;
++Gérer plus tard les Acesseurs et Mutateurs pour alléger les Observateurs;
+
++Gérer plus tard les transactions ainsi que les conflits d'accès simultanés aux données;

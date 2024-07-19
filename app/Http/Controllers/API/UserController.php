@@ -6,6 +6,7 @@ use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\User\ImportRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
@@ -137,6 +138,10 @@ class UserController extends Controller
     public function destroy(User $user) : JsonResponse
     {
         $user->delete();
+        if(($profilPictureFilePath = $user->profil_picture_path) !== '') {
+            $path = 'public/'.$profilPictureFilePath;
+            if(Storage::exists($path)) Storage::delete($path);
+        }
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET, POST, PUT, PATCH, DELETE'],
@@ -154,7 +159,12 @@ class UserController extends Controller
     {
         $ids = $request->validated('ids');
         array_map(function (int $id) {
-            User::find($id)->delete();
+            $user = User::find($id);
+            $user->delete();
+            if(($profilPictureFilePath = $user->profil_picture_path) !== '') {
+                $path = 'public/'.$profilPictureFilePath;
+                if(Storage::exists($path)) Storage::delete($path);
+            }
         }, $ids);
         return response()->json(
             status : 200,
