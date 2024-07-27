@@ -43,7 +43,7 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Voir l
     ->except(['store', 'update', 'destroy']);
 });
 
-Route::group(['middleware' => ["auth:sanctum", "verified", "permission:Gérer les Rôles"]], function () use($idRegex) {
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Rôles"] */], function () use($idRegex) {
     // Rôles
     Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);
 

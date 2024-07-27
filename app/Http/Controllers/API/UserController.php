@@ -222,7 +222,7 @@ class UserController extends Controller
      *
      * @param ImportRequest $request [explicite description]
      */
-    public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
+    public function importUsers(Request $request) : RedirectResponse | JsonResponse
     {
         if ($request->routeIs("import.eneamiens.students")) {
             $students = User::query()

@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
+/* Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
     Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');
     Route::get(uri : 'export-users', action : 'export')->name('export.users');
     Route::post(uri : 'import-teachers', action : 'importUsers')->name('import.teachers');
@@ -35,7 +35,7 @@ Route::controller(SupportedMemoryController::class)->group(function(){
     Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
     Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
     Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
-});
+}); */
 
 /* Route::get('/php-blade/{memory}', function (SupportedMemory $memory) {
     return GenerateReports::printReportUsingBladeView($memory);
