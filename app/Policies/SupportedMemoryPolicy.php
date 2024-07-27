@@ -81,11 +81,11 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can download any model.
+     * Determine whether the user can download any supported memory.
      */
     public function downloadMemory(User $user, SupportedMemory $supportedMemory): bool
     {
-        return $user->can("Gérer les Mémoires Soutenus");
+        return $user->can("Télécharger un Mémoire");
     }
 
     /**
@@ -97,7 +97,7 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can validate any model.
+     * Determine whether the user can validate any supported memory.
      */
     public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
     {
@@ -105,9 +105,17 @@ class SupportedMemoryPolicy
     }
 
     /**
-     * Determine whether the user can reject any model.
+     * Determine whether the user can reject any supported memory.
      */
     public function rejectMemory(User $user, SupportedMemory $supportedMemory): bool
+    {
+        return $user->can("Gérer les Mémoires Soutenus");
+    }
+
+    /**
+     * Determine whether the user can reject any supported memory.
+     */
+    public function importReports(User $user): bool
     {
         return $user->can("Gérer les Mémoires Soutenus");
     }

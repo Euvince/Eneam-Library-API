@@ -43,7 +43,7 @@ class UserRequest extends FormRequest
                 'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
                 'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
                 /* 'sex' => [
-                    'nullable', 'before_or_equal:today',
+                    'nullable',
                     new ValueInValuesRequestRules(
                         request : request(),
                         message : "Le sexe doit être soit 'Masculin', soit 'Féminin', soit 'Autre'.",

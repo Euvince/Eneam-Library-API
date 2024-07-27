@@ -20,9 +20,9 @@ use App\Models\SupportedMemory;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 
 /* Route::controller(App\Http\Controllers\API\UserController::class)->group(function(){
     Route::get(uri : 'users', action : 'getUsers')->name('users.getUsers');

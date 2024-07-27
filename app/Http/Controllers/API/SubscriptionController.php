@@ -76,7 +76,7 @@ class SubscriptionController extends Controller
      * @param SubscriptionRequest $request
      * @return JsonResponse
      */
-    public function destroyComments (SubscriptionRequest $request) : JsonResponse
+    public function destroySubscriptions (SubscriptionRequest $request) : JsonResponse
     {
         $ids = $request->validated('ids');
         array_map(function (int $id) {

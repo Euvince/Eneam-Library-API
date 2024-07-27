@@ -222,7 +222,7 @@ class UserController extends Controller
      *
      * @param ImportRequest $request [explicite description]
      */
-    public function importUsers(Request $request) : RedirectResponse | JsonResponse
+    public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
     {
         if ($request->routeIs("import.eneamiens.students")) {
             $students = User::query()
@@ -242,6 +242,8 @@ class UserController extends Controller
                     $query->where('name', "Enseignant");
                 })->get();
             foreach ($teachers as $teacher) {
+                $teacher->permissions()->detach();
+                $teacher->roles()->detach();
                 $teacher->forceDelete();
             }
         }
@@ -252,7 +254,7 @@ class UserController extends Controller
 
         try {
             Excel::import(new UsersImport($request), $request->file);
-            return str_contains(request()->route()->getName(), 'api')
+            return str_contains(request()->route()->uri(), 'api')
                 ?  response()->json(
                         status : 200,
                         data : ['message' => $message]

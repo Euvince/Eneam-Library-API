@@ -33,7 +33,7 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
     // Subscriptions
     Route::apiResource(name : 'subscription', controller : App\Http\Controllers\API\SubscriptionController::class);
 
-    Route::delete(uri : '/destroy-subscriptions', action : [App\Http\Controllers\API\SectorController::class, 'destroySubscriptions'])
+    Route::delete(uri : '/destroy-subscriptions', action : [App\Http\Controllers\API\SubscriptionController::class, 'destroySubscriptions'])
         ->name('destroy-subscriptions');
 });
 

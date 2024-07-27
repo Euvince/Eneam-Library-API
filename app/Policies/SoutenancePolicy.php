@@ -21,7 +21,7 @@ class SoutenancePolicy
      */
     public function view(User $user, Soutenance $soutenance): bool
     {
-         return $user->can("Gérer les Soutenances");
+        return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -29,7 +29,7 @@ class SoutenancePolicy
      */
     public function create(User $user): bool
     {
-         return $user->can("Gérer les Soutenances");
+        return $user->can("Gérer les Soutenances");
     }
 
     /**
@@ -37,7 +37,7 @@ class SoutenancePolicy
      */
     public function update(User $user, Soutenance $soutenance): bool
     {
-         return $user->can("Gérer les Soutenances");
+        return $user->can("Gérer les Soutenances");
     }
 
     /**

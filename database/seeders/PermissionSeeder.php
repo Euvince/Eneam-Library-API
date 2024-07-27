@@ -27,8 +27,10 @@ class PermissionSeeder extends Seeder
             'Gérer les Abonnements',
             'Gérer les Soutenances',
             'Gérer les Réservations',
+            'Voir les Commentaires',
             'Gérer les Commentaires',
             'Gérer les Configurations',
+            'Gérer les Années Scolaires',
             'Gérer les Mémoires Soutenus',
             'Gérer les Fiches de Dépôts de Mémoires',
         ];
@@ -38,6 +40,7 @@ class PermissionSeeder extends Seeder
             'Demander un Accès',
             'Consulter un Livre',
             'Commenter un Livre',
+            'Voir les Commentaires',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
         ];
@@ -47,6 +50,7 @@ class PermissionSeeder extends Seeder
             'Demander un Accès',
             'Consulter un Livre',
             'Commenter un Livre',
+            'Voir les Commentaires',
             'Déposer un Mémoire',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
@@ -55,6 +59,7 @@ class PermissionSeeder extends Seeder
             'Demander un Accès',
             'Consulter un Livre',
             'Commenter un Livre',
+            'Voir les Commentaires',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
         ];
