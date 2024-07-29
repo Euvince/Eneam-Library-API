@@ -248,7 +248,7 @@ class UserController extends Controller
             }
         }
 
-        $message = $request->routeIs('teachers.import')
+        $message = $request->routeIs('import.teachers')
             ? "Enseignants importés avec succès"
             : "Étudiants énéamiens importés avec succès";
 
@@ -265,7 +265,7 @@ class UserController extends Controller
                     );
         }catch(\Exception $e) {
             return (int)$e->getCode() === 23000
-                ? back()->with(['error' => "Un ou plusieurs enrégistrement dans le fichier existent déjà, veuillez vérifier vos données"])
+                ? back()->with(['error' => "Un ou plusieurs enrégistrement(s) dans le fichier existent déjà, veuillez vérifier vos données"])
                 : back()->with(['error' => "Une erreur est survenue lors de l'enrégistrement des données."]);
         }
     }

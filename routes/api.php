@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Statistiques\StatistiquesController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,9 @@ $slugRegex = '[0-9a-z\-]+';
 
 Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
     return $request->user()->load(['roles'/* , 'permissions' */]);
+});
+
+
+Route::middleware(['auth:sanctum'/* , 'verified', 'role:Administrateur, Gestionnaire' */])->get('/statistiques', function (Request $request) {
+    Route::get(uri : 'statistiques', action : [StatistiquesController::class]);
 });

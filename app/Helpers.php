@@ -9,7 +9,7 @@ class Helpers
     }
 
     public static function generateRandomPassword ($length = 10) : string {
-        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&^*()\/_|§~";
+        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&^*()\/_|§~¢";
         $password = "";
         for ((int)$i = 0; $i < $length; $i++) {
             $password .= $characters[rand(0, strlen($characters) - 1)];

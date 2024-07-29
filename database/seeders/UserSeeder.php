@@ -52,7 +52,11 @@ class UserSeeder extends Seeder
             'created_by' => 'APPLICATION'
         ])->assignRole(['Gestionnaire']);
         $managerPermissions = \App\Models\Role::findByName(name : 'Gestionnaire')->permissions->pluck('name', 'id');
+        $adminPermissions = \App\Models\Role::findByName(name : 'Administrateur')->permissions->pluck('name', 'id');
         foreach ($managerPermissions as $permission) {
+            $ghislaine->givePermissionTo($permission);
+        }
+        foreach ($adminPermissions as $permission) {
             $ghislaine->givePermissionTo($permission);
         }
 
