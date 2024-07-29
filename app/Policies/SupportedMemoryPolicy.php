@@ -93,7 +93,9 @@ class SupportedMemoryPolicy
      */
     public function printFilingReport(User $user, SupportedMemory $supportedMemory): bool
     {
-        return $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Gérer les Mémoires Soutenus") /* &&
+            SupportedMemory::isValide($supportedMemory) */;
     }
 
     /**
@@ -101,7 +103,9 @@ class SupportedMemoryPolicy
      */
     public function validateMemory(User $user, SupportedMemory $supportedMemory): bool
     {
-        return $user->can("Gérer les Mémoires Soutenus");
+        return
+            $user->can("Gérer les Mémoires Soutenus") /* &&
+            !SupportedMemory::isValide($supportedMemory) */;
     }
 
     /**

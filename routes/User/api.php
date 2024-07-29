@@ -10,22 +10,28 @@ use App\Http\Controllers\API\SupportedMemory\DepositSupportedMemoryController;
 
 
 // Mémoires soutenus
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Consulter un Mémoire"] */], function () use($idRegex) {
-    Route::get(uri : 'supportedMemory', action : [SupportedMemoryController::class, 'index'])
-    ->name(name : 'supportedMemory.index');
+Route::get(uri : 'supportedMemory', action : [SupportedMemoryController::class, 'index'])
+    ->name(name : 'supportedMemory.index')
+    /* ->middleware(['auth:sanctum', 'verified', 'Consulter un Mémoire']) */;
+
+Route::post(uri : 'deposit-memory', action : DepositSupportedMemoryController::class)
+    ->name(name : 'deposit-memory')
+    /* ->middleware(['auth:sanctum', 'verified', 'Déposer un Mémoire']) */;
+
+
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Télécharger un Mémoire"] */], function () use($idRegex) {
+    Route::patch('download-memory/{supportedMemory}', [SupportedMemoryController::class, 'downloadMemory'])
+    ->name(name : 'download-memory')
+    ->where(['supportedMemory' => $idRegex]);
 
     Route::patch(uri : '/download-memories', action : [SupportedMemoryController::class, 'downloadMemories'])
         ->name('download-memories');
 });
 
-Route::post(uri : 'deposit-memory', action : DepositSupportedMemoryController::class)
-    ->name(name : 'deposit-memory')
-    ->middleware(['auth:sanctum', 'verified', 'Déposer un Mémoire']);
-
-Route::patch('download-memory/{supportedMemory}', [SupportedMemoryController::class, 'downloadMemory'])
-    ->name(name : 'download-memory')
-    ->where(['supportedMemory' => $idRegex])
-    /* ->middleware(['auth:sanctum', 'verified', 'Télécharger un Mémoire']) */;
+// Articles
+Route::get(uri : 'article', action : [ArticleController::class, 'index'])
+    ->name(name : 'article.index')
+    /* ->middleware(['auth:sanctum', 'verified', 'Consulter un Livre']) */;
 
 
 // Pour les fichiers
@@ -59,11 +65,4 @@ Route::get('/epub/{filename}', function ($filename) {
     $response->header("Content-Type", $type);
 
     return $response;
-});
-
-
-// Articles
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Consulter un Livre"] */], function () use($idRegex) {
-    Route::get(uri : 'article', action : [ArticleController::class, 'index'])
-    ->name(name : 'article.index');
 });

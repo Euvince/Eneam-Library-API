@@ -29,7 +29,7 @@ class StatistiquesController extends Controller
         );
     }
 
-    private static function example () {
+    private static function example () : void {
 
     }
 

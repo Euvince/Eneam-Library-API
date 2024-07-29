@@ -30,6 +30,7 @@ class PermissionSeeder extends Seeder
             'Voir les Commentaires',
             'Gérer les Commentaires',
             'Gérer les Configurations',
+            'Consulter les Statistiques',
             'Gérer les Années Scolaires',
             'Gérer les Mémoires Soutenus',
             'Gérer les Fiches de Dépôts de Mémoires',

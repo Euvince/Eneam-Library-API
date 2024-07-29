@@ -9,6 +9,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SchoolYearController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(SchoolYear::class, 'schoolYear');
+    }
+
     /**
      * Display a listing of the resource.
      */

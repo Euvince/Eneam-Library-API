@@ -123,6 +123,7 @@ class CycleController extends Controller
      */
     public function destroyCycles (CycleRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Cycle::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Cycle::find($id)->delete();

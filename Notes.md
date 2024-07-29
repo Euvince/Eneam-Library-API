@@ -4,8 +4,6 @@
 
 -Continuer les tâches multiples;
 
--Continuer les Permissions, Polices, Middlewares et Conditions à la fin du projet;
-
 -Finir de tester l'authentification) :
     +Verify Email;
     +Forgot Pasword;

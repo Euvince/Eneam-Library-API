@@ -97,6 +97,7 @@ class SupportedMemoryController extends Controller
      */
     public function downloadMemories (SupportedMemoryRequest $request)
     {
+        /* $this->authorize('downloadMemory', SupportedMemory::class); */
         return DownloadMemories::downloadMemories(request : $request);
     }
 
@@ -116,6 +117,7 @@ class SupportedMemoryController extends Controller
      */
     public function validateMemories (SupportedMemoryRequest $request)
     {
+        /* $this->authorize('validateMemory', SupportedMemory::class); */
         return ValidateMemories::validateMemories($request);
     }
 
@@ -153,6 +155,7 @@ class SupportedMemoryController extends Controller
      */
     public function printReports (SupportedMemoryRequest $request)
     {
+        /* $this->authorize('printFilingReport', SupportedMemory::class); */
         return GenerateReports::printReportsUsingWord($request);
     }
 
@@ -200,6 +203,7 @@ class SupportedMemoryController extends Controller
      */
     public function destroyMemories (SupportedMemoryRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', SupportedMemory::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             $supportedMemory = SupportedMemory::find($id);

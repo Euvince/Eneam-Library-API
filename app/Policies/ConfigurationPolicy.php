@@ -13,7 +13,7 @@ class ConfigurationPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -21,7 +21,7 @@ class ConfigurationPolicy
      */
     public function view(User $user, Configuration $configuration): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -29,7 +29,7 @@ class ConfigurationPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -37,7 +37,15 @@ class ConfigurationPolicy
      */
     public function update(User $user, Configuration $configuration): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function updateConfiguration(User $user, Configuration $configuration): bool
+    {
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -45,7 +53,7 @@ class ConfigurationPolicy
      */
     public function delete(User $user, Configuration $configuration): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -53,7 +61,7 @@ class ConfigurationPolicy
      */
     public function restore(User $user, Configuration $configuration): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 
     /**
@@ -61,6 +69,6 @@ class ConfigurationPolicy
      */
     public function forceDelete(User $user, Configuration $configuration): bool
     {
-        //
+        return $user->can("Gérer les Configurations");
     }
 }

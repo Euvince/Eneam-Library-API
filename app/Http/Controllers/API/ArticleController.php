@@ -209,6 +209,7 @@ class ArticleController extends Controller
      */
     public function destroyArticles (ArticleRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Article::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             $article = Article::find($id);

@@ -17,6 +17,7 @@ class UpdateConfigurationController extends Controller
      */
     public function __invoke(ConfigurationRequest $request)
     {
+       /*  $this->authorize('updateConfiguration', Configuration::class); */
         $routeName = $request->route()->getName();
         $config = Configuration::appConfig();
         if (Str::contains($routeName, 'school-name')) $config->update(['school_name' => $request->school_name]);

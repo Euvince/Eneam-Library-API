@@ -23,13 +23,13 @@ class SupportedMemoryThemeRules implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        SupportedMemory::where([
+        $memories = SupportedMemory::where([
             'first_author_matricule' => $this->request->first_author_matricule,
             'second_author_matricule' => $this->request->second_author_matricule,
             'first_author_firstname' => $this->request->first_author_firstname,
             'second_author_firstname' => $this->request->second_author_firstname,
             'first_author_firstname' => $this->request->first_author_firstname,
             'second_author_firstname' => $this->request->second_author_firstname,
-        ]);
+        ])->get();
     }
 }

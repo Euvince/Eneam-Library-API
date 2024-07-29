@@ -14,6 +14,7 @@ class ConfigurationController extends Controller
     public function __invoke(Request $request) : SingleConfigurationResponse
     {
         /*  dd(\App\Models\Configuration::first()->getAttributes()); */
+        /*  $this->authorize('viewAny', Configuration::class); */
         return new SingleConfigurationResponse(
             statusCode : 200, allowedMethods : 'PATCH', message : "Configuration de l'année en cours",
             resource : new ConfigurationResource(resource : Configuration::appConfig())

@@ -117,6 +117,7 @@ class SoutenanceController extends Controller
      */
     public function destroySoutenances (SoutenanceRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Soutenance::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Soutenance::find($id)->delete();

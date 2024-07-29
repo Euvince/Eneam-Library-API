@@ -49,11 +49,11 @@ class SectorRequest extends FormRequest
             $rules['name'] = [
                 'required', new SameSpecialityForSector(request()),
                 Rule::unique(table : 'sectors', column : 'name')
-                ->where(function ($query) {
-                    return $query->where('type',  'Filière');
-                })
-                ->ignore(request()->route()->parameter(name : 'sector'))
-                ->withoutTrashed()
+                    ->where(function ($query) {
+                        return $query->where('type',  'Filière');
+                    })
+                    ->ignore(request()->route()->parameter(name : 'sector'))
+                    ->withoutTrashed()
             ];
         }
 

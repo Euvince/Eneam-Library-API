@@ -13,7 +13,7 @@ class SchoolYearPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -21,7 +21,7 @@ class SchoolYearPolicy
      */
     public function view(User $user, SchoolYear $schoolYear): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -29,7 +29,7 @@ class SchoolYearPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -37,7 +37,7 @@ class SchoolYearPolicy
      */
     public function update(User $user, SchoolYear $schoolYear): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -45,7 +45,7 @@ class SchoolYearPolicy
      */
     public function delete(User $user, SchoolYear $schoolYear): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -53,7 +53,7 @@ class SchoolYearPolicy
      */
     public function restore(User $user, SchoolYear $schoolYear): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 
     /**
@@ -61,6 +61,6 @@ class SchoolYearPolicy
      */
     public function forceDelete(User $user, SchoolYear $schoolYear): bool
     {
-        //
+        return $user->can("Gérer les Années Scolaires");
     }
 }

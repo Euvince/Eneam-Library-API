@@ -136,6 +136,7 @@ class SectorController extends Controller
      */
     public function destroySectors (SectorRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Sector::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Sector::find($id)->delete();
