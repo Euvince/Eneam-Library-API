@@ -4,8 +4,6 @@ use App\Http\Controllers\API\Statistiques\StatistiquesController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\User\UserResource;
-use App\Http\Responses\User\SingleUserResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +23,6 @@ Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request)
     return $request->user()->load(['roles'/* , 'permissions' */]);
 });
 
-
-Route::middleware([/* 'auth:sanctum', 'verified', 'role:Administrateur, Gestionnaire' */])->get('/statistiques', function (Request $request) {
-    Route::get(uri : 'statistiques', action : [StatistiquesController::class]);
-});
+Route::get(uri : 'statistiques', action : StatistiquesController::class)
+    ->name(name : 'statistiques')
+    /* ->middleware(['auth:sanctum', 'verified', 'role:Administrateur, Gestionnaire']) */;

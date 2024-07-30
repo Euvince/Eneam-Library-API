@@ -124,7 +124,7 @@ Route::get('/epub/{filename}', function ($filename) {
 });
 
 Route::get('/books-covers/{covername}', function ($covername) {
-    $path = storage_path('app/public/Article/cover-pages/' . $covername);
+    $path = storage_path('app/public/Articles/cover-pages/' . $covername);
 
     if (!File::exists($path)) {
         abort(404);

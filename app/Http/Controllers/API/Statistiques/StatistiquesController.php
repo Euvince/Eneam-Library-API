@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\SupportedMemory;
 use App\Services\SupportedMemoryService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -42,10 +43,19 @@ class StatistiquesController extends Controller
         $validMemoriesCount = SupportedMemory::query()->where('status', 'Validé')->count();
         $invalidMemoriesCount = SupportedMemory::query()->where('status', 'Invalidé')->count();
 
-        $ebooksCount = SupportedMemory::query()->where('has_ebooks', 1)->count();
-        $phyicalBooksCount = SupportedMemory::query()->where('is_physical', 1)->count();
+        $ebooksCount = Article::query()->where('has_ebooks', 1)->count();
+        $physicalBooksCount = Article::query()->where('is_physical', 1)->count();
 
-        /* dd(SupportedMemoryService::getMonthlyStatistics()); */
+        $statistics = SupportedMemoryService::getMonthlyStatistics();
+        $data = [];
+        foreach ($statistics as $stat) {
+            $month = Carbon::create()->month($stat['month'])->translatedFormat('F');
+            $status = $stat['status'];
+            $count = $stat['count'];
+
+            $data[$month][$status] = $count;
+        }
+        dd($data);
 
         return response()->json(
             status : 200,
@@ -64,7 +74,7 @@ class StatistiquesController extends Controller
 
                 'booksCount' => Article::count(),
                 'ebooksCount' => $ebooksCount,
-                'phyicalBooksCount' => $phyicalBooksCount,
+                'physicalBooksCount' => $physicalBooksCount,
             ],
         );
     }

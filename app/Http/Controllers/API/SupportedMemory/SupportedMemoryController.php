@@ -44,7 +44,7 @@ class SupportedMemoryController extends Controller
             message : "Liste des mémoires soutenus paginés",
             collection : SupportedMemory::query()->with([
                 'sector.sector', 'soutenance.cycle', 'soutenance.schoolYear'
-            ])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            ])->where('status', 'Validé')->orderBy('created_at', 'desc')->paginate(perPage : 20),
         );
     }
 

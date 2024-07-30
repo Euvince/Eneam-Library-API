@@ -96,12 +96,6 @@ return new class extends Migration
             });
         }
 
-        Schema::table(table : 'reminders', callback : function (Blueprint $table) {
-            $table->foreignIdFor(model : App\Models\Reminder::class, column : 'user_id')
-                ->nullable()
-                ->default(value : NULL);
-        });
-
     }
 
     /**
