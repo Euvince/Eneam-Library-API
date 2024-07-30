@@ -13,7 +13,7 @@ class ReminderPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -21,7 +21,7 @@ class ReminderPolicy
      */
     public function view(User $user, Reminder $reminder): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -29,7 +29,7 @@ class ReminderPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -37,7 +37,7 @@ class ReminderPolicy
      */
     public function update(User $user, Reminder $reminder): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -45,7 +45,7 @@ class ReminderPolicy
      */
     public function delete(User $user, Reminder $reminder): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -53,7 +53,7 @@ class ReminderPolicy
      */
     public function restore(User $user, Reminder $reminder): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 
     /**
@@ -61,6 +61,6 @@ class ReminderPolicy
      */
     public function forceDelete(User $user, Reminder $reminder): bool
     {
-        //
+        return $user->can("Gérer les Notifications");
     }
 }

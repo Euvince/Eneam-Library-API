@@ -43,7 +43,7 @@ class CommentController extends Controller
     {
         $comment = Comment::create($request->validated() + [
             'article_id' => $article->id,
-            'user_id' => $this->auth->user()->id ?? 2,
+            'user_id' => $this->auth->user()->id ?? 0,
         ]);
         return new SingleCommentResponse(
             statusCode : 201,
@@ -101,6 +101,7 @@ class CommentController extends Controller
      */
     public function destroyComments (CommentRequest $request) : JsonResponse
     {
+        /* $this->authorize('deleteComments', Comment::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Comment::find($id)->delete();

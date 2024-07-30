@@ -8,6 +8,12 @@ use App\Http\Requests\ReminderRequest;
 
 class ReminderController extends Controller
 {
+
+    /* public function __construct()
+    {
+        $this->authorizeResource(Reminder::class, 'reminder');
+    } */
+
     /**
      * Display a listing of the resource.
      */

@@ -11,17 +11,21 @@ class CommentPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): void
+    public function viewAny(User $user): bool
     {
-        /* return $user->can("Gérer les Commentaires"); */
+        return
+            $user->can('Voir les Commentaires') ||
+            $user->can("Gérer les Commentaires");
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Comment $comment): void
+    public function view(User $user, Comment $comment): bool
     {
-        /* return $user->can("Gérer les Commentaires"); */
+        return
+            $user->can('Voir les Commentaires') ||
+            $user->can("Gérer les Commentaires");
     }
 
     /**
@@ -30,8 +34,8 @@ class CommentPolicy
     public function create(User $user): bool
     {
         return
-            $user->can("Commenter un Livre") ||
-            $user->can("Gérer les Commentaires");
+            $user->can("Commenter un Livre") /* ||
+            $user->can("Gérer les Commentaires") */;
     }
 
     /**
@@ -40,8 +44,8 @@ class CommentPolicy
     public function update(User $user, Comment $comment): bool
     {
         return
-            $comment->user_id === $user->id ||
-            $user->can("Gérer les Commentaires");
+            $comment->user_id === $user->id /* ||
+            $user->can("Gérer les Commentaires") */;
     }
 
     /**
@@ -52,6 +56,14 @@ class CommentPolicy
         return
             $comment->user_id === $user->id ||
             $user->can("Gérer les Commentaires");
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function deleteComments(User $user, Comment $comment): bool
+    {
+        return$user->can("Gérer les Commentaires");
     }
 
     /**

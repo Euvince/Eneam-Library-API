@@ -85,15 +85,15 @@ class ArticleObserver
                 });
             }
 
-            if ($article->keywords()->count() > 0) {
+            /* if ($article->keywords()->count() > 0) {
                 $article->keywords()->each(function (\App\Models\Keyword $keyword) use ($article, $userFullName) {
-                    /* $article->keywords()->detach(ids : [$keyword->id]); */
+                    // $article->keywords()->detach(ids : [$keyword->id]);
                     $article->keywords()->updateExistingPivot($keyword->id, [
                         'deleted_at' => now(),
-                        /* 'deleted_by' => $userFullName */
+                        // 'deleted_by' => $userFullName
                     ]);
                 });
-            }
+            } */
         }
 
     }

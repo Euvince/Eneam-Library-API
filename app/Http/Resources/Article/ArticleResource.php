@@ -42,7 +42,8 @@ class ArticleResource extends JsonResource
             'stars_number' => $this->resource->stars_number,
             /* 'keywords' => json_decode($this->resource->keywords),
             'formats' => json_decode($this->resource->formats), */
-            'thumbnail_path' => $this->when($this->resource->thumbnail_path !== NULL, $this->resource->thumbnail_path),
+            /* 'thumbnail_path' => $this->when($this->resource->thumbnail_path !== NULL, $this->resource->thumbnail_path), */
+            'thumbnail_path' => $this->resource->thumbnail_path,
             'file_path' => $this->resource->file_path,
             'files_paths' => $this->when($this->resource->files_paths !== NULL, $this->resource->files_paths),
             'created_at' => $this->resource->created_at->format("Y-m-d"),

@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\API\ArticleController;
-use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\Configuration\{
     ConfigurationController,
     UpdateConfigurationController
@@ -87,10 +86,11 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 
 
 // Mémoires soutenus
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Mémoires Soutenus"] */], function () use($idRegex) {
-    Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])
-    ->name(name : 'supportedMemory.index.no-pagination');
+Route::get(uri : 'supportedMemory/no-pagination', action : [ SupportedMemoryController::class, 'indexWithoutPagination'])
+    ->name(name : 'supportedMemory.index.no-pagination')
+    /* ->middleware(['auth:sanctum', 'verified', 'Consulter un Mémoire, Gérer les Mémoires Soutenus']) */;
 
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Mémoires Soutenus"] */], function () use($idRegex) {
     Route::apiResource(name : 'supportedMemory', controller : SupportedMemoryController::class)
     ->except(methods : ['index', 'store']);
 
@@ -124,10 +124,11 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 
 
 // Articles
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Articles"] */], function () use($idRegex) {
-    Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])
-    ->name(name : 'article.index.no-pagination');
+Route::get(uri : 'article/no-pagination', action : [ ArticleController::class, 'indexWithoutPagination'])
+    ->name(name : 'article.index.no-pagination')
+    /* ->middleware(['auth:sanctum', 'verified', 'Consulter un Livre, Gérer les Articles']) */;
 
+Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Articles"] */], function () use($idRegex) {
     Route::apiResource(name : 'article', controller : ArticleController::class)->except(['index']);
 
     Route::get(uri : '/check-article-childrens/{article}', action : [App\Http\Controllers\API\ArticleController::class, 'checkChildrens'])
@@ -147,43 +148,8 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 });
 
 
-// Commentaires
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Voir les Commentaires"] */], function () use($idRegex) {
-    Route::apiResource(name : 'article.comment', controller : CommentController::class);
-});
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Commentaires"] */], function () use($idRegex) {
-    Route::delete(uri : '/destroy-comments', action : [CommentController::class, 'destroyComments'])
-    ->name('destroy-comments');
-});
-
-
-// Emprunts
-
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Prêter un Livre"] */], function () use($idRegex) {
-    // Emprunts Borrower
-    Route::get(uri : '/can-do-loan-request/{article}', action : [UserLoanController::class, 'canDoLoanRequest'])
-    ->name(name : 'can-do-loan-request')
-    ->where(['article' => $idRegex]);
-
-    Route::post(uri : '/do-loan-request/{article}', action : [UserLoanController::class, 'doLoanRequest'])
-        ->name(name : 'do-loan-request')
-        ->where(['article' => $idRegex]);
-
-    Route::get(uri : '/can-reniew-loan-request/{loan}', action : [UserLoanController::class, 'canReniewLoanRequest'])
-        ->name(name : 'can-reniew-loan-request')
-        ->where(['loan' => $idRegex]);
-
-    Route::patch(uri : '/reniew-loan-request/{loan}', action : [UserLoanController::class, 'reniewLoanRequest'])
-        ->name(name : 'reniew-loan-request')
-        ->where(['loan' => $idRegex]);
-
-    Route::delete(uri : '/cancel-loan-request/{loan}', action : [UserLoanController::class, 'cancelLoanRequest'])
-        ->name(name : 'cancel-loan-request')
-        ->where(['loan' => $idRegex]);
-});
-
+// Emprunts Manager
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Emprunts"] */], function () use($idRegex) {
-    // Emprunts Manager
     Route::apiResource(name : 'loan', controller : ManagerLoanController::class)
         ->except(methods : ['store', 'update']);
 

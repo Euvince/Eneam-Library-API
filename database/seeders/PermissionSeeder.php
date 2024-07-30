@@ -29,6 +29,7 @@ class PermissionSeeder extends Seeder
             'Gérer les Réservations',
             'Voir les Commentaires',
             'Gérer les Commentaires',
+            'Gérer les Notifications',
             'Gérer les Configurations',
             'Consulter les Statistiques',
             'Gérer les Années Scolaires',
@@ -37,6 +38,7 @@ class PermissionSeeder extends Seeder
         ];
         $teacherPermissions = [
             'Prêter un Livre',
+            'Renouveller un Emprunt',
             'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
@@ -44,9 +46,12 @@ class PermissionSeeder extends Seeder
             'Voir les Commentaires',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
+            'Modifier son profile',
+            'Modifier son mot de passe',
         ];
         $eneamienSutudentPermissions = [
             'Prêter un Livre',
+            'Renouveller un Emprunt',
             'Réserver un Livre',
             'Demander un Accès',
             'Consulter un Livre',
@@ -55,6 +60,8 @@ class PermissionSeeder extends Seeder
             'Déposer un Mémoire',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
+            'Modifier son profile',
+            'Modifier son mot de passe',
         ];
         $externSutudentPermissions = [
             'Demander un Accès',
@@ -63,6 +70,8 @@ class PermissionSeeder extends Seeder
             'Voir les Commentaires',
             'Consulter un Mémoire',
             'Télécharger un Mémoire',
+            'Modifier son profile',
+            'Modifier son mot de passe',
         ];
 
         $managerRole = \App\Models\Role::where('name', 'Gestionnaire')->first();

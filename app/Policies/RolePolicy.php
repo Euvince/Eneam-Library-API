@@ -13,7 +13,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -21,7 +21,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -29,7 +29,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -37,7 +37,15 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
+    }
+
+    /**
+     * Determine whether the user can check if the model has any children.
+     */
+    public function checkChildrens(User $user, Role $role): bool
+    {
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -45,7 +53,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -53,7 +61,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 
     /**
@@ -61,6 +69,6 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        //
+        return $user->can("Gérer les Rôles");
     }
 }

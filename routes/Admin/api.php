@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Route;
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
+
+// Users
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Utilisateurs"] */], function () use($idRegex) {
-    // Users
     Route::apiResource(name : 'user', controller : App\Http\Controllers\API\UserController::class)
     ->except(methods : ['store']);
 
@@ -29,22 +30,25 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
         ->name('destroy-users');
 });
 
+
+// Subscriptions
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Abonnements"] */], function () use($idRegex) {
-    // Subscriptions
     Route::apiResource(name : 'subscription', controller : App\Http\Controllers\API\SubscriptionController::class);
 
     Route::delete(uri : '/destroy-subscriptions', action : [App\Http\Controllers\API\SubscriptionController::class, 'destroySubscriptions'])
         ->name('destroy-subscriptions');
 });
 
+
+// Permissions
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Voir les Permissions"] */], function () use($idRegex) {
-    // Permissions
     Route::apiResource(name : 'permission', controller : App\Http\Controllers\API\PermissionController::class)
     ->except(['store', 'update', 'destroy']);
 });
 
+
+// Rôles
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Rôles"] */], function () use($idRegex) {
-    // Rôles
     Route::apiResource(name : 'role', controller : App\Http\Controllers\API\RoleController::class);
 
     Route::get(uri : '/check-role-childrens/{role}', action : [App\Http\Controllers\API\RoleController::class, 'checkChildrens'])
@@ -56,8 +60,8 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 });
 
 
+// Cycles
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Cycles"] */], function () use($idRegex) {
-    // Cycles
     Route::apiResource(name : 'cycle', controller : App\Http\Controllers\API\CycleController::class);
 
     Route::get(uri : '/check-cycle-childrens/{cycle}', action : [App\Http\Controllers\API\CycleController::class, 'checkChildrens'])
@@ -69,8 +73,8 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 });
 
 
+// Filières et spécialités
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Secteurs et Spécialités"] */], function () use($idRegex) {
-    // Filières et spécialités
     Route::apiResource(name : 'sector', controller : App\Http\Controllers\API\SectorController::class);
 
     Route::get(uri : '/check-sector-childrens/{sector}', action : [App\Http\Controllers\API\SectorController::class, 'checkChildrens'])

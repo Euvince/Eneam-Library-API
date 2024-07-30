@@ -21,7 +21,7 @@ class ArticlePolicy
      */
     public function viewAnyWithoutPagination(User $user): bool
     {
-        return $user->can("Consulter un Livre") || $user->can("Gérer les Mémoires Soutenus");
+        return $user->can("Consulter un Livre") || $user->can("Gérer les Articles");
     }
 
     /**

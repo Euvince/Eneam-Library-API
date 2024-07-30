@@ -247,6 +247,7 @@ class SupportedMemoryController extends Controller
      */
     public function importReports(ImportRequest $request) : RedirectResponse | JsonResponse
     {
+        /* $this->authorize('importReports', SupportedMemory::class); */
         try {
             $message = "La fiche de dépôt de mémoire a été envoyée avec succès";
             if (count($request->validated('files')) > 1) $message = "Les fiches de dépôts de mémoires ont été envoyées avec succès";

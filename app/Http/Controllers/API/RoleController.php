@@ -14,6 +14,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoleController extends Controller
 {
+
+    /* public function __construct()
+    {
+        $this->authorizeResource(Role::class, 'role');
+    } */
+
     /**
      * Display a listing of the resource.
      */
@@ -90,6 +96,7 @@ class RoleController extends Controller
     */
     public function checkChildrens (Role $role) : JsonResponse
     {
+        /* $this->authorize('checkChildrens', $role); */
         $usersCount = $role->users()->count();
         $permissionsCount = $role->permissions()->count();
         $hasChildrens = ($usersCount > 0 || $permissionsCount > 0) ? true : false;
@@ -131,6 +138,7 @@ class RoleController extends Controller
      */
     public function destroyRoles (RoleRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Role::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Role::find($id)->delete();

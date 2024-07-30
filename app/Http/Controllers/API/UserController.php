@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Imagick;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,10 +27,14 @@ use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use Imagick;
-
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -110,11 +115,19 @@ class UserController extends Controller
     */
     public function checkChildrens (User $user) : JsonResponse
     {
-        $rolesCount = $user->roles()->count();
+        $this->authorize('checkChildrens', $user);
+        // $rolesCount = $user->roles()->count();
         $commentsCount = $user->comments()->count();
-        $permissionsCount = $user->permissions()->count();
+        $remindersCount = $user->reminders()->count();
+        // $permissionsCount = $user->permissions()->count();
         $subscriptionsCount = $user->subscriptions()->count();
-        $hasChildrens = ($commentsCount > 0 || $subscriptionsCount > 0) ? true : false;
+        $supportedMemoriesCount = $user->supportedMemories()->count();
+        $hasChildrens = (
+                $commentsCount > 0 || $subscriptionsCount > 0 ||
+                $supportedMemoriesCount > 0 || $remindersCount > 0
+            )
+            ? true
+            : false;
         $message = $hasChildrens === true
             ? "Attention, cet utilisateur est relié à certaines données, souhaitez vous-vraiment le supprimer ?"
             : "Voulez-vous vraiment supprimer cet utilisateur ?, attention, cette action est irréversible.";
@@ -157,6 +170,7 @@ class UserController extends Controller
      */
     public function destroyUsers (UserRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', User::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             $user = User::find($id);
@@ -185,6 +199,7 @@ class UserController extends Controller
      */
     public function giveAccessToUser (User $user) : JsonResponse
     {
+        /* $this->authorize('giveAccessToUser', $user); */
         if ($user->hasAnyRole(
             roles : [
                 'Etudiant-Externe', 'Etudiant-Eneamien'
@@ -203,7 +218,7 @@ class UserController extends Controller
         else {
             return response()->json(
                 status : 403,
-                data : ["message" => "Cette opération n'est possible que sur les étudiants n'ayant pas encore validé leur abonnement."],
+                data : ["message" => "Cette opération n'est possible que sur les étudiants n'ayant pas encore accès à la bibliothèque."],
             );
         }
     }
@@ -224,7 +239,8 @@ class UserController extends Controller
      */
     public function importUsers(ImportRequest $request) : RedirectResponse | JsonResponse
     {
-        if ($request->routeIs("import.eneamiens.students")) {
+        /* $this->authorize('importUsers', User::class); */
+        /* if ($request->routeIs("import.eneamiens.students")) {
             $students = User::query()
                 ->whereHas(relation : 'roles', callback : function (Builder $query) {
                     $query->where('name', "Etudiant-Eneamien");
@@ -244,9 +260,9 @@ class UserController extends Controller
             foreach ($teachers as $teacher) {
                 $teacher->permissions()->detach();
                 $teacher->roles()->detach();
-                $teacher->forceDelete();
+                $teacher->delete();
             }
-        }
+        } */
 
         $message = $request->routeIs('import.teachers')
             ? "Enseignants importés avec succès"
@@ -265,13 +281,20 @@ class UserController extends Controller
                     );
         }catch(\Exception $e) {
             return (int)$e->getCode() === 23000
-                ? back()->with(['error' => "Un ou plusieurs enrégistrement(s) dans le fichier existent déjà, veuillez vérifier vos données"])
+                ? (str_contains(request()->route()->uri(), 'api')
+                        ? response()->json(
+                                status : 200,
+                                data : ['message' => "Un ou plusieurs enrégistrement(s) dans le fichier existent déjà, veuillez vérifier vos données"]
+                            )
+                        : back()->with(['error' => "Un ou plusieurs enrégistrement(s) dans le fichier existent déjà, veuillez vérifier vos données"])
+                    )
                 : back()->with(['error' => "Une erreur est survenue lors de l'enrégistrement des données."]);
         }
     }
 
     public function exportUsers()
     {
+        /* $this->authorize('exportUsers', User::class); */
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 

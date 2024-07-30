@@ -22,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
         \App\Models\Keyword::class => \App\Policies\KeywordPolicy::class,
         \App\Models\Payment::class => \App\Policies\PaymentPolicy::class,
+        \App\Models\Reminder::class => \App\Policies\ReminderPolicy::class,
         \App\Models\RoleType::class => \App\Policies\RoleTypePolicy::class,
         \App\Models\SchoolYear::class => \App\Policies\SchoolYearPolicy::class,
         \App\Models\Soutenance::class => \App\Policies\SoutenancePolicy::class,

@@ -56,6 +56,7 @@ class ArticleController extends Controller
      */
     public function indexWithoutPagination() : ArticleCollectionResponse | LengthAwarePaginator
     {
+        /* $this->authorize('viewAnyWithoutPagination', Article::class); */
         $articles = Article::query()->with([
             /* 'comments', */
             'schoolYear',
@@ -153,7 +154,7 @@ class ArticleController extends Controller
     */
     public function checkChildrens (Article $article) : JsonResponse
     {
-        $this->authorize('checkChildrens', $article);
+        /* $this->authorize('checkChildrens', $article); */
         $loansCount = $article->loans()->count();
         $commentsCount = $article->comments()->count();
         $hasChildrens = ($loansCount > 0 || $commentsCount > 0) ? true : false;

@@ -27,6 +27,7 @@ class UserLoanController extends Controller
 
     public function canDoLoanRequest(Article $article) : JsonResponse
     {
+        /* $this->authorize('canDoLoanRequest', $article); */
         $response = LoansOperationsService::userCanDoLoanRequest(
             $this->auth->user() ??
             \App\Models\User::find(2),
@@ -48,6 +49,7 @@ class UserLoanController extends Controller
 
     public function doLoanRequest(Article $article) : SingleLoanResponse | JsonResponse
     {
+        /* $this->authorize('doLoanRequest', $article); */
         if (LoansOperationsService::userCanDoLoanRequest(
                 $this->auth->user() ??
                 \App\Models\User::find(2),
@@ -74,6 +76,7 @@ class UserLoanController extends Controller
 
     public function canReniewLoanRequest(Loan $loan) : JsonResponse
     {
+        /* $this->authorize('canReniewLoanRequest', $loan); */
         $response = LoansOperationsService::userCanReniewLoanRequest(
             $loan,
             $this->auth->user() ??
@@ -95,6 +98,7 @@ class UserLoanController extends Controller
 
     public function reniewLoanRequest(Loan $loan) : JsonResponse
     {
+        /* $this->authorize('reniewLoanRequest', $loan); */
         if (LoansOperationsService::userCanReniewLoanRequest(
             $loan,
             $this->auth->user() ??
@@ -119,6 +123,7 @@ class UserLoanController extends Controller
 
     public function cancelLoanRequest(Loan $loan) : JsonResponse
     {
+        $this->authorize('cancelLoanRequest', $loan);
         if ($loan->status === "En cours de traitement" && $loan->book_recovered_at === NULL) {
             /**
              * @var Article $article

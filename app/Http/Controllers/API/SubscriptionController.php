@@ -9,6 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SubscriptionController extends Controller
 {
+
+    /* public function __construct()
+    {
+        $this->authorizeResource(Subscription::class, 'subscription');
+    } */
+
     /**
      * Display a listing of the resource.
      */
@@ -78,6 +84,7 @@ class SubscriptionController extends Controller
      */
     public function destroySubscriptions (SubscriptionRequest $request) : JsonResponse
     {
+        /* $this->authorize('delete', Subscription::class); */
         $ids = $request->validated('ids');
         array_map(function (int $id) {
             Subscription::find($id)->delete();

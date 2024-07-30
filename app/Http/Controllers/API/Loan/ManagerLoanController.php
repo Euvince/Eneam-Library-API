@@ -22,6 +22,12 @@ use App\Jobs\RemindTheUserAboutLoanRequestSomeTimesAfterJob;
 
 class ManagerLoanController extends Controller
 {
+
+    /* public function __construct()
+    {
+        $this->authorizeResource(Loan::class, 'loan');
+    } */
+
     /**
      * Display a listing of the resource.
      */
@@ -68,6 +74,7 @@ class ManagerLoanController extends Controller
      */
     public function acceptLoanRequest (Loan $loan) : JsonResponse
     {
+        /* $this->authorize('acceptLoanRequest', $loan); */
         /**
          * @var User $user
          */
@@ -106,6 +113,7 @@ class ManagerLoanController extends Controller
      */
     public function rejectLoanRequest (Loan $loan, LoanRequest $request) : JsonResponse
     {
+        /* $this->authorize('rejectLoanRequest', $loan); */
         if (!Loan::isAccepted($loan) && !Loan::isRejected($loan)) {
             RejectLoanRequestJob::dispatch($request->validated('reason'), $loan);
             LoanObserver::rejected($loan);
@@ -129,6 +137,7 @@ class ManagerLoanController extends Controller
      */
     public function markArticleAsRecovered (Loan $loan) : JsonResponse
     {
+        /* $this->authorize('markArticleAsRecovered', $loan); */
         if (Loan::isAccepted($loan) && !Loan::hasStarted($loan)) {
             Loan::markAsStarted($loan);
             /* RecoveredLoanRequestArticleJob::dispatch($loan); */
@@ -152,6 +161,7 @@ class ManagerLoanController extends Controller
      */
     public function markArticleAsReturned (Loan $loan) : JsonResponse
     {
+        /* $this->authorize('markArticleAsReturned', $loan); */
         if (Loan::hasStarted($loan) && !Loan::isFinished($loan)) {
             Loan::markAsFinished($loan);
             /**
@@ -180,6 +190,7 @@ class ManagerLoanController extends Controller
      */
     public function markAsWithdrawed (Loan $loan) : JsonResponse
     {
+        /* $this->authorize('markAsWithdrawed', $loan); */
         if (
             (Loan::isFinished($loan) && !Loan::isWithdrawed($loan)) ||
             (Loan::isRejected($loan) && !Loan::isWithdrawed($loan))

@@ -101,6 +101,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->pdfPageNumber(2); */
     }
 
+    public function supportedMemories () : HasMany {
+        return $this->hasMany(related : \App\Models\SupportedMemory::class, foreignKey : 'user_id');
+    }
+
     public function payments () : HasMany {
         return $this->hasMany(related : \App\Models\Payment::class, foreignKey : 'user_id');
     }
@@ -119,6 +123,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function reservations () : HasMany {
         return $this->hasMany(related : \App\Models\Reservation::class, foreignKey : 'user_id');
+    }
+
+    public function reminders () : HasMany {
+        return $this->hasMany(related : \App\Models\Reminder::class, foreignKey : 'user_id');
     }
 
     public function scopeRecent (Builder $builder) : Builder {

@@ -13,7 +13,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Voir les Permissions");
     }
 
     /**
@@ -21,13 +21,13 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        //
+        return $user->can("Voir les Permissions");
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): void
     {
         //
     }
@@ -35,7 +35,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Permission $permission): bool
+    public function update(User $user, Permission $permission): void
     {
         //
     }
@@ -43,7 +43,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Permission $permission): bool
+    public function delete(User $user, Permission $permission): void
     {
         //
     }
@@ -51,7 +51,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Permission $permission): bool
+    public function restore(User $user, Permission $permission): void
     {
         //
     }
@@ -59,7 +59,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Permission $permission): bool
+    public function forceDelete(User $user, Permission $permission): void
     {
         //
     }

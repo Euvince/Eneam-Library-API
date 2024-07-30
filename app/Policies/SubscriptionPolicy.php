@@ -13,7 +13,7 @@ class SubscriptionPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 
     /**
@@ -21,7 +21,7 @@ class SubscriptionPolicy
      */
     public function view(User $user, Subscription $subscription): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 
     /**
@@ -29,7 +29,8 @@ class SubscriptionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can("Gérer les Abonnements")
+           /*  && !User::hasPaid($user) && !User::hasAccess($user) */;
     }
 
     /**
@@ -37,7 +38,7 @@ class SubscriptionPolicy
      */
     public function update(User $user, Subscription $subscription): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 
     /**
@@ -45,7 +46,7 @@ class SubscriptionPolicy
      */
     public function delete(User $user, Subscription $subscription): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 
     /**
@@ -53,7 +54,7 @@ class SubscriptionPolicy
      */
     public function restore(User $user, Subscription $subscription): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 
     /**
@@ -61,6 +62,6 @@ class SubscriptionPolicy
      */
     public function forceDelete(User $user, Subscription $subscription): bool
     {
-        //
+        return $user->can("Gérer les Abonnements");
     }
 }

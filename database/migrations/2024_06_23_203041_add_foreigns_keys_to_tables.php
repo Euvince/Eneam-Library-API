@@ -17,6 +17,9 @@ return new class extends Migration
                 ->default(value : NULL);
         });
         Schema::table(table : 'supported_memories', callback : function (Blueprint $table) {
+            $table->foreignIdFor(model : App\Models\User::class, column : 'user_id')
+                ->nullable()
+                ->default(value : NULL);
             $table->foreignIdFor(model : App\Models\Sector::class, column : 'sector_id')
                 ->nullable()
                 ->default(value : NULL);
@@ -92,6 +95,12 @@ return new class extends Migration
                     ->default(value : NULL);
             });
         }
+
+        Schema::table(table : 'reminders', callback : function (Blueprint $table) {
+            $table->foreignIdFor(model : App\Models\Reminder::class, column : 'user_id')
+                ->nullable()
+                ->default(value : NULL);
+        });
 
     }
 

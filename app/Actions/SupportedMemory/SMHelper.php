@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class SMHelper
 {
     public static function helper(SupportedMemory $supportedMemory, Request $request) : array {
-        $data = $request->validated();
+        $data = $request->validated() + ['user_id' => auth()->user()->id ?? 0];
         if(array_key_exists('file_path', $data) &&  array_key_exists('cover_page_path', $data))
         {
             /** @var UploadedFile|null $memoryCollection */

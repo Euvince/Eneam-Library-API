@@ -26,6 +26,6 @@ Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request)
 });
 
 
-Route::middleware(['auth:sanctum'/* , 'verified', 'role:Administrateur, Gestionnaire' */])->get('/statistiques', function (Request $request) {
+Route::middleware([/* 'auth:sanctum', 'verified', 'role:Administrateur, Gestionnaire' */])->get('/statistiques', function (Request $request) {
     Route::get(uri : 'statistiques', action : [StatistiquesController::class]);
 });

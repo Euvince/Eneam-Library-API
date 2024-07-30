@@ -55,6 +55,32 @@ class UserObserver
             ? $user->deleted_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $user->deleted_by = NULL;
         $user->save();
+
+        if (!app()->runningInConsole()) {
+            if ($user->comments()->count() > 0) {
+                $user->comments()->each(function (\App\Models\Comment $comment) {
+                    $comment->delete();
+                });
+            }
+
+            if ($user->loans()->count() > 0) {
+                $user->loans()->each(function (\App\Models\Loan $loan) {
+                    $loan->delete();
+                });
+            }
+
+            if ($user->supportedMemories()->count() > 0) {
+                $user->supportedMemories()->each(function (\App\Models\SupportedMemory $memory) {
+                    $memory->delete();
+                });
+            }
+
+            if ($user->reminders()->count() > 0) {
+                $user->reminders()->each(function (\App\Models\Reminder $reminder) {
+                    $reminder->delete();
+                });
+            }
+        }
     }
 
 

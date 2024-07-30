@@ -13,7 +13,7 @@ class KeywordController extends Controller
 
     /* public function __construct()
     {
-        $this->authorizeResource(Keyword::class, 'keyword');
+        $this->authorizeResource(Keyword::class);
     } */
 
     /**
