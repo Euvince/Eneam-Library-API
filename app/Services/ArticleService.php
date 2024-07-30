@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\SupportedMemory;
+use App\Models\Article;
 
-class SupportedMemoryService
+class ArticleService
 {
 
     // Méthode pour récupérer les statistiques mensuelles
     public static function getMonthlyStatistics()
     {
-        return SupportedMemory::selectRaw('MONTH(created_at) as month, status, COUNT(*) as count')
+        return Article::selectRaw('MONTH(created_at) as month, status, COUNT(*) as count')
                 ->groupBy('month', 'status')
                 ->get();
     }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\SupportedMemory;
+use App\Services\SupportedMemoryService;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -43,6 +44,8 @@ class StatistiquesController extends Controller
 
         $ebooksCount = SupportedMemory::query()->where('has_ebooks', 1)->count();
         $phyicalBooksCount = SupportedMemory::query()->where('is_physical', 1)->count();
+
+        /* dd(SupportedMemoryService::getMonthlyStatistics()); */
 
         return response()->json(
             status : 200,

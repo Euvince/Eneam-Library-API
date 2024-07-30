@@ -70,7 +70,9 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Prête
 });
 
 
-// Pour les fichiers
+//Pour les fichiers
+
+//Mémoires
 Route::get('/pdf/{filename}', function ($filename) {
     $path = storage_path('app/public/SupportedMemories/memories/' . $filename);
 
@@ -87,6 +89,24 @@ Route::get('/pdf/{filename}', function ($filename) {
     return $response;
 });
 
+Route::get('/memories-covers/{covername}', function ($covername) {
+    $path = storage_path('app/public/SupportedMemories/cover-pages/' . $covername);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
+
+//Livres
 Route::get('/epub/{filename}', function ($filename) {
     $path = storage_path('app/public/Articles/articles/' . $filename);
 
@@ -96,6 +116,22 @@ Route::get('/epub/{filename}', function ($filename) {
 
     $file = File::get($path);
     $type = 'application/epub+zip';
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
+Route::get('/books-covers/{covername}', function ($covername) {
+    $path = storage_path('app/public/Article/cover-pages/' . $covername);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
 
     $response = Response::make($file, 200);
     $response->header("Content-Type", $type);
