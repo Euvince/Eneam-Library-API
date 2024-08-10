@@ -3,7 +3,7 @@
 +Faire le jeu de présentation (LA DEMO);
 +Mettre les images qu'il faut pour les livres et les mémoires;
 +Téléchargement de mémoires;
-+Renvoyer uniquement les mémoires validés pour la route no-pagination;
++Renvoyer les données pour les statistiques;
 +Prévoir de vider les énéamiens qui ne sont plus d'actualité;
 
 

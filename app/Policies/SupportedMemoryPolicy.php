@@ -85,7 +85,8 @@ class SupportedMemoryPolicy
      */
     public function downloadMemory(User $user, SupportedMemory $supportedMemory): bool
     {
-        return $user->can("Télécharger un Mémoire");
+        return $user->can("Télécharger un Mémoire") /* &&
+            SupportedMemory::isValide($supportedMemory) */;
     }
 
     /**
