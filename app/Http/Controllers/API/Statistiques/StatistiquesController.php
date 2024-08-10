@@ -56,6 +56,7 @@ class StatistiquesController extends Controller
 
             $data1[$month][$status] = $count;
         }
+        dd($data1);
 
         $ebooksMonthlyStats = ArticleService::getEBooksMonthlyStatistics();
         $data2 = [];

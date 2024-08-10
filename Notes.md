@@ -2,7 +2,7 @@
 
 -L'utilisateur ne peut avoir certains rôles à la fois
 
--Continuer les tâches multiples;
+-Continuer les tâches multiples (Demandes de prêts);
 
 -Finir de tester l'authentification) :
     +Verify Email;
@@ -12,6 +12,8 @@
     +Double Authentification complète;
 
 -Les tests unitaires à la fin du projet;
+
+**Optionnel**
 
 *****************************************************************************************************************
 
@@ -27,7 +29,6 @@
 
 *****************************************************************************************************************
 
-**Optionnel**
 
 +Gérer plus tard les created_at, updated_at, deleted_at, created_by, updated_by et deleted_by pour les tables associatives
 

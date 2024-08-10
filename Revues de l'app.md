@@ -1,9 +1,4 @@
-+Faire des tests;
-+Revoir les fautes de frappes sur le front;
-+Faire le jeu de présentation (LA DEMO);
 +Mettre les images qu'il faut pour les livres et les mémoires;
-+Téléchargement de mémoires;
-+Renvoyer les données pour les statistiques;
 +Prévoir de vider les énéamiens qui ne sont plus d'actualité;
 
 

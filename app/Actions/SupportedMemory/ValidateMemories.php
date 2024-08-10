@@ -30,6 +30,7 @@ class ValidateMemories
 
             $supportedMemory->update([
                 'status' => "Validé",
+                'validated_at' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
                 'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
             ]);
             \App\Models\Soutenance::find(
@@ -73,6 +74,7 @@ class ValidateMemories
 
                 $supportedMemory->update([
                     'status' => "Validé",
+                    'validated_at' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
                     'cote'   => \Carbon\Carbon::parse($supportedMemory->soutenance->start_date)->year."/".$supportedMemory->sector->acronym."/".$validMemoriesInCurrentYearNumber + 1
                 ]);
                 \App\Models\Soutenance::find(

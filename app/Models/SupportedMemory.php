@@ -31,7 +31,8 @@ class SupportedMemory extends Model
         'first_author_email', 'second_author_email', 'soutenance_id', 'sector_id',
         'first_author_phone', 'second_author_phone', 'jury_president_name',
         'memory_master_name', 'memory_master_email', 'file_path',
-        'cover_page_path', 'cote', 'status', 'user_id',
+        'cover_page_path', 'cote', 'status',
+        'validated_at', 'rejected_at', 'user_id',
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at',
         'printed_number', 'download_number', 'views_number'

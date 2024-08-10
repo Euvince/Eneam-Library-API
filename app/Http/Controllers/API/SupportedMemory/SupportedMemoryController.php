@@ -128,7 +128,10 @@ class SupportedMemoryController extends Controller
     public function rejectMemory(SupportedMemoryRequest $request, SupportedMemory $supportedMemory) : JsonResponse
     {
         /* $this->authorize('rejectMemory', $supportedMemory); */
-        $supportedMemory->update(['status' => "Rejeté"]);
+        $supportedMemory->update([
+            'status' => "Rejeté",
+            'rejected_at' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
         $supportedMemory->delete();
         RejectSupportedMemoryJob::dispatch($request->validated('reason'), $supportedMemory);
         return response()->json(

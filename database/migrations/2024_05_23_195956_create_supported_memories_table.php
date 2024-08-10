@@ -32,6 +32,8 @@ return new class extends Migration
             $table->string(column : 'memory_master_email')->nullable()->default(value : NULL);
             $table->string(column : 'cote')->nullable()->default(value : NULL);
             $table->string(column : 'status')->default(value : "Invalidé");
+            $table->dateTime(column : 'validated_at')->nullable()->default(value : NULL);
+            $table->dateTime(column : 'rejected_at')->nullable()->default(value : NULL);
             $table->string(column : 'file_path')->nullable()->default(value : NULL);
             $table->string(column : 'cover_page_path')->nullable()->default(value : NULL);
             $table->integer(column : 'views_number')->nullable()->default(value : NULL);
