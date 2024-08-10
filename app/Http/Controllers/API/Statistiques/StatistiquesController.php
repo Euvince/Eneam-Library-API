@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\SupportedMemory;
+use App\Services\ArticleService;
 use App\Services\SupportedMemoryService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +25,7 @@ class StatistiquesController extends Controller
 
         $teachersNumber = User::query()
             ->whereHas(relation : 'roles', callback : function (Builder $query) {
-                $query->where('name', "Enseignants");
+                $query->where('name', "Enseignant");
             })
             ->count();
 
@@ -46,16 +47,35 @@ class StatistiquesController extends Controller
         $ebooksCount = Article::query()->where('has_ebooks', 1)->count();
         $physicalBooksCount = Article::query()->where('is_physical', 1)->count();
 
-        $statistics = SupportedMemoryService::getMonthlyStatistics();
-        $data = [];
-        foreach ($statistics as $stat) {
+        $memoriesMonthlyStats = SupportedMemoryService::getMemoriesMonthlyStatistics();
+        $data1 = [];
+        foreach ($memoriesMonthlyStats as $stat) {
             $month = Carbon::create()->month($stat['month'])->translatedFormat('F');
             $status = $stat['status'];
             $count = $stat['count'];
 
-            $data[$month][$status] = $count;
+            $data1[$month][$status] = $count;
         }
-        dd($data);
+
+        $ebooksMonthlyStats = ArticleService::getEBooksMonthlyStatistics();
+        $data2 = [];
+        foreach ($ebooksMonthlyStats as $stat) {
+            $month = Carbon::create()->month($stat['month'])->translatedFormat('F');
+            $has_ebooks = $stat['has_ebooks'] === 1 ? 'Ebook' : '';
+            $count = $stat['count'];
+
+            $data2[$month][$has_ebooks] = $count;
+        }
+
+        $physicalBooksMonthlyStats = ArticleService::getPhysicalBooksMonthlyStatistics();
+        $data3 = [];
+        foreach ($physicalBooksMonthlyStats as $stat) {
+            $month = Carbon::create()->month($stat['month'])->translatedFormat('F');
+            $is_physical = $stat['is_physical'] === 1 ? 'Physique' : 0;
+            $count = $stat['count'];
+
+            $data3[$month][$is_physical] = $count;
+        }
 
         return response()->json(
             status : 200,
@@ -75,6 +95,9 @@ class StatistiquesController extends Controller
                 'booksCount' => Article::count(),
                 'ebooksCount' => $ebooksCount,
                 'physicalBooksCount' => $physicalBooksCount,
+                'memoriesMonthlyStats' => $data1,
+                'ebooksMonthlyStats' => $data2,
+                'physicalMonthlyStats' => $data3,
             ],
         );
     }

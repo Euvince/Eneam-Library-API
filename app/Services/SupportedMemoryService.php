@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Article;
 use App\Models\SupportedMemory;
 
 class SupportedMemoryService
 {
 
-    // Méthode pour récupérer les statistiques mensuelles
-    public static function getMonthlyStatistics()
+    // Méthode pour récupérer les statistiques mensuelles des mémoires soutenus
+    public static function getMemoriesMonthlyStatistics()
     {
         $startDate = now()->subMonths(6)->endOfMonth();
         $endDate = now()->endOfMonth();

@@ -61,7 +61,7 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 
 
 // Cycles
-Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Cycles"] */], function () use($idRegex) {
+Route::group(['middleware' => ["auth:sanctum", "verified", "permission:Gérer les Cycles"]], function () use($idRegex) {
     Route::apiResource(name : 'cycle', controller : App\Http\Controllers\API\CycleController::class);
 
     Route::get(uri : '/check-cycle-childrens/{cycle}', action : [App\Http\Controllers\API\CycleController::class, 'checkChildrens'])
