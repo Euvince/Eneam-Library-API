@@ -1,4 +1,5 @@
 +Mettre les images qu'il faut pour les livres et les mémoires;
++Rechercher sur la page d'emprunts;
 +Prévoir de vider les énéamiens qui ne sont plus d'actualité;
 
 

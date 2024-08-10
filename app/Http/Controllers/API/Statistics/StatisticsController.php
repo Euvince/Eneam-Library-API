@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\Statistiques;
+namespace App\Http\Controllers\API\Statistics;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Statistic;
 use App\Models\SupportedMemory;
 use App\Services\ArticleService;
 use App\Services\SupportedMemoryService;
@@ -13,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class StatistiquesController extends Controller
+class StatisticsController extends Controller
 {
     public function __invoke(Request $request) : JsonResponse
     {
@@ -56,7 +57,6 @@ class StatistiquesController extends Controller
 
             $data1[$month][$status] = $count;
         }
-        dd($data1);
 
         $ebooksMonthlyStats = ArticleService::getEBooksMonthlyStatistics();
         $data2 = [];
@@ -96,9 +96,12 @@ class StatistiquesController extends Controller
                 'booksCount' => Article::count(),
                 'ebooksCount' => $ebooksCount,
                 'physicalBooksCount' => $physicalBooksCount,
-                'memoriesMonthlyStats' => $data1,
+
+                /* 'memoriesMonthlyStats' => $data1,
                 'ebooksMonthlyStats' => $data2,
-                'physicalMonthlyStats' => $data3,
+                'physicalMonthlyStats' => $data3, */
+
+                'monthlyStats' => Statistic::orderBy('id', 'desc')->limit(12)->get()->reverse()
             ],
         );
     }

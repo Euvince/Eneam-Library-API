@@ -23,7 +23,7 @@ class ConfigurationResource extends JsonResource
             'school_name' => $this->resource->school_name,
             'school_acronym' => $this->resource->school_acronym,
             'school_city' => $this->resource->school_city,
-            'archivist_name' => $this->resource->archivist_name,
+            'archivist_full_name' => $this->resource->archivist_full_name,
             'eneamien_subscribe_amount' => $this->resource->eneamien_subscribe_amount,
             'extern_subscribe_amount' => $this->resource->extern_subscribe_amount,
             'student_debt_amount' => $this->resource->student_debt_amount,

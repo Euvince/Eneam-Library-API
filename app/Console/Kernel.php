@@ -12,10 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        /* $schedule->command('app:create-school-year')->everyTwentySeconds();
-        $schedule->command('app:create-configuration')->everyTwentySeconds();
-        $schedule->command('app:delete-subscription-after-expiration-date')->everyTwentySeconds(); */
-        $schedule->command('app:remind-all-users-of-the-end-of-their-loans-requests')->everyMinute();
+        $schedule->command('app:create-school-year')->hourly();
+        $schedule->command('app:create-configuration')->hourly();
+        $schedule->command('app:store-monthly-statistics')->everyTenSeconds();
+        $schedule->command('app:delete-subscription-after-expiration-date')->hourly();
+        $schedule->command('app:remind-all-users-of-the-end-of-their-loans-requests')->everyThirtyMinutes();
     }
 
     /**
