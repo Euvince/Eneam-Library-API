@@ -34,7 +34,7 @@ class StoreMonthlyStatistics extends Command
     {
         $monthlyValues = self::monthlyValues();
         Statistic::create([
-            'month' => Carbon::now()->translatedFormat('F'),
+            'month' => ucfirst(Carbon::now()->translatedFormat('F')),
             'valid_memories_number' => $monthlyValues['validMemoriesPerMonthNumber'],
             'invalid_memories_number' => $monthlyValues['invalidMemoriesPerMonthNumber'],
             'ebooks_number' => $monthlyValues['ebooksPerMonthNumber'],

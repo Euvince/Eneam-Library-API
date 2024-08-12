@@ -18,6 +18,15 @@ class StatisticsController extends Controller
 {
     public function __invoke(Request $request) : JsonResponse
     {
+        $months = collect();
+        for ($i = 1; $i < 6; $i++) {
+            $months->push(Carbon::now()->subMonths($i)->format('F Y'));
+        }
+        $monthReverse = $months->reverse();
+        // dd($monthReverse);
+        // dd(Carbon::parse(explode(' ', $monthReverse[0])[0])->month);
+        // dd((int)explode(' ', $monthReverse[0])[1]);
+
         $managersNumber = User::query()
             ->whereHas(relation : 'roles', callback : function (Builder $query) {
                 $query->where('name', "Gestionnaire");
