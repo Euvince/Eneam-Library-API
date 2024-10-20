@@ -37,7 +37,7 @@ Route::controller(SupportedMemoryController::class)->group(function(){
     Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
 }); */
 
-Route::get('/php-blade/{memory}', function (SupportedMemory $memory) {
+/* Route::get('/php-blade/{memory}', function (SupportedMemory $memory) {
     return GenerateReports::printReportUsingBladeView($memory);
 });
 
@@ -45,13 +45,13 @@ Route::get('/php-word/{memory}', function (SupportedMemory $memory) {
     return GenerateReports::printReportUsingWord($memory);
 });
 
-Route::get('/php-blades', function (SupportedMemory $memory) use($memory) {
+Route::get('/php-blades', function (SupportedMemory $memory) {
     return GenerateReports::printReportsUsingBladeView($memory);
 });
 
-Route::get('/php-words', function (SupportedMemory $memory) use($memory) {
+Route::get('/php-words', function (SupportedMemory $memory) {
     return GenerateReports::printReportsUsingWord($memory);
-});
+}); */
 
 
 
