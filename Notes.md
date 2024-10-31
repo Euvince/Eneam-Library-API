@@ -1,15 +1,8 @@
--Achever les règles de validations pour l'unicité des Mémoires soutenus et des Livres;
+**Optionnel**
+
+*****************************************************************************************************************
 
 -L'utilisateur ne peut avoir certains rôles à la fois
-
--Finir de tester l'authentification) :
-    +Verify Email;
-    +Forgot Pasword;
-    +Password Reset;
-    +Remember token;
-    +Double Authentification complète;
-
-**Optionnel**
 
 *****************************************************************************************************************
 
