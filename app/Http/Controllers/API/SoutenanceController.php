@@ -34,7 +34,7 @@ class SoutenanceController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Soutenance::count(),
             message : "Liste de toutes les soutenances",
-            collection : Soutenance::query()->with(['schoolYear', 'cycle'/* , 'supportedMemories' */])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Soutenance::query()->with(['schoolYear', 'cycle'/* , 'supportedMemories' */])->orderBy('created_at', 'desc')->get()/* paginate(perPage : 20) */,
         );
     }
 

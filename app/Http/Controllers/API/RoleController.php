@@ -30,7 +30,7 @@ class RoleController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : Role::count(),
             message : "Liste de tous les rôles",
-            collection : Role::query()->with(['permissions'/* , 'users' */])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : Role::query()->with(['permissions'/* , 'users' */])->orderBy('created_at', 'desc')->get()/* paginate(perPage : 20) */,
         );
     }
 
