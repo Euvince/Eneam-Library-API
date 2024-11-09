@@ -30,8 +30,8 @@ class SectorController extends Controller
     {
         /* $type = $request->validated('type'); */
         $collection = $request->has('type')
-            ? Sector::query()->where('type', $request->type)->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->paginate(perPage : 20)
-            : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->paginate(perPage : 20);
+            ? Sector::query()->where('type', $request->type)->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->get()/* paginate(perPage : 20) */
+            : Sector::query()->with(['sector'/* , 'specialities', 'supportedMemories' */])->orderBy('created_at', 'desc')->get()/* paginate(perPage : 20) */;
         $message = !$request->has('type')
             ? "Liste des filières et spécialités"
             : ($request->has('type') && mb_strtolower($request->type) === mb_strtolower('Filière') ? "Liste des filières" : "Liste des spécialités");
