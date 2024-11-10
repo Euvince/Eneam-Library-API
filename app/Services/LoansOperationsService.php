@@ -58,7 +58,8 @@ class LoansOperationsService
             Loan::hasStarted($loan) &&
             !Loan::isFinished($loan) &&
             $loan->user_id === $user->id &&
-            !self::theBorrowerHasAlreadyReniewedRequestOnce($loan) &&
+            /* !self::theBorrowerHasAlreadyReniewedRequestOnce($loan) && */
+            !self::theBorrowerAttemptHerMaxRenewals($user, $loan) &&
             !(
                 Carbon::parse($loan->book_must_returned_on)->format("Y-m-d H:i:s") <
                 Carbon::parse(Carbon::now())->format("Y-m-d H:i:s")
@@ -97,6 +98,16 @@ class LoansOperationsService
 
     private static function theBorrowerHasAlreadyReniewedRequestOnce(Loan $loan) : bool {
         return $loan->renewals > 0;
+    }
+
+    public static function theBorrowerAttemptHerMaxRenewals(User $user, Loan $loan) : bool {
+        $userRenewalsNumber = $user->hasAnyRole(roles : [
+            'Etudiant-Eneamien', 'Etudiant-Externe'
+            ])
+            ? self::initConfig()->student_renewals_number
+            : self::initConfig()->teacher_renewals_number;
+
+        return $loan->renewals === $userRenewalsNumber;
     }
 
     private static function theBorrowerHasAlreadyLoanRequestForThisArticle(User $user, Article $article) : bool {
