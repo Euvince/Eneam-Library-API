@@ -53,10 +53,10 @@ class ValidateSupportedMemoryJob implements ShouldQueue
 
         foreach ($emails as $name => $email) {
 
-            $file = GenerateReports::generateQrCodeImage($this->supportedMemory->id);
+            /* $file = GenerateReports::generateQrCodeImage($this->supportedMemory->id); */
             $config = Configuration::appConfig();
             $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
-            $imagePath = public_path(path : "qrcodes/$file");
+            /* $imagePath = public_path(path : "qrcodes/$file"); */
             $signaturePath = public_path(path : "images/signature.png");
             \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
             $document = new PhpWord();
@@ -86,17 +86,18 @@ class ValidateSupportedMemoryJob implements ShouldQueue
             $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
             $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
             $bottomTable1->addRow();
-            $bottomTable1->addCell()->addImage(
+            $bottomTable1->addCell()->addText(' ');
+            /* $bottomTable1->addCell()->addImage(
                 $imagePath, [
                     'width' => 60,
                     'height' => 60,
-                    /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                    // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                 ]
-            );
+            ); */
             $bottomTable1->addCell()->addImage(
                 $signaturePath, [
-                    'width' => 80,
-                    'height' => 80,
+                    'width' => 125,
+                    'height' => 100,
                     'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                 ]
             );
