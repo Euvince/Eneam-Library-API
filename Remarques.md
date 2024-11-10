@@ -3,8 +3,8 @@ Remarques après tests
 
  - Confirmation pour les suppressions
 
- - Les placeholders
+ - Les placeholders qui ne réflètent pas le libellé dans certains cas
 
  - Le message **Erreur de validation des champs** qui n'informe pas de quelle erreur côté back il s'agit
 
- - Les champs **date de début** et **date de fin** qui ne marchent pas sur sur l'ajout et la modification d'une soutenance
+ - Les champs **date de début** et **date de fin** qui ne marchent pas sur sur l'ajout et la modification d'une soutenance : Quand on clique ça s'affiche pas.

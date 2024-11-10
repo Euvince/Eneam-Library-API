@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('statistics', function (Blueprint $table) {
             $table->id();
             $table->string('month');
-            $table->integer('valid_memories_number')->default(value : 0);
-            $table->integer('invalid_memories_number')->default(value : 0);
-            $table->integer('ebooks_number')->default(value : 0);
-            $table->integer('physical_books_number')->default(value : 0);
+            $table->unsignedBigInteger('valid_memories_number')->default(value : 0);
+            $table->unsignedBigInteger('invalid_memories_number')->default(value : 0);
+            $table->unsignedBigInteger('ebooks_number')->default(value : 0);
+            $table->unsignedBigInteger('physical_books_number')->default(value : 0);
             $table->timestamps();
         });
     }

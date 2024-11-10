@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Models\User;
 use App\Models\Configuration;
+use App\Services\LoansOperationsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -84,6 +85,7 @@ class RemindTheUserOfTheEndOfHerLoanRequestMail extends Mailable
                 'manager' => $manager,
                 'delayValue' => $delayValue,
                 'debtAmount' => $debtAmount,
+                'canReniewLoanRequest' => LoansOperationsService::theBorrowerAttemptHerMaxRenewals($this->loan->user, $this->loan)
             ]
         );
     }
@@ -97,4 +99,5 @@ class RemindTheUserOfTheEndOfHerLoanRequestMail extends Mailable
     {
         return [];
     }
+
 }

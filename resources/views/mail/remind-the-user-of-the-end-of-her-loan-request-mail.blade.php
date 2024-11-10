@@ -13,13 +13,20 @@ Nous vous rappelons que la date limite pour retourner le livre **{{ $loan->artic
 Nous tenons à vous rappeler que passé ce délai, si le livre n'est pas retourné, des frais de pénalité de **{{ $debtAmount }} FCFA** vous seront appliqués et votre accès à la bibliothèque sera suspendu jusqu'au règlement de votre dette.
 Si vous avez des questions ou besoin de plus d'informations, n'hésitez pas à nous contacter à **{{ $manager->email }}** ou par téléphone au **{{ $manager->phone_number }}**.
 
-@if ($loan->renewals <= 0)
-Si vous avez besoin de plus de temps pour finir votre lecture, vous pouvez renouveler votre emprunt en cliquant sur le bouton ci-dessous :
-
-<div style="text-align: center;">
-    <x-mail::button :url="''">Renouveler mon emprunt</x-mail::button>
-</div>
+@if ((bool)$canReniewLoanRequest === false)
+    Si vous avez besoin de plus de temps pour finir votre lecture, vous pouvez renouveller votre emprunt sur votre compte **Ebiblio**.
 @endif
+
+
+{{-- La condition là est fausse car on doit plutôt vérifier si l'emprunteur a atteint son nombre maximal de renouvellements --}}
+{{-- @if ($loan->renewals <= 0)
+    Si vous avez besoin de plus de temps pour finir votre lecture, vous pouvez renouveler votre emprunt en cliquant sur le bouton ci-dessous :
+
+    <div style="text-align: center;">
+        <x-mail::button :url="''">Renouveler mon emprunt</x-mail::button>
+    </div>
+@endif --}}
+
 
 Cordialement,
 
