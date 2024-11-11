@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string(column : 'cote')->nullable()->default(value : NULL);
             $table->integer(column : 'number_pages')->nullable()->default(value : NULL);
             $table->string(column : 'ISBN')->nullable()->default(value : NULL);
-            $table->unsignedBigInteger(column : 'available_stock')->nullable()->default(value : NULL);
+            $table->unsignedBigInteger(column : 'available_stock')->nullable()->default(value : 0);
             $table->boolean(column : 'available')->default(value : true);
             $table->boolean(column : 'loaned')->default(value : false);
             $table->boolean(column : 'reserved')->default(value : false);

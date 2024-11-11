@@ -8,6 +8,7 @@ use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Rules\UserCanNotBeEneamienAndExtern;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRequest extends FormRequest
@@ -33,13 +34,15 @@ class UserRequest extends FormRequest
 
         if ($routeName === "user.update") {
             $rules = [
-                'firstname' => ['required', 'string', 'max:255'],
-                'lastname' => ['required', 'string', 'max:255'],
+                'firstname' => ['nullable', 'string', 'max:255'],
+                'lastname' => ['nullable', 'string', 'max:255'],
                 'email' => [
                     'required','string','email','max:255',
-                    Rule::unique(User::class),
+                    Rule::unique(User::class)
+                    ->ignore(request()->route()->parameter(name : 'user'))
+                    ->withoutTrashed(),
                 ],
-                'password' => $this->passwordRules(),
+                /* 'password' => $this->passwordRules(), */
                 'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
                 'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
                 /* 'sex' => [
@@ -51,7 +54,7 @@ class UserRequest extends FormRequest
                     )
                 ], */
                 'sex' => ['nullable', 'in:Masculin,Féminin,Autre'],
-                'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'],
+                'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'/* , new UserCanNotBeEneamienAndExtern() */],
             ];
         }
 
