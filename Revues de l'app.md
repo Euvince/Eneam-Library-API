@@ -11,7 +11,7 @@
    .L'update de Password et ses buggs,
    .Forgot Password et email verification;
 
--Finir de tester l'authentification) :
+-Finir de tester l'authentification :
     +Verify Email;
     +Forgot Pasword;
     +Password Reset;
