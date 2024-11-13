@@ -39,9 +39,9 @@ class UsersImport implements ToModel
                 'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Etudiant-Eneamien']);
-            foreach ($eneamienStudentPermissions as $permission) {
+            /* foreach ($eneamienStudentPermissions as $permission) {
                 $user->givePermissionTo($permission);
-            }
+            } */
             SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password, $user->matricule);
             return $user;
         }

@@ -44,7 +44,7 @@ class SoutenanceObserver
 
     public function updating(Soutenance $soutenance): void
     {
-        if (!app()->runningInConsole()) {
+        if (!app()->runningInConsole() && $this->request && isset($this->request->cycle_id) && isset($this->request->school_year_id)/*  && is_null($soutenance->deleted_at) */) {
             /* $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name."".\Carbon\Carbon::parse($soutenance->start_date)->year; */
             $soutenance->name = \App\Models\Cycle::find($this->request->cycle_id)->name." ".\App\Models\SchoolYear::find($this->request->school_year_id)->school_year;
             $soutenance->slug = \Illuminate\Support\Str::slug($soutenance->name);

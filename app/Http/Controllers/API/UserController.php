@@ -25,6 +25,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Jobs\AskAgainEmailVerificationLinkJob;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
@@ -45,7 +47,7 @@ class UserController extends Controller
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
             total : User::count(),
             message : "Liste de tous les utilisateurs",
-            collection : User::query()->with(['roles', 'permissions'])->orderBy('created_at', 'desc')->paginate(perPage : 20),
+            collection : User::query()->with(['roles', 'permissions'])->orderBy('created_at', 'desc')->get()/* paginate(perPage : 20) */,
         );
     }
 
@@ -89,6 +91,7 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user) : SingleUserResponse
     {
         $data = $request->validated();
+        /* unset($data['roles']); */
         $user->update($data);
         if (array_key_exists('roles', $data)) {
             $user->roles()->sync($request['roles']);
@@ -100,6 +103,10 @@ class UserController extends Controller
                     $user->givePermissionTo($permission->name);
                 }
             }
+        }
+        if ($data['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail) {
+            AskAgainEmailVerificationLinkJob::dispatch($user);
         }
         return new SingleUserResponse(
             statusCode : 200,
@@ -151,7 +158,7 @@ class UserController extends Controller
     public function destroy(User $user) : JsonResponse
     {
         $user->delete();
-        if(($profilPictureFilePath = $user->profil_picture_path) !== '') {
+        if(($profilPictureFilePath = $user->profile_picture_path) !== '') {
             $path = 'public/'.$profilPictureFilePath;
             if(Storage::exists($path)) Storage::delete($path);
         }
