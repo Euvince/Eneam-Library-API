@@ -57,7 +57,8 @@ class ValidateSupportedMemoryJob implements ShouldQueue
             $config = Configuration::appConfig();
             $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
             /* $imagePath = public_path(path : "qrcodes/$file"); */
-            $signaturePath = public_path(path : "images/signature.png");
+            $signaturePath = public_path(path : "storage/$config->archivist_signature");
+            // $signaturePath = storage_path(path : $config->archivist_signature);
             \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
             $document = new PhpWord();
             $sectionStyles = [

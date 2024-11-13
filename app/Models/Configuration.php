@@ -27,6 +27,7 @@ class Configuration extends Model
         'school_acronym',
         'school_city',
         'archivist_full_name',
+        'archivist_signature',
         'student_debt_amount',
         'teacher_debt_amount',
         'student_loan_delay',

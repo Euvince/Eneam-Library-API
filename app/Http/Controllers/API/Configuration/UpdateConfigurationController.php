@@ -78,14 +78,13 @@ class UpdateConfigurationController extends Controller
          * @var UploadedFile|null $signaturePathCollection
          */
         $signaturePathCollection = $data['archivist_signature'];
-        $data['archivist_signature'] = $signaturePathCollection->storeAs(public_path("images/signature.").$request->file('archivist_signature')->getClientOriginalExtension(), 'public');
-        $archivistSignaturePath = public_path("images/$config->archivist_signature");
+        // $data['archivist_signature'] = $signaturePathCollection->storeAs(public_path("images"), "signature.".$request->file('archivist_signature')->getClientOriginalExtension(), 'public');
+        $data['archivist_signature'] = $signaturePathCollection->storeAs("images", "signature.".$request->file('archivist_signature')->getClientOriginalExtension(), 'public');
+        $archivistSignaturePath = public_path("storage/$config->archivist_signature");
         if (File::exists($archivistSignaturePath)) {
             File::delete($archivistSignaturePath);
         }
         return $data;
-
-        /* |file|mimes:png,jpg,jpeg|max:1024 */
     }
 
 }
