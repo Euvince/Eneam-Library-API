@@ -3,13 +3,13 @@ Remarques après tests
 
  - Confirmation pour les suppressions
 
- - Les placeholders qui ne réflètent pas le libellé dans certains cas
+ - Les placeholders qui ne réflètent pas le libellé pour certains champs
 
  - Le message **Erreur de validation des champs** qui n'informe pas de quelle erreur côté back il s'agit
 
  - Les champs **date de début** et **date de fin** qui ne marchent pas sur sur l'ajout et la modification d'une soutenance : Quand on clique ça s'affiche pas
 
- - Sur la configuration il manque la modification des délais de récupération de livres pour l'étudiant et l'enseignant en jours, il manque aussi le champ pour spécifier le délai d'expiration d'un abonnement en années
+ - Sur la configuration il manque la modification des délais de récupération de livres pour l'étudiant et l'enseignant en jours, il manque aussi le champ pour spécifier le délai d'expiration d'un abonnement en années seulement pour les étuidiants
 
  - La modification de la signature du gestionnaire rencontre un problème
 
@@ -18,5 +18,6 @@ Remarques après tests
 - Le select des rôles lors de la modification d'un user est blanc en thème sombre
 
 
+-La modale pour *visualiser* un mémoire déposé, elle doit pouvoir consulter le mémoire.
 
 - Le formulaire d'ajout et de modification des Livres, lorsqu'on met assez de mots clés, le formulaire s'élargit et une partie est masquée, soit on scrolle ou on limite à 3 mots-clés comme ça va pas casser le listing aussi

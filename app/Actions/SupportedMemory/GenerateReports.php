@@ -27,6 +27,9 @@ use App\Http\Requests\SupportedMemory\SupportedMemoryRequest;
 class GenerateReports
 {
 
+    public function __construct (private readonly Configuration $configuration) {
+    }
+
     public static function printReportUsingBladeView (SupportedMemory $memory)
     {
         if (SupportedMemory::isValide($memory)) {
@@ -34,11 +37,13 @@ class GenerateReports
             $memory->update([
                 'printed_number' => ++$memory->printed_number,
             ]);
+            $config = Configuration::appConfig();
             $pdf = FacadePdf::loadView(view : 'fiche', data : [
                 'memory' => $memory,
-                'config' => Configuration::appConfig(),
+                'config' => $config,
                 'qrCodeImg' => self::getImage(public_path(path : "qrcodes/$file")),
-                'signatureImg' => self::getImage(public_path(path : "images/signature.png"))
+                'signatureImg' => self::getImage(public_path(path : "storage/$config->archivist_signature"))
+                // 'signatureImg' => self::getImage(storage_path(path : $config->archivist_signature))
             ])
             ->setOptions(['defaultFont' => 'sans-serif'])
             ->setPaper('A4', 'portrait');
@@ -96,11 +101,13 @@ class GenerateReports
                     $supportedMemory->update([
                         'printed_number' => ++$supportedMemory->printed_number,
                     ]);
+                    $config = Configuration::appConfig();
                     $pdf = FacadePdf::loadView(view : 'fiche', data : [
                         'memory' => $supportedMemory,
-                        'config' => Configuration::appConfig(),
+                        'config' => $config,
                         'qrCodeImg' => self::getImage(public_path(path : "qrcodes/$file")),
-                        'signatureImg' => self::getImage(public_path(path : "images/signature.png"))
+                        'signatureImg' => self::getImage(public_path(path : "storage/$config->archivist_signature"))
+                        // 'signatureImg' => self::getImage(storage_path(path : $config->archivist_signature))
                     ])
                     ->setOptions(['defaultFont' => 'sans-serif'])
                     ->setPaper('A4', 'portrait');
@@ -134,7 +141,8 @@ class GenerateReports
             $config = Configuration::appConfig();
             $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
             $imagePath = public_path(path : "qrcodes/$file");
-            $signaturePath = public_path(path : "images/signature.png");
+            $signaturePath = public_path(path : "storage/$config->archivist_signature");
+            // $signaturePath = storage_path(path : $config->archivist_signature);
             \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
             $document = new PhpWord();
             $sectionStyles = [
@@ -163,13 +171,14 @@ class GenerateReports
             $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
             $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
             $bottomTable1->addRow();
-            $bottomTable1->addCell()->addImage(
+            $bottomTable1->addCell()->addText(' ');
+            /* $bottomTable1->addCell()->addImage(
                 $imagePath, [
                     'width' => 60,
                     'height' => 60,
-                    /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                    // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                 ]
-            );
+            ); */
             $bottomTable1->addCell()->addImage(
                 $signaturePath, [
                     'width' => 80,
@@ -279,7 +288,8 @@ class GenerateReports
                     $config = Configuration::appConfig();
                     $now = Carbon::parse(Carbon::now())->translatedFormat("l d F Y");
                     $imagePath = public_path(path : "qrcodes/$file");
-                    $signaturePath = public_path(path : "images/signature.png");
+                    $signaturePath = public_path(path : "storage/$config->archivist_signature");
+                    // $signaturePath = storage_path(path : $config->archivist_signature);
                     \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
                     $document = new PhpWord();
                     $sectionStyles = [
@@ -348,14 +358,15 @@ class GenerateReports
                     $bottomTable2->addRow();
                     $bottomTable2->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
                     $bottomTable2->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
-                    $bottomTable2->addRow();
-                    $bottomTable2->addCell()->addImage(
+                    $bottomTable1->addRow();
+                    $bottomTable1->addCell()->addText(' ');
+                    /* $bottomTable2->addCell()->addImage(
                         $imagePath, [
                             'width' => 60,
                             'height' => 60,
-                            /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                            // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                         ]
-                    );
+                    ); */
                     $bottomTable2->addCell()->addImage(
                         $signaturePath, [
                             'width' => 80,

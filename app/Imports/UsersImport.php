@@ -39,6 +39,7 @@ class UsersImport implements ToModel
                 'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Etudiant-Eneamien']);
+            $user->givePermissionTo(['Déposer un Mémoire']);
             /* foreach ($eneamienStudentPermissions as $permission) {
                 $user->givePermissionTo($permission);
             } */

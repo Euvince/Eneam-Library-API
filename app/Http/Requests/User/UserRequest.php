@@ -8,6 +8,7 @@ use App\Rules\ValueInValuesRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Rules\OnlyOneRoleForOneUser;
 use App\Rules\UserCanNotBeEneamienAndExtern;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -54,7 +55,11 @@ class UserRequest extends FormRequest
                     )
                 ], */
                 'sex' => ['nullable', 'in:Masculin,Féminin,Autre'],
-                'roles' => ['sometimes', 'required', 'array', 'exists:roles,id'/* , new UserCanNotBeEneamienAndExtern() */],
+                'roles.*' => ['integer', 'exists:roles,id'],
+                'roles' => [
+                    'sometimes', 'required', 'array', 'size:1',
+                    /* new UserCanNotBeEneamienAndExtern(), */
+                ],
             ];
         }
 
@@ -80,6 +85,8 @@ class UserRequest extends FormRequest
     public function messages () : array {
         $messages = [];
         $routeName = request()->route()->getName();
+
+        $messages['roles.size'] = "L'utilisateur ne peut avoir plus d'un rôle à la fois";
 
         if ($routeName === "destroy-users") {
             $messages['ids.required'] = "Veuillez sélectionnés un ou plusieurs utilisateur(s)";
