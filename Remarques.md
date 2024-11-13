@@ -1,13 +1,15 @@
 Remarques après tests
- - Lorsqu'on ajoute un nouveau **cycle**, **filière**, **soutenance** et qu'on veut le modifier automatiquement les données sont mal indexés, ça sera pareil pour rôle même si on ajoute pas un rôle, pareil pour **Article**
+ - Lorsqu'on ajoute un nouveau **cycle** et qu'on veut le modifier automatiquement les données sont mal indexés, ça sera pareil pour **rôle**, **filière**, **soutenance** même si on ajoute pas un rôle, pareil pour **Article**
 
- - Confirmation pour les suppressions
+ - Confirmation pour les **suppressions** et pour la **validation** des **dépôts** (Ils sont irréversibles)
 
  - Les placeholders qui ne réflètent pas le libellé pour certains champs
 
  - Le message **Erreur de validation des champs** qui n'informe pas de quelle erreur côté back il s'agit
 
  - Les champs **date de début** et **date de fin** qui ne marchent pas sur sur l'ajout et la modification d'une soutenance : Quand on clique ça s'affiche pas
+
+ - Enlever le bouton de **suppression** des rôles.
 
  - Sur la configuration il manque la modification des délais de récupération de livres pour l'étudiant et l'enseignant en jours, il manque aussi le champ pour spécifier le délai d'expiration d'un abonnement en années seulement pour les étuidiants
 

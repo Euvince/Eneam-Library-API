@@ -94,7 +94,12 @@ class UserController extends Controller
         // UN SEUL RÔLE POUR UN USER SINON BEAUCOUP TROP DE CONTRÔLES -> PERTE EN PERFORMANCES
 
         $data = $request->validated();
+
+        if ($data['email'] !== $user->email && $user instanceof MustVerifyEmail) {
+            AskAgainEmailVerificationLinkJob::dispatch($user);
+        }
         $user->update($data);
+
         if (array_key_exists('roles', $data)) {
 
             $user->roles()->sync($request['roles']);
@@ -118,10 +123,7 @@ class UserController extends Controller
             }
 
         }
-        if ($data['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            AskAgainEmailVerificationLinkJob::dispatch($user);
-        }
+
         return new SingleUserResponse(
             statusCode : 200,
             allowedMethods : 'GET, POST, PUT, PATCH, DELETE',
