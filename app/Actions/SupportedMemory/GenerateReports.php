@@ -212,14 +212,15 @@ class GenerateReports
             $bottomTable2->addRow();
             $bottomTable2->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
             $bottomTable2->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
-            $bottomTable2->addRow();
-            $bottomTable2->addCell()->addImage(
+            $bottomTable1->addRow();
+            $bottomTable1->addCell()->addText(' ');
+            /* $bottomTable1->addCell()->addImage(
                 $imagePath, [
                     'width' => 60,
                     'height' => 60,
-                    /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                    // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                 ]
-            );
+            ); */
             $bottomTable2->addCell()->addImage(
                 $signaturePath, [
                     'width' => 80,
@@ -318,13 +319,14 @@ class GenerateReports
                     $bottomTable1->addCell(width : 16000)->addText("SIGNATURE DE L'ÉTUDIANT");
                     $bottomTable1->addCell(width : 24000)->addText("SIGNATURE CHEF SERVICE DOCUMENTATION ET ARCHIVES", ['align' => 'end']);
                     $bottomTable1->addRow();
-                    $bottomTable1->addCell()->addImage(
+                    $bottomTable1->addCell()->addText(' ');
+                    /* $bottomTable1->addCell()->addImage(
                         $imagePath, [
                             'width' => 60,
                             'height' => 60,
-                            /* 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, */
+                            // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                         ]
-                    );
+                    ); */
                     $bottomTable1->addCell()->addImage(
                         $signaturePath, [
                             'width' => 80,
