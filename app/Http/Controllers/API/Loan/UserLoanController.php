@@ -29,8 +29,8 @@ class UserLoanController extends Controller
     {
         /* $this->authorize('canDoLoanRequest', $article); */
         $response = LoansOperationsService::userCanDoLoanRequest(
-            $this->auth->user() ??
-            \App\Models\User::find(2),
+            $this->auth->user() /* ??
+            \App\Models\User::find(2) */,
             $article
         );
         $message = $response
@@ -51,8 +51,8 @@ class UserLoanController extends Controller
     {
         /* $this->authorize('doLoanRequest', $article); */
         if (LoansOperationsService::userCanDoLoanRequest(
-                $this->auth->user() ??
-                \App\Models\User::find(2),
+                $this->auth->user() /* ??
+                \App\Models\User::find(2) */,
                 $article
             )
         ) {
@@ -79,8 +79,8 @@ class UserLoanController extends Controller
         /* $this->authorize('canReniewLoanRequest', $loan); */
         $response = LoansOperationsService::userCanReniewLoanRequest(
             $loan,
-            $this->auth->user() ??
-            \App\Models\User::find(2),
+            $this->auth->user() /* ??
+            \App\Models\User::find(2), */
         );
         $message = $response
             ? "L'emprunteur peut renouveller la demande d'emprunt"
@@ -101,8 +101,8 @@ class UserLoanController extends Controller
         /* $this->authorize('reniewLoanRequest', $loan); */
         if (LoansOperationsService::userCanReniewLoanRequest(
             $loan,
-            $this->auth->user() ??
-            \App\Models\User::find(2),
+            $this->auth->user() /* ??
+            \App\Models\User::find(2), */
         )) {
             LoanObserver::renewed($loan);
             NotifyLoanRequestReniwedJob::dispatch($loan);

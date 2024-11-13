@@ -274,5 +274,10 @@ return [
         'firstname'                => 'nom',
         'lastname'                 => 'prénom',
 
+        // Configuration
+
+        'archivist_signature' => 'signature du gestionnaire'
+        //...
+
     ],
 ];

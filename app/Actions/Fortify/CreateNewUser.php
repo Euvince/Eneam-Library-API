@@ -43,10 +43,10 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ])->assignRole(['Etudiant-Externe']);
-        $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
+        /* $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
         foreach ($externStudentPermissions as $permission) {
             $user->givePermissionTo($permission);
-        }
+        } */
 
         return $user;
     }

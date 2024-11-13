@@ -84,6 +84,8 @@ class UpdateConfigurationController extends Controller
             File::delete($archivistSignaturePath);
         }
         return $data;
+
+        /* |file|mimes:png,jpg,jpeg|max:1024 */
     }
 
 }
