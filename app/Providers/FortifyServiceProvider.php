@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use APP\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
@@ -45,6 +46,16 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        
+        /* Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email->first());
+
+            if ($user &&
+                \Illuminate\Support\Facades\Hash::check($request->password, $user->password) &&
+                User::hasAccess($user) && User::hasPaid($user)
+            ) return $user;
+        }); */
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

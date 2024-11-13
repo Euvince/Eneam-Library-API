@@ -32,10 +32,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UserController extends Controller
 {
 
-    public function __construct()
+    /* public function __construct()
     {
         $this->authorizeResource(User::class, 'user');
-    }
+    } */
 
     /**
      * Display a listing of the resource.
@@ -90,19 +90,33 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user) : SingleUserResponse
     {
+
+        // UN SEUL RÔLE POUR UN USER SINON BEAUCOUP TROP DE CONTRÔLES -> PERTE EN PERFORMANCES
+
         $data = $request->validated();
-        /* unset($data['roles']); */
         $user->update($data);
         if (array_key_exists('roles', $data)) {
+
             $user->roles()->sync($request['roles']);
+
             foreach ($user->permissions as $permission) {
                 $user->revokePermissionTo($permission);
             }
-            foreach($request['roles'] as $role){
-                foreach (Role::find($role)->permissions as $permission) {
-                    $user->givePermissionTo($permission->name);
+
+            if (User::hasAccess($user) && User::hasPaid($user)){
+                foreach($request['roles'] as $role){
+                    foreach (Role::find($role)->permissions as $permission) {
+                        $user->givePermissionTo($permission->name);
+                    }
                 }
             }
+            else {
+                $id = \App\Models\Role::where('name', 'Etudiant-Eneamien')->first()->id;
+                if (in_array($id, $request['roles'])) {
+                    $user->givePermissionTo('Déposer un Mémoire');
+                }
+            }
+
         }
         if ($data['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
@@ -217,6 +231,26 @@ class UserController extends Controller
             \App\Models\Subscription::create([
                 'user_id' => $user->id
             ]);
+
+            $roles = $user->roles->pluck('name', 'id')->toArray();
+            $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
+            if (in_array('Etudiant-Externe', $roles)) {
+                foreach ($externStudentPermissions as $permission) {
+                    $user->givePermissionTo($permission);
+                }
+            }
+
+            $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
+            if (in_array('Etudiant-Eneamien', $roles)) {
+                foreach ($user->permissions as $permission) {
+                    $user->revokePermissionTo($permission);
+                }
+
+                foreach ($eneamienStudentPermissions as $permission) {
+                    $user->givePermissionTo($permission);
+                }
+            }
+
             return response()->json(
                 status : 200,
                 data : ["message" => "L'opération a été éffectuée avec succès."],

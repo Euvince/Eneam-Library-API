@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
         /* \App\Models\User::factory(10)->create(); */
 
         \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
             'firstname' => 'Doe',
             'lastname' => 'Jonh',
             'slug' => \Illuminate\Support\Str::slug('Doe Jonh'),
@@ -35,7 +34,6 @@ class UserSeeder extends Seeder
         ->permissions()->sync(\App\Models\Permission::all());
 
         $ghislaine = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
             'firstname' => 'AKOMIA',
             'lastname' => 'Ghislaine',
             'slug' => \Illuminate\Support\Str::slug('AKOMIA Ghislaine'),
@@ -61,7 +59,6 @@ class UserSeeder extends Seeder
         }
 
         $euvince = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
             'firstname' => 'CAPO-CHICHI',
             'lastname' => 'Jean-Daniel Euvince',
             'slug' => \Illuminate\Support\Str::slug('CAPO-CHICHI Jean-Daniel Euvince'),
@@ -83,7 +80,6 @@ class UserSeeder extends Seeder
         }
 
         $maurice = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
             'firstname' => 'COMLAN',
             'lastname' => 'Maurice',
             'slug' => \Illuminate\Support\Str::slug('COMLAN Maurice'),
@@ -104,8 +100,28 @@ class UserSeeder extends Seeder
             $maurice->givePermissionTo($permission);
         }
 
+        $charbel = \App\Models\User::create([
+            'firstname' => 'BOKO',
+            'lastname' => 'Charbel',
+            'slug' => \Illuminate\Support\Str::slug('BOKO Charbel'),
+            'email' => 'charbel@gmail.com',
+            'email_verified_at' => now(),
+            'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
+            'phone_number' => '+229 97 60 26 56',
+            'birth_date' => fake()->date(),
+            'sex' => 'Masculin',
+            'has_paid' => 1,
+            'has_access' => 1,
+            'debt_amount' => 0,
+            'remember_token' => \Illuminate\Support\Str::random(10),
+            'created_by' => 'APPLICATION'
+        ])->assignRole(['Enseignant']);
+        $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
+        foreach ($teacherPermissions as $permission) {
+            $charbel->givePermissionTo($permission);
+        }
+
         $joly = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
             'firstname' => 'LAOUROU',
             'lastname' => 'Joly-Tharcisius Adébola',
             'slug' => \Illuminate\Support\Str::slug('LAOUROU Joly-Tharcisius Adébola'),
@@ -121,7 +137,9 @@ class UserSeeder extends Seeder
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
+
         $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
+
         foreach ($externStudentPermissions as $permission) {
             $joly->givePermissionTo($permission);
         }
@@ -129,7 +147,7 @@ class UserSeeder extends Seeder
         $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
 
         $daril = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
+            'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
             'firstname' => 'DJODJO KOUTON',
             'lastname' => 'Esprit-Divin Daril',
             'slug' => \Illuminate\Support\Str::slug('DJODJO KOUTON Esprit-Divin Daril'),
@@ -150,7 +168,7 @@ class UserSeeder extends Seeder
         }
 
         $arthur = \App\Models\User::create([
-            'matricule' => fake()->numberBetween(10000000, 99999999),
+            'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
             'firstname' => 'ZANNOU',
             'lastname' => 'Marc-Arthur',
             'slug' => \Illuminate\Support\Str::slug('ZANNOU Marc-Arthur'),
@@ -171,6 +189,36 @@ class UserSeeder extends Seeder
         }
 
 
+        $georges = \App\Models\User::create([
+            'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
+            'firstname' => 'SAGBO',
+            'lastname' => 'Georges',
+            'slug' => \Illuminate\Support\Str::slug('SAGBO Georges'),
+            'email' => 'georges@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
+            'sex' => 'Masculin',
+            'has_paid' => 0,
+            'has_access' => 0,
+            'debt_amount' => 0,
+            'created_by' => 'APPLICATION'
+        ])->assignRole(['Etudiant-Eneamien'])
+        ->givePermissionTo(['Déposer un Mémoire']);
+
+        $andre = \App\Models\User::create([
+            'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
+            'firstname' => 'SOSSOU',
+            'lastname' => 'André',
+            'slug' => \Illuminate\Support\Str::slug('SOSSOU André'),
+            'email' => 'andre@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
+            'sex' => 'Masculin',
+            'has_paid' => 0,
+            'has_access' => 0,
+            'debt_amount' => 0,
+            'created_by' => 'APPLICATION'
+        ])->assignRole(['Etudiant-Eneamien'])
+        ->givePermissionTo(['Déposer un Mémoire']);
+
         $oswald = \App\Models\User::create([
             'firstname' => 'DOVONON',
             'lastname' => 'Oswald',
@@ -183,10 +231,6 @@ class UserSeeder extends Seeder
             'debt_amount' => 0,
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
-        /* $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
-        foreach ($externStudentPermissions as $permission) {
-            $joly->givePermissionTo($permission);
-        } */
 
         $franklin = \App\Models\User::create([
             'firstname' => 'DUPONT',
@@ -200,10 +244,6 @@ class UserSeeder extends Seeder
             'debt_amount' => 0,
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
-        /* $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
-        foreach ($externStudentPermissions as $permission) {
-            $joly->givePermissionTo($permission);
-        } */
 
         $isabelle = \App\Models\User::create([
             'firstname' => 'DOE',
@@ -217,10 +257,6 @@ class UserSeeder extends Seeder
             'debt_amount' => 0,
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
-        /* $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
-        foreach ($externStudentPermissions as $permission) {
-            $joly->givePermissionTo($permission);
-        } */
 
         $emeline = \App\Models\User::create([
             'firstname' => 'DUBOIS',
@@ -234,10 +270,6 @@ class UserSeeder extends Seeder
             'debt_amount' => 0,
             'created_by' => 'APPLICATION'
         ])->assignRole(['Etudiant-Externe']);
-        /* $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
-        foreach ($externStudentPermissions as $permission) {
-            $joly->givePermissionTo($permission);
-        } */
 
     }
 }
