@@ -52,7 +52,7 @@ class ArticleRequest extends FormRequest
                 'has_ebooks' => ['nullable', 'boolean'],
                 'is_physical' => ['nullable', 'boolean'],
                 'has_audios' => ['nullable', 'boolean'],
-                'keywords' => ['required', 'array'],
+                'keywords' => ['required', 'array', 'size:3'],
                 'thumbnail_path' => ['nullable', 'file', 'mimes:png,jpg,jpeg'/* , 'max:value' */],
                 'file_path' => [
                     Rule::requiredIf((boolean) request()->has_ebooks === true),
@@ -95,6 +95,7 @@ class ArticleRequest extends FormRequest
         if ($routeName === 'article.store' || $routeName === 'article.update') {
             $messages = [
                 'editing_year.date_format' => "L'année d'édition n'est pas une année valide",
+                'keywords.size' => "Vous pouvez choisir 3 mots-clés au maximum",
                 'thumbnails_paths.file' => "La couverture du livre doit être un fichier",
                 'thumbnails_paths.mimes' => "La couverture du livre doit être un fichier de type : png, jpg ou jpeg",
                 'has_ebooks.required' => "Vous devez précisez si le livre possède ou pas d'e-book",

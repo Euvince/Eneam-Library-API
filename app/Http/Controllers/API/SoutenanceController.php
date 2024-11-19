@@ -39,12 +39,18 @@ class SoutenanceController extends Controller
     }
 
     /**
+     * Display some informations on in progress soutenance.
+     */
+    public function someInformationsOnInProgressSoutenance () {
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(SoutenanceRequest $request) : SingleSoutenanceResponse | JsonResponse
     {
-        $response = StoreAction::handle(data : $request->validated(), request : $request);
-        return $response;
+        return StoreAction::handle(data : $request->validated(), request : $request);
     }
 
     /**
@@ -65,8 +71,10 @@ class SoutenanceController extends Controller
      */
     public function update(SoutenanceRequest $request, Soutenance $soutenance) : SingleSoutenanceResponse | JsonResponse
     {
-        $response = UpdateAction::handle(data : $request->validated(), request : $request, soutenance : $soutenance);
-        return $response;
+        return UpdateAction::handle(
+            data : $request->validated(),
+            request : $request, soutenance : $soutenance
+        );
     }
 
 

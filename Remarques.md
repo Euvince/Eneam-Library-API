@@ -8,6 +8,8 @@
 
  - Les placeholders qui ne réflètent pas le libellé pour certains champs
 
+ - Les modales dont les textes me cadrent pas à certains endroits
+
  - Le message **Erreur de validation des champs** qui n'informe pas de quelle erreur côté back il s'agit
 
  - Les champs **date de début** et **date de fin** qui ne marchent pas sur sur l'ajout et la modification d'une soutenance : Quand on clique ça s'affiche pas
@@ -21,17 +23,33 @@
 
 + **Utilisateurs**
 
-  - Les **noms** et **prénoms** sont inversés sur le listing des users
-
   - Le select des rôles lors de la modification d'un user est blanc en thème sombre
 
 
 + **Mémoires**
 
-  - La modale pour *visualiser* un mémoire déposé, elle doit pouvoir consulter le mémoire.
-  - Lui afficher le nombre de **mémoires attendus** et le nombre de **mémoires restants**
+  - La modale pour *visualiser* un mémoire sur les 2 listings de **Mémoires**, elle doit pouvoir consulter le mémoire pour éffectuer les actions en fonction.
+
+  - Lui afficher le nombre de **mémoires attendus** et le nombre de **mémoires restants** pour la soutenance de l'année scolaire en cours (Si filtrer sera trop complexe, j'écris une API) : Sur la page des dépôts sera mieux
+
+  - Impression unique pose un problème, on dirait c'est Axios, voir dans la console.C'est une route en patch
 
 
 + **Livres**
 
   - Le formulaire d'ajout et de modification des Livres, lorsqu'on met assez de mots clés, le formulaire s'élargit et une partie est masquée, soit on scrolle ou on limite à 3 mots-clés comme ça va pas casser le listing aussi
+
+  - Suppression multiples
+
+  - La modale pour *visualiser* un livre
+
+  - Filtrer les demandes d'emprunt par titre de Demande ou titre de Livre(le nom du livre est inclu dans celui de la demande)
+
+
++ **Statistiques**
+
+
+
++ **Authentification**
+    - Register : Le laisser sur la même page avec un message de succès simplement
+    - Login
