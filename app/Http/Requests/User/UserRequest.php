@@ -44,7 +44,7 @@ class UserRequest extends FormRequest
                     ->withoutTrashed(),
                 ],
                 /* 'password' => $this->passwordRules(), */
-                'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
+                'phone_number' => ['nullable', /* 'phone:INTERNATIONAL', */],
                 'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
                 /* 'sex' => [
                     'nullable',

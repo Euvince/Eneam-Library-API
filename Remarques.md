@@ -1,5 +1,8 @@
-Remarques après tests
- - Lorsqu'on ajoute un nouveau **cycle** et qu'on veut le modifier automatiquement les données sont mal indexés, ça sera pareil pour **rôle**, **filière**, **soutenance** même si on ajoute pas un rôle, pareil pour **Article**
+**Remarques après tests**
+
++ **Configuration**
+
+ - Lorsqu'on ajoute un nouveau **cycle** et qu'on veut le modifier automatiquement les données sont mal indexés, ça sera peut-être pareil pour **rôle**, **filière**, **soutenance** même si on ajoute pas un rôle, peut-être pareil pour **Article**
 
  - Confirmation pour les **suppressions** et pour la **validation** des **dépôts** (Ils sont irréversibles)
 
@@ -11,15 +14,24 @@ Remarques après tests
 
  - Enlever le bouton de **suppression** des rôles.
 
- - Sur la configuration il manque la modification des délais de récupération de livres pour l'étudiant et l'enseignant en jours, il manque aussi le champ pour spécifier le délai d'expiration d'un abonnement en années seulement pour les étuidiants
+ - Sur la configuration il manque la modification des délais de récupération de livres pour l'étudiant et l'enseignant en jours, il manque aussi le champ pour spécifier le délai d'expiration d'un abonnement en années seulement pour les étudiants
 
  - La modification de la signature du gestionnaire rencontre un problème
 
- - Les **noms** et **prénoms** sont inversés sur le listing des users
 
-- Le select des rôles lors de la modification d'un user est blanc en thème sombre
++ **Utilisateurs**
+
+  - Les **noms** et **prénoms** sont inversés sur le listing des users
+
+  - Le select des rôles lors de la modification d'un user est blanc en thème sombre
 
 
--La modale pour *visualiser* un mémoire déposé, elle doit pouvoir consulter le mémoire.
++ **Mémoires**
 
-- Le formulaire d'ajout et de modification des Livres, lorsqu'on met assez de mots clés, le formulaire s'élargit et une partie est masquée, soit on scrolle ou on limite à 3 mots-clés comme ça va pas casser le listing aussi
+  - La modale pour *visualiser* un mémoire déposé, elle doit pouvoir consulter le mémoire.
+  - Lui afficher le nombre de **mémoires attendus** et le nombre de **mémoires restants**
+
+
++ **Livres**
+
+  - Le formulaire d'ajout et de modification des Livres, lorsqu'on met assez de mots clés, le formulaire s'élargit et une partie est masquée, soit on scrolle ou on limite à 3 mots-clés comme ça va pas casser le listing aussi

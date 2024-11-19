@@ -16,9 +16,9 @@ class UserSeeder extends Seeder
 
         \App\Models\User::create([
             'firstname' => 'Doe',
-            'lastname' => 'Jonh',
-            'slug' => \Illuminate\Support\Str::slug('Doe Jonh'),
-            'email' => 'jonh@doe.fr',
+            'lastname' => 'John',
+            'slug' => \Illuminate\Support\Str::slug('Doe John'),
+            'email' => 'john@doe.fr',
             'email_verified_at' => now(),
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
             'phone_number' => fake()->unique()->phoneNumber(),

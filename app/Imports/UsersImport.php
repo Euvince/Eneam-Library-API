@@ -26,7 +26,7 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         if ($this->request->routeIs("import.eneamiens.students")) {
-            if (in_array($row[2], User::pluck('email')->toArray())) {
+            if (in_array($row[2], User::whereNull('deleted_at')->pluck('email')->toArray())) {
                 return null;
             }
             $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
@@ -48,7 +48,7 @@ class UsersImport implements ToModel
         }
 
         else if ($this->request->routeIs("import.teachers")) {
-            if (in_array($row[2], User::pluck('email')->toArray())) {
+            if (in_array($row[2], User::whereNull('deleted_at')->pluck('email')->toArray())) {
                 return null;
             }
             $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
