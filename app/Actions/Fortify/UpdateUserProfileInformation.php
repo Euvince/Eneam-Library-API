@@ -36,7 +36,7 @@ class UpdateUserProfileInformation extends Controller implements UpdatesUserProf
                 'required','string','email','max:255',
                 Rule::unique('users')->ignore(id : $user->id),
             ],
-            'phone_number' => ['nullable', /* 'phone:INTERNATIONAL' */],
+            'phone_number' => ['nullable', 'phone:AUTO,BJ' /* 'phone:INTERNATIONAL' */],
             'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             /* 'sex' => [
                 'nullable', 'before_or_equal:today',

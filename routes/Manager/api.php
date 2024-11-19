@@ -76,6 +76,9 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
 Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer les Soutenances"] */], function () use($idRegex) {
     Route::apiResource(name : 'soutenance', controller : SoutenanceController::class);
 
+    Route::get(uri : '/in-progress-soutenance-informations', action : [App\Http\Controllers\API\SoutenanceController::class, 'someInformationsOnInProgressSoutenance'])
+        ->name('in-progress-soutenance-informations');
+
     Route::get(uri : '/check-soutenance-childrens/{soutenance}', action : [App\Http\Controllers\API\SoutenanceController::class, 'checkChildrens'])
         ->name('check-soutenance-childrens')
         ->where(['soutenance' => $idRegex]);
@@ -113,9 +116,9 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
     ->name('print-reports');
 
     Route::controller(SupportedMemoryController::class)->group(function(){
-    // Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
-    Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
-    Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
+        // Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
+        Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
+        Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
     });
 
     Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])

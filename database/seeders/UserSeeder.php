@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
         /* \App\Models\User::factory(10)->create(); */
 
         \App\Models\User::create([
-            'firstname' => 'Doe',
-            'lastname' => 'John',
+            'lastname' => 'Doe',
+            'firstname' => 'John',
             'slug' => \Illuminate\Support\Str::slug('Doe John'),
             'email' => 'john@doe.fr',
             'email_verified_at' => now(),
@@ -34,8 +34,8 @@ class UserSeeder extends Seeder
         ->permissions()->sync(\App\Models\Permission::all());
 
         $ghislaine = \App\Models\User::create([
-            'firstname' => 'AKOMIA',
-            'lastname' => 'Ghislaine',
+            'lastname' => 'AKOMIA',
+            'firstname' => 'Ghislaine',
             'slug' => \Illuminate\Support\Str::slug('AKOMIA Ghislaine'),
             'email' => 'ghislaine@gmail.com',
             'email_verified_at' => now(),
@@ -59,8 +59,8 @@ class UserSeeder extends Seeder
         }
 
         $euvince = \App\Models\User::create([
-            'firstname' => 'CAPO-CHICHI',
-            'lastname' => 'Jean-Daniel Euvince',
+            'lastname' => 'CAPO-CHICHI',
+            'firstname' => 'Jean-Daniel Euvince',
             'slug' => \Illuminate\Support\Str::slug('CAPO-CHICHI Jean-Daniel Euvince'),
             'email' => 'euvince03@gmail.com',
             'email_verified_at' => now(),
@@ -80,8 +80,8 @@ class UserSeeder extends Seeder
         }
 
         $maurice = \App\Models\User::create([
-            'firstname' => 'COMLAN',
-            'lastname' => 'Maurice',
+            'lastname' => 'COMLAN',
+            'firstname' => 'Maurice',
             'slug' => \Illuminate\Support\Str::slug('COMLAN Maurice'),
             'email' => 'maurice@gmail.com',
             'email_verified_at' => now(),
@@ -101,8 +101,8 @@ class UserSeeder extends Seeder
         }
 
         $charbel = \App\Models\User::create([
-            'firstname' => 'BOKO',
-            'lastname' => 'Charbel',
+            'lastname' => 'BOKO',
+            'firstname' => 'Charbel',
             'slug' => \Illuminate\Support\Str::slug('BOKO Charbel'),
             'email' => 'charbel@gmail.com',
             'email_verified_at' => now(),
@@ -122,8 +122,8 @@ class UserSeeder extends Seeder
         }
 
         $joly = \App\Models\User::create([
-            'firstname' => 'LAOUROU',
-            'lastname' => 'Joly-Tharcisius Adébola',
+            'lastname' => 'LAOUROU',
+            'firstname' => 'Joly-Tharcisius Adébola',
             'slug' => \Illuminate\Support\Str::slug('LAOUROU Joly-Tharcisius Adébola'),
             'email' => 'joly@gmail.com',
             'email_verified_at' => now(),
@@ -148,8 +148,8 @@ class UserSeeder extends Seeder
 
         $daril = \App\Models\User::create([
             'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
-            'firstname' => 'DJODJO KOUTON',
-            'lastname' => 'Esprit-Divin Daril',
+            'lastname' => 'DJODJO KOUTON',
+            'firstname' => 'Esprit-Divin Daril',
             'slug' => \Illuminate\Support\Str::slug('DJODJO KOUTON Esprit-Divin Daril'),
             'email' => 'darkout04@gmail.com',
             'email_verified_at' => now(),
@@ -169,8 +169,8 @@ class UserSeeder extends Seeder
 
         $arthur = \App\Models\User::create([
             'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
-            'firstname' => 'ZANNOU',
-            'lastname' => 'Marc-Arthur',
+            'lastname' => 'ZANNOU',
+            'firstname' => 'Marc-Arthur',
             'slug' => \Illuminate\Support\Str::slug('ZANNOU Marc-Arthur'),
             'email' => 'arthur@gmail.com',
             'email_verified_at' => now(),
@@ -191,8 +191,8 @@ class UserSeeder extends Seeder
 
         $georges = \App\Models\User::create([
             'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
-            'firstname' => 'SAGBO',
-            'lastname' => 'Georges',
+            'lastname' => 'SAGBO',
+            'firstname' => 'Georges',
             'slug' => \Illuminate\Support\Str::slug('SAGBO Georges'),
             'email' => 'georges@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
@@ -206,8 +206,8 @@ class UserSeeder extends Seeder
 
         $andre = \App\Models\User::create([
             'matricule' => fake()->unique()->numberBetween(10000000, 99999999),
-            'firstname' => 'SOSSOU',
-            'lastname' => 'André',
+            'lastname' => 'SOSSOU',
+            'firstname' => 'André',
             'slug' => \Illuminate\Support\Str::slug('SOSSOU André'),
             'email' => 'andre@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
@@ -220,8 +220,8 @@ class UserSeeder extends Seeder
         ->givePermissionTo(['Déposer un Mémoire']);
 
         $oswald = \App\Models\User::create([
-            'firstname' => 'DOVONON',
-            'lastname' => 'Oswald',
+            'lastname' => 'DOVONON',
+            'firstname' => 'Oswald',
             'slug' => \Illuminate\Support\Str::slug('DOVONON Oswald'),
             'email' => 'oswald@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
@@ -233,8 +233,8 @@ class UserSeeder extends Seeder
         ])->assignRole(['Etudiant-Externe']);
 
         $franklin = \App\Models\User::create([
-            'firstname' => 'DUPONT',
-            'lastname' => 'Franklin',
+            'lastname' => 'DUPONT',
+            'firstname' => 'Franklin',
             'slug' => \Illuminate\Support\Str::slug('DUPONT Franklin'),
             'email' => 'franklin@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
@@ -246,8 +246,8 @@ class UserSeeder extends Seeder
         ])->assignRole(['Etudiant-Externe']);
 
         $isabelle = \App\Models\User::create([
-            'firstname' => 'DOE',
-            'lastname' => 'Isabelle',
+            'lastname' => 'DOE',
+            'firstname' => 'Isabelle',
             'slug' => \Illuminate\Support\Str::slug('DOE Isabelle'),
             'email' => 'isabelle@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
@@ -259,8 +259,8 @@ class UserSeeder extends Seeder
         ])->assignRole(['Etudiant-Externe']);
 
         $emeline = \App\Models\User::create([
-            'firstname' => 'DUBOIS',
-            'lastname' => 'Emeline',
+            'lastname' => 'DUBOIS',
+            'firstname' => 'Emeline',
             'slug' => \Illuminate\Support\Str::slug('DUBOIS Emeline'),
             'email' => 'emeline@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('Baba2004'),
