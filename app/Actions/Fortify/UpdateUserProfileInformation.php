@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Jobs\AskAgainEmailVerificationLinkJob;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class UpdateUserProfileInformation extends Controller implements UpdatesUserProfileInformation
 {
@@ -36,7 +38,10 @@ class UpdateUserProfileInformation extends Controller implements UpdatesUserProf
                 'required','string','email','max:255',
                 Rule::unique('users')->ignore(id : $user->id),
             ],
-            'phone_number' => ['nullable', 'phone:AUTO,BJ' /* 'phone:INTERNATIONAL' */],
+            'phone_number' => [
+                'nullable', /* 'phone:AUTO,BJ', */ 'phone:INTERNATIONAL',
+                Rule::unique('users')->ignore(id : $user->id),
+            ],
             'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             /* 'sex' => [
                 'nullable', 'before_or_equal:today',
@@ -68,7 +73,8 @@ class UpdateUserProfileInformation extends Controller implements UpdatesUserProf
                 'firstname' => $input['firstname'],
                 'lastname' => $input['lastname'],
                 'email' => $input['email'],
-                'phone_number' => $phoneNumber,
+                // 'phone_number' => PhoneNumber::make($phoneNumber)->formatE164(),
+                'phone_number' => Helpers::formatPhoneNumber($phoneNumber),
                 'birth_date' => $birthDate,
                 'sex' => $sex,
             ])->save();
@@ -97,11 +103,13 @@ class UpdateUserProfileInformation extends Controller implements UpdatesUserProf
             'lastname' => $input['lastname'],
             'email' => $input['email'],
             'email_verified_at' => null,
-            'phone_number' => $phoneNumber,
+            // 'phone_number' => PhoneNumber::make($phoneNumber)->formatE164(),
+            'phone_number' => Helpers::formatPhoneNumber($phoneNumber),
             'birth_date' => $birthDate,
             'sex' => $sex,
         ])->save();
 
         AskAgainEmailVerificationLinkJob::dispatch($user);
     }
+
 }

@@ -1,4 +1,4 @@
-**Remarques après tests**
+**Remarques après tests sur le Dashboard**
 
 + **Configuration**
 
@@ -47,6 +47,20 @@
 
 
 + **Statistiques**
+
+
+
+**Remarques après tests sur la partie users**
+
++ **Mémoires**
+   - Dépôt de mémoire qui ne soumet pas, NextJS affiche une erreur (peut-être aussi une règle de validation non affichée sur le front bloque)
+
+   - Page de garde en couverture
+
+   - Téléchargement du mémoire, bouton **indisponible** pourquoi ???
+
+   - Consultation du mémoire
+
 
 
 
