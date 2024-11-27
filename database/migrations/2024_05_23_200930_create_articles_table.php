@@ -32,8 +32,8 @@ return new class extends Migration
             $table->boolean(column : 'has_audios')->default(value : false);
             $table->string('thumbnail_path')->nullable()->default(value : NULL);
             $table->string('file_path')->nullable()->default(value : NULL);
-            /* $table->json('keywords')->nullable()->default(value : NULL);
-            $table->json('formats')->nullable()->default(value : NULL); */
+            $table->json('keywords')->nullable()->default(value : NULL);
+            $table->json('formats')->nullable()->default(value : NULL);
             $table->json('files_paths')->nullable()->default(value : NULL);
             $table->unsignedBigInteger(column : 'likes_number')->default(value : 0);
             $table->unsignedBigInteger(column : 'views_number')->default(value : 0);

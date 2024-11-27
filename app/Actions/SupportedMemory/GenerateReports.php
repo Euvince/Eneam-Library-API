@@ -241,7 +241,7 @@ class GenerateReports
             $writer = IOFactory::createWriter($document, 'Word2007');
             $writer->save($filename);
             File::deleteDirectory(public_path('qrcodes'));
-            return Response::download(public_path(path : $filename))->deleteFileAfterSend();
+            return Response::download(public_path(path : $filename))/* ->deleteFileAfterSend() */;
         }
         else {
             return response()->json(

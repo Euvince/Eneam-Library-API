@@ -115,11 +115,11 @@ Route::group([/* 'middleware' => ["auth:sanctum", "verified", "permission:Gérer
     Route::patch(uri : '/print-reports', action : [SupportedMemoryController::class, 'printReports'])
     ->name('print-reports');
 
-    Route::controller(SupportedMemoryController::class)->group(function(){
-        // Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
+    /* Route::controller(SupportedMemoryController::class)->group(function(){
+        Route::get(uri : 'memories', action : 'getMemories')->name('memories.getMemories');
         Route::post(uri : 'import-pdfs-reports', action : 'importReports')->name(name : 'import.pdfs.reports');
         Route::post(uri : 'import-words-reports', action : 'importReports')->name(name : 'import.words.reports');
-    });
+    }); */
 
     Route::delete(uri : '/destroy-memories', action : [SupportedMemoryController::class, 'destroyMemories'])
     ->name('destroy-memories');

@@ -88,6 +88,20 @@ class ArticleFactory extends Factory
         $formats = json_encode(value : $formats);
         $available = $this->faker->boolean(chanceOfGettingTrue : 80);
 
+        $covers = [
+            'book-cover1.jpg',
+            'book-cover2.jpg',
+            'book-cover3.jpg',
+            'book-cover4.jpg',
+        ];
+
+        $files = [
+            'La République (Platon) (Z-Library).epub',
+            'pg73955-images-3.epub'
+        ];
+
+        // dd(storage_path('app/public/Articles/articles/pg73955-images-3.epub'));
+
         return [
             'title' => $title,
             'slug' => \Illuminate\Support\Str::slug($title),
@@ -106,9 +120,11 @@ class ArticleFactory extends Factory
             'has_ebooks' => $this->faker->boolean(chanceOfGettingTrue : 50),
             'is_physical' => $this->faker->boolean(chanceOfGettingTrue : 85),
             'has_audios' => $this->faker->boolean(chanceOfGettingTrue : 50),
+            /* 'thumbnail_path' => storage_path('app/public/Eneam-Biblio/' . $this->faker->randomElement(array : $covers)),
+            'file_path' => storage_path('app/public/Eneam-Biblio/' . $this->faker->randomElement(array : $files)), */
             /* 'keywords' => $keywords,
             'formats' => $formats, */
-            'created_by' => 'APPLICATION'
+            'created_by' => 'APPLICATION',
         ];
     }
 }
