@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Simple routes
+
 $idRegex = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
