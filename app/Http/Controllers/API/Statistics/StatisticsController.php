@@ -22,10 +22,10 @@ class StatisticsController extends Controller
         for ($i = 1; $i < 6; $i++) {
             $months->push(Carbon::now()->subMonths($i)->format('F Y'));
         }
-        $monthReverse = $months->reverse();
-        // dd($monthReverse);
-        // dd(Carbon::parse(explode(' ', $monthReverse[0])[0])->month);
-        // dd((int)explode(' ', $monthReverse[0])[1]);
+        $reversedMonths = $months->reverse();
+        // dd($reversedMonths);
+        // dd(Carbon::parse(explode(' ', $reversedMonths[0])[0])->month);
+        // dd((int)explode(' ', $reversedMonths[0])[1]);
 
         $managersNumber = User::query()
             ->whereHas(relation : 'roles', callback : function (Builder $query) {
@@ -87,6 +87,11 @@ class StatisticsController extends Controller
             $data3[$month][$is_physical] = $count;
         }
 
+        /* $reversedMonthlyStats = Statistic::orderBy('id', 'desc')->limit(12)->get()->reverse(); */
+
+        $monthlyStats = Statistic::orderBy('id', 'desc')->limit(12)->get()->toArray();
+        $reversedMonthlyStats = array_reverse($monthlyStats);
+
         return response()->json(
             status : 200,
             headers : ["Allow" => 'GET'],
@@ -110,7 +115,7 @@ class StatisticsController extends Controller
                 'ebooksMonthlyStats' => $data2,
                 'physicalMonthlyStats' => $data3, */
 
-                'monthlyStats' => Statistic::orderBy('id', 'desc')->limit(12)->get()->reverse()
+                'monthlyStats' => $reversedMonthlyStats
             ],
         );
     }

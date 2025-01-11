@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string(column : 'school_city');
             $table->string(column : 'archivist_full_name');
             $table->string(column : 'archivist_signature')->nullable();
-            $table->decimal('eneamien_subscribe_amount', 15, 2);
-            $table->decimal('extern_subscribe_amount', 15, 2);
+            $table->decimal('eneamien_subscribe_amount', 20, 2);
+            $table->decimal('extern_subscribe_amount', 20, 2);
             $table->unsignedBigInteger(column : 'subscription_expiration_delay');
-            $table->decimal('student_debt_amount', 15, 2);
-            $table->decimal('teacher_debt_amount', 15, 2);
+            $table->decimal('student_debt_amount', 20, 2);
+            $table->decimal('teacher_debt_amount', 20, 2);
             $table->unsignedBigInteger(column : 'student_loan_delay');
             $table->unsignedBigInteger(column : 'teacher_loan_delay');
             $table->unsignedBigInteger(column : 'student_recovered_delay');

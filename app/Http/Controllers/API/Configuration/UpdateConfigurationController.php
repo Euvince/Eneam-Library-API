@@ -81,6 +81,7 @@ class UpdateConfigurationController extends Controller
         // $data['archivist_signature'] = $signaturePathCollection->storeAs(public_path("images"), "signature.".$request->file('archivist_signature')->getClientOriginalExtension(), 'public');
         $data['archivist_signature'] = $signaturePathCollection->storeAs("images", "signature.".$request->file('archivist_signature')->getClientOriginalExtension(), 'public');
         $archivistSignaturePath = public_path("storage/$config->archivist_signature");
+        if(Storage::exists($archivistSignaturePath)) Storage::delete($archivistSignaturePath);
         if (File::exists($archivistSignaturePath)) {
             File::delete($archivistSignaturePath);
         }

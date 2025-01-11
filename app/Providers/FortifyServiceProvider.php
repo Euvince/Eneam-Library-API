@@ -49,7 +49,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
+
         /* Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email->first());
 

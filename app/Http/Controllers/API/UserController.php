@@ -100,6 +100,10 @@ class UserController extends Controller
         }
         $user->update($data);
 
+        $eneamStudentRoleId = \App\Models\Role::where('name', 'Etudiant-Eneamien')->first()->id;
+        $teacherRole = \App\Models\Role::where('name', 'Enseignant')->first();
+        $teacherPermissions = $teacherRole->permissions->pluck('name', 'id');
+
         if (array_key_exists('roles', $data)) {
 
             $user->roles()->sync($request['roles']);
@@ -115,10 +119,13 @@ class UserController extends Controller
                     }
                 }
             }
-            else {
-                $id = \App\Models\Role::where('name', 'Etudiant-Eneamien')->first()->id;
-                if (in_array($id, $request['roles'])) {
-                    $user->givePermissionTo('Déposer un Mémoire');
+            else if (in_array($eneamStudentRoleId, $request['roles'])) {
+                $user->givePermissionTo('Déposer un Mémoire');
+            }
+
+            else if (in_array($teacherRole->id, $request['roles'])) {
+                foreach ($teacherPermissions as $permission) {
+                    $user->givePermissionTo($permission);
                 }
             }
 
@@ -237,6 +244,9 @@ class UserController extends Controller
             $roles = $user->roles->pluck('name', 'id')->toArray();
             $externStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Externe')->permissions->pluck('name', 'id');
             if (in_array('Etudiant-Externe', $roles)) {
+                foreach ($user->permissions as $permission) {
+                    $user->revokePermissionTo($permission);
+                }
                 foreach ($externStudentPermissions as $permission) {
                     $user->givePermissionTo($permission);
                 }
@@ -247,8 +257,17 @@ class UserController extends Controller
                 foreach ($user->permissions as $permission) {
                     $user->revokePermissionTo($permission);
                 }
-
                 foreach ($eneamienStudentPermissions as $permission) {
+                    $user->givePermissionTo($permission);
+                }
+            }
+
+            $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
+            if (in_array('Enseignant', $roles)) {
+                foreach ($user->permissions as $permission) {
+                    $user->revokePermissionTo($permission);
+                }
+                foreach ($teacherPermissions as $permission) {
                     $user->givePermissionTo($permission);
                 }
             }
@@ -261,7 +280,7 @@ class UserController extends Controller
         else {
             return response()->json(
                 status : 403,
-                data : ["message" => "Cette opération n'est possible que sur les étudiants n'ayant pas encore accès à la bibliothèque."],
+                data : ["message" => "Cette opération n'est possible que sur les utilisateurs n'ayant pas encore accès à la bibliothèque."],
             );
         }
     }
