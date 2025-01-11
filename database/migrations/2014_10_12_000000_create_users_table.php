@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string(column : 'matricule')->unique()->nullable()->default(value : NULL);
+            $table->string(column : 'matricule')/* ->unique() */->nullable()->default(value : NULL);
             $table->string(column : 'firstname')->nullable()->default(value : NULL);
             $table->string(column : 'lastname')->nullable()->default(value : NULL);
             $table->string(column : 'slug')->nullable()->default(value : NULL);
-            $table->string(column : 'email')->unique();
+            $table->string(column : 'email')/* ->unique() */;
             $table->timestamp(column : 'email_verified_at')->nullable();
             $table->string(column : 'password');
             $table->string(column : 'phone_number')->nullable()->default(value : NULL);

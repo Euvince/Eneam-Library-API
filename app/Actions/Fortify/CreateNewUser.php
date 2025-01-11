@@ -87,7 +87,7 @@ class CreateNewUser implements CreatesNewUsers
                         Rule::unique(User::class),
                     ],
                     'password' => $this->passwordRules(),
-                    'phone_number' => ['nullable', 'phone:INTERNATIONAL'],
+                    'phone_number' => ['nullable', /* 'phone:INTERNATIONAL' */],
                     'birth_date' => ['nullable', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
                     'sex' => [
                         'nullable', 'before_or_equal:today',

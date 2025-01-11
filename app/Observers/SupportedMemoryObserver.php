@@ -2,12 +2,15 @@
 
 namespace App\Observers;
 
+use App\Helpers;
 use App\Models\SupportedMemory;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 
 class SupportedMemoryObserver
 {
     public function __construct(
+        private readonly Request $request,
         private readonly AuthManager $auth
     )
     {
@@ -22,6 +25,13 @@ class SupportedMemoryObserver
     {
         $supportedMemory->status = "Invalidé";
         $supportedMemory->slug = \Illuminate\Support\Str::slug($supportedMemory->theme);
+
+        if (!app()->runningInConsole() && isset($this->request->first_author_phone))
+        $supportedMemory->first_author_phone = Helpers::formatPhoneNumber($this->request->first_author_phone);
+
+        if (!app()->runningInConsole() && isset($this->request->second_author_phone))
+        $supportedMemory->second_author_phone = Helpers::formatPhoneNumber($this->request->second_author_phone);
+
         $this->canDoEvent()
             ? $supportedMemory->created_by = $this->auth->user()->firstname . " " . $this->auth->user()->lastname
             : $supportedMemory->created_by = NULL;

@@ -26,21 +26,21 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         if ($this->request->routeIs("import.eneamiens.students")) {
-            if (in_array($row[2], User::pluck('email')->toArray())) {
+            if (in_array($row[2], User::whereNull('deleted_at')->pluck('email')->toArray())) {
                 return null;
             }
-            $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
             $password = Helpers::generateRandomPassword();
             $user = new User([
                 'email'     => $row[2],
-                'lastname'  => $row[1],
+                'lastname'  => $row[0],
                 'matricule' => $row[3],
-                'firstname' => $row[0],
+                'firstname' => $row[1],
                 'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Etudiant-Eneamien']);
             $user->givePermissionTo(['Déposer un Mémoire']);
-            /* foreach ($eneamienStudentPermissions as $permission) {
+            /* $eneamienStudentPermissions = \App\Models\Role::findByName(name : 'Etudiant-Eneamien')->permissions->pluck('name', 'id');
+            foreach ($eneamienStudentPermissions as $permission) {
                 $user->givePermissionTo($permission);
             } */
             SendConnectionCredentialsToUserJob::dispatch($user->email, $user->password, $user->matricule);
@@ -48,18 +48,18 @@ class UsersImport implements ToModel
         }
 
         else if ($this->request->routeIs("import.teachers")) {
-            if (in_array($row[2], User::pluck('email')->toArray())) {
+            if (in_array($row[2], User::whereNull('deleted_at')->pluck('email')->toArray())) {
                 return null;
             }
-            $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
             $password = Helpers::generateRandomPassword();
             $user = new User([
                 'email'     => $row[2],
-                'lastname'  => $row[1],
-                'firstname' => $row[0],
+                'lastname'  => $row[0],
+                'firstname' => $row[1],
                 'password'  => Hash::make($password),
             ]);
             $user->assignRole(roles : ['Enseignant']);
+            $teacherPermissions = \App\Models\Role::findByName(name : 'Enseignant')->permissions->pluck('name', 'id');
             foreach ($teacherPermissions as $permission) {
                 $user->givePermissionTo($permission);
             }

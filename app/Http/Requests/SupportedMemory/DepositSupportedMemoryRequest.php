@@ -70,7 +70,7 @@ class DepositSupportedMemoryRequest extends FormRequest
             "start_at.before" => "L'heure de début doit être antérieure à celle de fin.",
             "ends_at.after" => "L'heure de fin doit être postérieure à celle de début.",
             "first_author_phone" => "Le numéro de téléphone du premier étudiant n'est pas valide.",
-            "second_author_phone" => "Le numéro de téléphone du deuxième étudiant n'est pas valide.",
+            "second_author_phone" => "Le numéro de téléphone du second étudiant n'est pas valide.",
             "cover_page_path.max" => "La taille du fichier de la page de garde ne peut dépasser 2mo.",
             "file_path.max" => "La taille du fichier du mémoire soutenu ne peut dépassser 5mo.",
         ];

@@ -103,7 +103,7 @@ return [
     'not_in'               => 'Le champ :attribute sélectionné n\'est pas valide.',
     'not_regex'            => 'Le format du champ :attribute n\'est pas valide.',
     'numeric'              => 'Le champ :attribute doit contenir un nombre.',
-    'phone' => 'The :attribute field must be a valid number.',
+    'phone' => 'Le :attribute doit être un numéro de téléphone valide.',
     'password'             => [
         'letters'       => 'Le champ :attribute doit contenir au moins une lettre.',
         'mixed'         => 'Le champ :attribute doit contenir au moins une majuscule et une minuscule.',
@@ -238,10 +238,10 @@ return [
         'ends_at'                  => "heure de fin",
         'first_author_name'        => "nom du premier étudiant",
         'first_author_email'       => "email du premier étudiant",
-        'second_author_name'       => "nom du deuxième étudiant",
-        'second_author_email'      => "email du deuxième étudiant",
+        'second_author_name'       => "nom du second étudiant",
+        'second_author_email'      => "email du second étudiant",
         'first_author_phone'       => "numéro de téléphone du premier étudiant",
-        'second_author_phone'      => "numéro de téléphone du deuxième étudiant",
+        'second_author_phone'      => "numéro de téléphone du second étudiant",
         'jury_president_name'      => "nom du président de jury",
         'memory_master_name'       => "nom du maître mémoire",
         'memory_master_email'      => "email du maître mémoire",
@@ -276,8 +276,11 @@ return [
 
         // Configuration
 
-        'archivist_signature' => 'signature du gestionnaire'
+        'archivist_signature' => 'signature du gestionnaire',
         //...
+
+
+        'phone_number'        => 'numéro de téléphone'
 
     ],
 ];
